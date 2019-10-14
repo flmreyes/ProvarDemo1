@@ -1,0 +1,288 @@
+<apex:page standardController="Flosum__Patch_Manifest__c" recordSetVar="mani" extensions="Flosum.MassDeletePatchItemsController" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+	
+	<style>
+		.msgIcon {
+			display: none!important
+		}
+		.lbcls{
+	        font-weight: 700 !important;
+	    }
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.message {
+			opacity: 0;
+		}
+		div .pagination {
+			text-align: center;
+		}
+		td .dataCell label {
+			font-weight: normal;
+		}
+		.pagination input {
+			margin-left: 4px;
+		} 
+		body .searchRow {
+		  	margin-left: 1%;
+		}
+		body .searchRowLast {
+		  	margin-left: .5%;
+		}
+		.btnMargin {
+			margin-top: 160px;
+		}
+	</style>
+	
+	<div class="slds-scope">
+		<apex:form styleClass="slds-form--stacked" id="form">
+			<apex:actionfunction name="selectAllItems" action="{!selectAll}" reRender="msg,tb" onComplete="hide();checkUnCheck();">
+				<apex:param assignTo="{!selectAllFlag}" value="" name="selectAllFlag"/>
+			</apex:actionfunction>
+			<apex:actionFunction name="callSearch" action="{!searchComponent}" oncomplete="hide();" rerender="pBlock,msg" />
+			<apex:pagemessages id="msg"/>
+			<div class="slds-page-header">
+				<div class="slds-media">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Remove From Deployment">Remove From Deployment</h1>
+				</div>
+			</div>
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block" id="pBlock">
+					<div class="slds-float--right btnMargin" role="group">
+						<apex:commandButton styleClass="slds-button slds-button_neutral" value="Refresh List" action="{!refereshList}" rendered="{!if(compTypeOptions.size>0,true,false)}" oncomplete="hide();uncheckGlobalInput();" rerender="pBlock,msg" onclick="show();"/>
+	        			<apex:commandButton styleClass="slds-button slds-button_neutral" value="Remove From Deployment" action="{!addToPatch}" rendered="{!if(compTypeOptions.size>0,true,false)}" oncomplete="overridePageMessages();hide();" rerender="msg" onclick="show();"/>
+					</div>
+					<apex:outputPanel layout="block" id="pbSectionBlock">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!if(patchId != null,true,false)}">
+							<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Deployment Name :" />
+							<div class="slds-form-element__control">
+								<apex:outputText style="background:#f4f6f9" styleClass="slds-input slds-text-heading_regular" value="{!patchName}"/>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(compTypeOptions.size > 0,true,false)}">
+							<apex:outputLabel styleClass="lbcls slds-m-top--medium slds-form-element__label slds-text-heading_regular" value="{!$Label.flosum__component_type} :" />
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" label="{!$Label.flosum__component_type} :" size="1" value="{!selectedType}" >
+										<apex:selectOptions value="{!compTypeOptions}" />
+										<apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!defaultPagination}" oncomplete="hide();uncheckGlobalInput();checkUnCheck();" onsubmit="show();"/> 
+									</apex:selectList>
+								</div>
+							</div>
+							<div class="slds-m-top--medium slds-m-bottom--medium slds-grid">
+								<div class="slds-size--1-of-2 slds-m-right--small">
+									<apex:inputText value="{!searchText}" styleClass="searchRow slds-text-heading_regular slds-input slds-float_left"/>
+								</div>
+								<div class="slds-size--1-of-2">
+									<apex:commandButton action="{!searchComponent}" value="Search" onClick="show();" onComplete="hide();overridePageMessages();" reRender="pBlock,msg" styleClass="searchRow btn slds-button slds-button_neutral slds-float_left" />
+					      			<apex:commandButton action="{!hideSearch}" value="Hide Search" onClick="show();" onComplete="hide();overridePageMessages();" reRender="pBlock,msg" rendered="{!if(IsSearch,true,false)}" styleClass="searchRowLast btn slds-button slds-button_neutral slds-float_left" />
+								</div>
+							</div>
+            			</apex:outputPanel>
+	            		<apex:outputPanel layout="block" id="tb">
+	            			<div class="slds-form-element__control slds-p-bottom_x-large">
+                        		<span class="slds-checkbox slds-float--left" style="margin-left: 24px;">
+		                            <apex:inputCheckbox onclick="checkItemAllGlobal(this); return false;" styleclass="slds-input globalCheck" id="checkbox-2" value="{!selectAllFlag}" rendered="{!IF(componentList.size > 0,true,false)}"/>
+		                            <apex:outputLabel for="checkbox-2" styleClass="lbcls slds-checkbox__label" rendered="{!IF(componentList.size > 0,true,false)}" >
+		                                <span class="slds-checkbox--faux"></span>
+		                                <span class="slds-form-element__label">Select / Deselect All</span>
+		                            </apex:outputLabel>
+		                        </span>
+		                    </div>
+	            		
+				            <apex:dataTable value="{!componentList}" var="mi" rendered="{!if(componentList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+				            	<apex:column headervalue="Select">
+									<apex:facet name="header">
+										<div class="slds-form-element">
+											<div class="slds-form-element__control">
+												<span class="slds-checkbox">
+												    <input type="checkbox" class="psli" name="options" id="checkbox-2" onclick="checkItemAll(this);" />
+												    <label class="slds-checkbox__label" for="checkbox-2">
+												        <span class="slds-checkbox_faux" />
+												        <span class="slds-form-element__label" />
+											      	</label>
+											    </span>
+											</div>
+										</div>
+									</apex:facet>
+									<div class="slds-form-element">
+									    <div class="slds-form-element__control">
+									        <span class="slds-checkbox">
+									            <apex:inputCheckbox onClick="checkUnCheck();" id="comp_records" styleclass="sli slds-input" value="{!mi.checkStatus}"/>
+									            <apex:outputLabel for="comp_records" styleClass="slds-checkbox__label">
+									                <span class="slds-checkbox--faux"/>
+									                <span class="slds-form-element__label"/>
+									            </apex:outputLabel>
+									        </span>
+									    </div>
+									</div>
+								</apex:column>
+								<apex:column >
+									<apex:facet name="header">
+										<apex:commandLink value="{!If(OrderByFieldName == 'Component_Name__c',If(Order == 'ASC',$Label.flosum__component_name+' ▲',$Label.flosum__component_name+' ▼') ,$Label.flosum__component_name)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+											<apex:param assignTo="{!TempOrderByFieldName}" value="Component_Name__c" name="OrderByFieldName"/>
+										</apex:commandLink>
+									</apex:facet>
+									<apex:outputLabel value="{!mi.comp.Flosum__Component_Name__c}" />
+								</apex:column>
+								<apex:column >
+									<apex:facet name="header">
+										<apex:commandLink value="{!If(OrderByFieldName == 'Component_Type__c',If(Order == 'ASC',$Label.flosum__component_type+' ▲',$Label.flosum__component_type+' ▼') ,$Label.flosum__component_type)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+											<apex:param assignTo="{!TempOrderByFieldName}" value="Component_Type__c" name="OrderByFieldName"/>
+										</apex:commandLink>
+									</apex:facet>
+									<apex:outputLabel value="{!mi.comp.Flosum__Component_Type__c}" />
+								</apex:column>
+								<apex:column >
+									<apex:facet name="header">
+										<apex:commandLink value="{!If(OrderByFieldName == 'Version__c',If(Order == 'ASC',$Label.flosum__version+' ▲',$Label.flosum__version+' ▼') ,$Label.flosum__version)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+											<apex:param assignTo="{!TempOrderByFieldName}" value="Version__c" name="OrderByFieldName"/>
+										</apex:commandLink>
+									</apex:facet>
+									<apex:outputLabel value="{!mi.comp.Flosum__Version__c}" />
+					            </apex:column>
+					            <apex:column >
+					        		<apex:facet name="header">
+										<apex:commandLink value="{!If(OrderByFieldName == 'Developer__c',If(Order == 'ASC',$Label.flosum__developer+' ▲',$Label.flosum__developer+' ▼') ,$Label.flosum__developer)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+											<apex:param assignTo="{!TempOrderByFieldName}" value="Developer__c" name="OrderByFieldName"/>
+										</apex:commandLink>
+									</apex:facet>
+									<apex:outputLabel value="{!mi.comp.Flosum__Developer__c}" />
+								</apex:column>
+					        	<apex:column >
+					        		<apex:facet name="header">
+										<apex:commandLink value="{!If(OrderByFieldName == 'Last_Updated_On__c',If(Order == 'ASC',$Label.flosum__changed_on+' ▲',$Label.flosum__changed_on+' ▼') ,$Label.flosum__changed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+											<apex:param assignTo="{!TempOrderByFieldName}" value="Last_Updated_On__c" name="OrderByFieldName"/>
+										</apex:commandLink>
+									</apex:facet>
+									<apex:outputLabel value="{!mi.comp.Flosum__Last_Updated_On__c}" />
+								</apex:column>
+							</apex:dataTable>
+							<apex:outputPanel rendered="{!if(componentList.size > 0,true,false)}" layout="block" styleClass="pagination slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded">
+								<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+									<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="Previous" action="{!previous}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+									<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="First" action="{!FirstPage}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+								</div>
+								<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+									<apex:outputText value="{!paginationStr}" styleClass="pagination"/>
+								</div>
+								<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+									<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Next" action="{!next}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+									<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Last" action="{!LastPage}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+								</div>
+							</apex:outputPanel>
+	            		</apex:outputPanel>
+				    </apex:outputPanel>
+			    </apex:outputPanel>
+			</fieldset>
+		</apex:form>
+	</div> 
+	
+	<script>
+		$( document ).ready(function() {
+		    checkUnCheck();
+		});
+						
+		function enterPress(e){
+	        if(e.keyCode==13){
+	        	show();
+	            if(e.preventDefault){ 
+	                e.preventDefault();
+	            }
+	            else{
+	                e.returnValue=false;
+	            }
+	            callSearch();
+	        }        
+	    }		
+		function checkItemAll(ele) {
+			var checkboxes = document.getElementsByClassName('sli');
+		     if (ele.checked) {
+		         for (var i = 0; i < checkboxes.length; i++) {
+		             if (checkboxes[i].type == 'checkbox') {
+		                 checkboxes[i].checked = true;
+		             }
+		         }
+		     } else {
+		         for (var i = 0; i < checkboxes.length; i++) {
+		             if (checkboxes[i].type == 'checkbox') {
+		                 checkboxes[i].checked = false;
+		             }
+		         }
+		     }
+		}
+		
+		function checkUnCheck()
+		{	
+			var checkboxes = document.getElementsByClassName('sli');
+			if(checkboxes != undefined && checkboxes.length > 0)
+			{
+				var allUnChecked = true;
+				var allChecked = true;
+				for(var i = 0; i < checkboxes.length; i++) 
+		        {
+					if(checkboxes[i].type == 'checkbox' && checkboxes[i].checked) 
+		            {
+			        	allUnChecked = false;
+			        }
+		            else if(checkboxes[i].type == 'checkbox' && !checkboxes[i].checked)
+		            {
+		            	allChecked = false;
+		            }
+		        }
+		        if(allChecked)
+		        {
+		        	var parentCheckboxes = document.getElementsByClassName('psli');
+		        	if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+		        	{
+		        		parentCheckboxes[0].checked = true;
+		        	}
+		        }
+		        else if(allUnChecked || (!allUnChecked && !allChecked))
+		        {
+		        	var parentCheckboxes = document.getElementsByClassName('psli');
+		        	if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+		        	{
+		        		parentCheckboxes[0].checked = false;
+		        	}
+		        }
+		    }
+		}
+		
+		function checkItemAllGlobal(ele){
+			show();
+			console.log('ele.checked---'+ele.checked);
+			selectAllItems(ele.checked);
+		}
+		
+		function uncheckGlobalInput(){
+	    	console.log('unchecked');
+	    	document.getElementsByClassName('globalCheck')[0].checked = false;
+		}
+
+		function overridePageMessages()
+		{    
+		    var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+    	}
+	</script>
+</apex:page>

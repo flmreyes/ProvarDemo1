@@ -1,0 +1,304 @@
+<apex:page doctype="HTML-5.0" standardController="Flosum__Organisation__c" extensions="Flosum.RegisterOrganizationController" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	
+	<apex:slds />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jquery)}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jsforce)}"/> 
+	
+	<style>
+		.lbcls{
+	        font-weight: 700 !important;
+	   	}
+		.slds-input {
+	    	font-size: small;
+	    }
+		.slds-page-header__title{
+		    font-weight: 500!important;
+		}
+		.msgIcon {
+			display: none!important
+		}
+		.customMessage * {
+			color: #fff!important
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.message {
+			opacity: 0;
+		}
+	</style>
+
+	<div class="slds-scope">
+		<apex:form styleClass="slds-form ">
+			<apex:pageMessage escape="false" summary="Please enter the org name and select org type (leave authentication type as automatic). After clicking on Authorize button, you will be forwarded to the standard Salesforce login page.<br/>
+									If you are not redirected back to Flosum after entering valid credentials, then please contact Flosum Support or your Flosum representative for instructions on manual authentication.<br/>
+									This page works best with Google Chrome, Edge, Safari or Firefox (cannot be used with Internet Explorer)." severity="info" strength="0" />
+			<apex:pagemessages id="msg_cred"/>
+			<div class="slds-page-header">
+				<div class="slds-grid">
+					<div class="slds-media__body">
+						<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Add Organization">Add Organization</h1>
+					</div>
+					<div class="slds-col slds-no-flex slds-grid slds-align-top">
+						<div class="slds-button-group" role="group">
+							<apex:commandbutton styleClass="slds-button slds-button_neutral slds-m-right--small" value="Authorize" oncomplete="overridePageMessages();" onclick="show();auth(); return false;"/>
+							<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" onclick="show();" action="{!cancelSave}" oncomplete="overridePageMessages();" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<apex:actionfunction name="checkGovtOrg" rerender="creds,msg_cred,passBlock,govCloud" oncomplete="overridePageMessages();hide();"/>
+			<div class="slds-grid slds-p-top_large slds-form_stacked slds-p-bottom_medium slds-size_4-of-12">
+				<div class="slds-col slds-size--2-of-6 slds-m-left_x-large">
+					<div class="slds-form-element">
+						<label class="lbcls slds-form-element__label" for="Orgname">{!$ObjectType.Flosum__Organisation__c.fields.Name.label} :</label>
+						<div class="slds-form-element__control">
+							<apex:inputText id="Orgname" Styleclass="slds-input" value="{!organizationRecord.Name}" />
+						</div>
+					</div>
+					<div class="slds-form-element">
+						<label class="lbcls slds-form-element__label " for="AuthType">Authentication Type :</label>
+						<div class="slds-select_container">
+							<apex:selectList id="AuthType" value="{!selectedAuthType}" Styleclass="slds-select slds-combobox__input selectedAuthType" onchange="show();checkGovtOrg();" multiselect="false" size="1">
+			                	<apex:selectOptions value="{!authOptions}"/>
+			                </apex:selectList>  
+		            	</div>
+					</div>
+					<div class="slds-form-element">
+						<label class="lbcls slds-form-element__label " for="OrgType">{!$ObjectType.Flosum__Organisation__c.fields.Flosum__Organisation_Type__c.label} :</label>
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList id="OrgType" value="{!organizationRecord.Flosum__Organisation_Type__c}" Styleclass="slds-select slds-combobox__input  RemoveNone" onchange="show();checkGovtOrg();" multiselect="false" size="1" disabled="{!isUpdatePage}">
+									<apex:selectOption itemValue="Developer/Production" itemLabel="Developer/Production"/>
+								    <apex:selectOption itemValue="Sandbox" itemLabel="Sandbox"/>
+								    <apex:selectOption itemValue="Government cloud org" itemLabel="Government cloud org"/>
+								</apex:selectList>
+							</div>
+						</div>	 
+					</div>
+					<apex:outputPanel id="passBlock">
+						<apex:outputPanel rendered="{!selectedAuthType == MANUAL_AUTH}">
+							<div class="slds-form-element slds-p-top_small">
+								<label class="lbcls slds-form-element__label" for="Authcode">Authorization Code :</label>
+								<div class="slds-form-element__control">
+									<apex:inputsecret id="Authcode" Styleclass="slds-input pkp" value="{!password}" redisplay="true" />
+								</div>
+							</div>
+						</apex:outputPanel>
+					</apex:outputPanel>
+					<apex:outputPanel id="govCloud" >
+						<apex:outputPanel rendered="{!If(organizationRecord.Flosum__Organisation_Type__c == 'Government cloud org',true,false)}">
+							<div class="slds-form-element slds-p-top_small">
+								<label class="lbcls slds-form-element__label" for="GCloud">{!$ObjectType.Flosum__Organisation__c.fields.Flosum__HostName__c.label} :</label>
+								<apex:inputField value="{!organizationRecord.Flosum__HostName__c}"  Styleclass="slds-input"/>
+							<!-- 	<apex:outputField value="{!organizationRecord.Flosum__HostName__c}"  Styleclass="slds-input" rendered="{!isUpdatePage}"/>  -->
+							</div>
+						</apex:outputPanel>
+					</apex:outputPanel>
+				</div>
+			</div>
+			<apex:actionfunction name="checkAndSave" action="{!checkAndSave}" rerender="creds,msg_cred" oncomplete="overridePageMessages(); afterSave('{!remoteSiteSettingURL}','{!PlaceOfException}');"/>
+           	<apex:actionfunction name="authorize" action="{!processLogin}" oncomplete="promptLink('{!JSENCODE(loginUrl)}','{!JSENCODE(organizationRecord.Name)}');overridePageMessages();hide();" rerender="msg_cred"/> 
+           	<apex:actionfunction name="completeRegisterOrg" action="{!completeRegisterOrg}" oncomplete="overridePageMessages();hide();" rerender="msg_cred"/> 
+       		<apex:actionfunction action="{!showMessage}" reRender="creds,msg_cred" name="showMessage" onComplete="overridePageMessages();hide();">
+           		<apex:param assignTo="{!message}" value="" name="newstr"/>
+       		</apex:actionfunction>
+       		<apex:actionfunction name="autoAuth" action="{!autoAuth}" rerender="registerBlock,msg_cred" oncomplete="overridePageMessages();afterSave('{!remoteSiteSettingURL}','{!PlaceOfException}');"/>
+		</apex:form>
+	</div>
+		
+	<script>
+		$(document).ready(function(){
+	       overridePageMessages();
+	       isLightningExperienceOrSalesforce1();    
+	    });
+        
+	    function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM4').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM4').removeClass('infoM4');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+
+		var url = '{!baseUrl}';
+		var flosumsf = jsforce;
+		$( document ).ready(function() {
+	        var code = '{!JSENCODE($CurrentPage.parameters.code)}';
+	        console.log(code);
+	        if(code != '')
+	        {
+	        	show();
+			    autoAuth();
+			}
+		});
+			
+		function promptLink(linkUrl,organizationName){
+			if(linkUrl != '' && $(".selectedAuthType").val() != '{!AUTO_AUTH}')
+			{
+				prompt('Copy the following link and open in other browser or in incognito mode to get autorization code', linkUrl);
+			}
+		}
+			
+		function auth() {
+	        if($(".pkp").val() == '' || $(".selectedAuthType").val() == '{!AUTO_AUTH}') {
+	            authorize();
+	        } else {
+	            show();
+	           	checkAndSave();
+	        }
+	        	return false;
+	        }
+			
+		function afterSave(remoteSiteSettingURL,placeOfEX)
+		{
+			console.log(remoteSiteSettingURL);
+			console.log(placeOfEX);
+			if(remoteSiteSettingURL != '' && (placeOfEX == 'ID' || placeOfEX == 'AUTHORIZATION'))
+			{
+				listRemoteSiteSetting(remoteSiteSettingURL,placeOfEX);
+			}
+			else
+				hide();
+		}
+			
+		function listRemoteSiteSetting(RSURL,placeOfEX)
+		{
+			var reg = /[^a-zA-Z0-9]+/g
+		    var host = RSURL;
+		    var fullName = RSURL.slice(8,RSURL.indexOf('.salesforce.com'));
+		    fullName = fullName.replace(reg,'');
+		    var firstChar = fullName.charAt(0);
+			if(firstChar >= 0 && firstChar <= 9)
+			{
+			    fullName = 'A' + fullName;
+			}
+
+			var ExistingNames = {};
+			var selfConn = new flosumsf.Connection({ accessToken: '{!$API.Session_Id}' });
+			var queryLi = [];
+        	var query = new Object();
+        	query.folder = '';
+        	query.type = 'RemoteSiteSetting';
+        	queryLi.push(query);
+        	console.log(ExistingNames);
+        	selfConn.metadata.list(queryLi, '34.0', function(err,result){
+        		if(err) 
+            	{
+            		console.log(err);
+            		if(err != undefined && err.errorCode == 'sf:INSUFFICIENT_ACCESS')
+            			showMessage('INSUFFICIENT_ACCESS: use of the Metadata API requires a user with the ModifyAllData permission. Add remote site setting with url('+host+').');
+            		else
+            			showMessage(JSON.stringify(err));
+            	}
+            	else
+            	{
+            		if(Array.isArray(result))
+        			{
+        				for(var index in result)
+        				{
+        					if(index < result.length)
+        					{
+        						var mi = result[index];
+        						ExistingNames[mi.fullName]= mi.fullName;
+        					}
+        				}
+        			}
+        			else
+        			{
+        				ExistingNames[result.fullName]= result.fullName;
+        			}
+        			var remoteSite = new Object();
+        			remoteSite.fullName = ExistingNames[fullName] != undefined ?  getRemoteSiteName(fullName+'1',ExistingNames) : fullName;
+        			remoteSite.description = 'Metadata API Remote Site Setting for Flosum Application';
+        			remoteSite.isActive = true;
+        			remoteSite.url = host;
+        			console.log(remoteSite);
+        			selfConn.metadata.create('RemoteSiteSetting',remoteSite,function(err2,result2){
+        				if(err2) 
+		            	{
+		            		console.log(err2);
+		            		if(err2 != undefined && err2.errorCode == 'sf:INSUFFICIENT_ACCESS')
+		            			showMessage('INSUFFICIENT_ACCESS: use of the Metadata API requires a user with the ModifyAllData permission. Add remote site setting with url('+host+').');
+		            		else
+		            			showMessage(JSON.stringify(err2));
+		            	}
+		            	else
+		            	{
+		            		if(result2 != undefined && result2.success)
+		            		{
+		            			if(placeOfEX == 'AUTHORIZATION')
+					     		{
+					     			checkAndSave();
+					     		}
+					     		else if(placeOfEX == 'ID')
+					     		{
+					     			completeRegisterOrg();
+					     		}
+					     		else
+					     		{
+					     			hide();
+					     		}
+		            		}
+		            		else
+		            		{
+		            			console.log(JSON.stringify(result2.errors));
+		            			hide();
+		            		}
+		            	}
+        			});
+            	}
+        	});
+		}
+			
+		function getRemoteSiteName(fullName,ExistingNames)
+		{
+			if(ExistingNames[fullName] != undefined)
+			{
+				fullName = calculateName(fullName);
+				return getRemoteSiteName(fullName,ExistingNames);
+			}
+			else
+			{
+				return fullName;
+			}
+		}
+			
+		function calculateName(input)
+		{
+			var result = input;
+			var i = input.length;
+			var last = input.charAt(--i);
+			if(isNaN(last))
+			{
+				return result+'1';
+			}
+			else
+			{
+                last = parseInt(last) + 1;
+                result = result.slice(0,result.length - 1);
+				return result  + ''+last ;
+			}
+		}
+
+		function isLightningExperienceOrSalesforce1() {
+		    if(!((typeof sforce != 'undefined') && sforce && (!!sforce.one))){
+		    	$("html").css({"background-color": "#1797c0"});
+		    }
+		}
+	</script>
+</apex:page>

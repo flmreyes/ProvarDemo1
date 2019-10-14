@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testCase id="110">
+  <summary>&lt;font face="Segoe UI" size="2"&gt;This test case executes the creation of Contact and its related Machine.&lt;/font&gt;</summary>
+  <steps>
+    <caseCall testCaseId="e5587bf6-aace-4d96-9f9b-b2858bcd7c92" testCasePath="tests/Test Cases/Contact Management.testcase" testItemId="9">
+      <arguments>
+        <argument argId="db08549c-88b1-4037-8420-794890f95965" id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument argId="bf0a35a3-d4d2-40ec-816c-daa57d71ea07" id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument argId="28efee09-b87a-41b5-8f92-e10e4fb4b125" id="AccountName">
+          <value class="variable">
+            <path element="AccountName"/>
+          </value>
+        </argument>
+      </arguments>
+    </caseCall>
+    <caseCall testCaseId="5adbf7f2-adf7-4d39-b5bf-b28fcaaf2c1d" testCasePath="tests/Test Cases/Machine Management.testcase" testItemId="10">
+      <arguments>
+        <argument id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument argId="8b624fa0-e216-4437-98f0-62e1e13c75a7" id="MachineName">
+          <value class="variable">
+            <path element="MachineName"/>
+          </value>
+        </argument>
+        <argument argId="118251bc-78af-4756-afc5-40d853ad493c" id="SerialNumber">
+          <value class="variable">
+            <path element="SerialNumber"/>
+          </value>
+        </argument>
+      </arguments>
+    </caseCall>
+  </steps>
+  <params>
+    <param linkedToUrl="provar:hasvalue:db08549c-88b1-4037-8420-794890f95965" name="FirstName" title="FirstName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:bf0a35a3-d4d2-40ec-816c-daa57d71ea07" name="LastName" title="LastName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:28efee09-b87a-41b5-8f92-e10e4fb4b125" name="AccountName" title="AccountName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:8b624fa0-e216-4437-98f0-62e1e13c75a7" name="MachineName" title="MachineName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:118251bc-78af-4756-afc5-40d853ad493c" name="SerialNumber" title="SerialNumber">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+  </params>
+  <args>
+    <argument id="FirstName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">First Name </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="LastName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Last Name </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="AccountName">
+      <value class="value" valueClass="string">Global Media</value>
+    </argument>
+    <argument id="MachineName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Machine </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="SerialNumber">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">SN </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+  </args>
+</testCase>

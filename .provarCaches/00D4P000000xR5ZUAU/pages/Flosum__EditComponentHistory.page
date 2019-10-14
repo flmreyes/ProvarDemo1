@@ -1,0 +1,1153 @@
+<apex:page standardController="Flosum__Component_History__c" sidebar="false" extensions="Flosum.EditComponentHistoryController">
+    <c:TrackPanel />
+    <c:Wait />
+    <apex:slds />
+    
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/ace.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/mode-xml.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/mode-java.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/mode-html.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/theme-chrome.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'src-min/ext-searchbox.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'beauty/forMatXML.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/ga.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/js/zip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__X2JS)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jquery)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.js')}"/>
+    
+    
+    <style type="text/css" media="screen">
+       #editor {
+            height: 600px;
+        }
+        .ace_print-margin {
+            visibility: hidden!important;
+        }
+        span.ace_searchbtn.prev, span.ace_searchbtn.next {
+            padding-top: 9px;
+            padding-bottom: 7px;
+        }
+        .message .messageText {
+            color: white !important;
+        }
+        .message .messageText h4{
+            color: white !important;
+        }
+        .message table ul li{
+            color: white !important;
+        }
+        .customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+            margin: 0px !important;
+            opacity: 1!important;
+            width: 100%;
+            font-size: 13px;
+            border: 0px;
+            padding-left: 10px;
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1 !important;
+        }
+        .tab button {
+          background-color:inherit !important;
+          float: left;
+          border: none;
+          outline: none;
+          font-size: 12px;
+          padding: 5px 8px;
+          background:none !important;
+        }
+        .tab button:hover {
+          background-color: #ddd !important;
+        }
+       .tab button.active {
+          background-color:  #b3b3b3 !important;
+        }
+    </style>
+    <apex:outputPanel layout="block" styleClass="slds-scope">
+        <apex:form styleClass="slds-form--stacked">
+        	<apex:actionFunction name="updateContent" action="{!updateContent}" reRender="none" onComplete="hide();">
+            	<apex:param assignTo="{!base64Content}" value="" name="base64Str"/>
+            	<apex:param assignTo="{!CRC32}" value="" name="crc32" />
+            </apex:actionFunction>
+            <apex:pagemessages id="msg"/>
+            <apex:outputPanel layout="block" styleClass="slds-page-header">
+                <div class="slds-media">
+                    <div class="slds-media__body">
+                        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Settings">{!compName}({!compVersion})</h1>
+                        
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h1><span class="slds-text-heading_medium">{!compType} Edit</span></h1>
+                        </div>
+                    </header>
+                    <div class="slds-no-flex">
+                    	<apex:commandbutton styleClass="slds-button slds-button_neutral" onClick="updateContentOfCompHistory(); return false;" value="Save" reRender="none" rendered="{!IF(componentHistoryId != null && componentHistoryId != '',true,false)}"/>
+                        <apex:commandbutton styleClass="slds-button slds-button_neutral" action="{!cancel}" value="Cancel" reRender="none"/>
+                    </div>
+                </div>
+                <article class="slds-card slds-box">
+                    <apex:outputPanel layout="block" id="editorSectionId">
+                        
+                    </apex:outputPanel>
+                </article>
+            </apex:outputPanel> 
+        </apex:form>
+    </apex:outputPanel>
+    <script>
+        var codeEditorBlockLi = [];
+        Visualforce.remoting.timeout = 120000;
+        zip.workerScriptsPath = "{!URLFOR($Resource.zipp,'res/js/workers')}/";
+        var zipFileEntry, zipWriter, writer, creationMethod, URL = window.webkitURL || window.mozURL || window.URL;
+        var compHistId = '{!JSENCODE(componentHistoryId)}';
+        var compHistDetail;
+        var compHistContentMap = {};
+        var compHistCrcMap = {};
+        
+        var bundleTypes = {};
+        bundleTypes['AuraDefinitionBundle'] = 'AuraDefinitionBundle';
+        bundleTypes['LightningComponentBundle'] = 'LightningComponentBundle';
+        
+        var mmap = new Object();
+        mmap['CustomField'] = true;
+        mmap['CustomLabel'] = true;
+        mmap['CompactLayout'] = true;
+        mmap['WebLink'] = true;
+        mmap['RecordType'] = true;
+        mmap['ListView'] = true;
+        mmap['FieldSet'] = true;
+        mmap['AssignmentRule'] = true;
+        mmap['AutoResponseRule'] = true;
+        mmap['ValidationRule'] = true;
+        mmap['WorkflowTask'] = true;
+        mmap['WorkflowOutboundMessage'] = true;
+        mmap['WorkflowFieldUpdate'] = true;
+        mmap['WorkflowKnowledgePublish'] = true;
+        mmap['WorkflowAlert'] = true;
+        mmap['WorkflowRule'] = true;
+        
+        mmap['SharingOwnerRule'] = true;
+        mmap['SharingCriteriaRule'] = true;
+        mmap['BusinessProcess'] = true;
+        mmap['SharingReason'] = true;
+        mmap['EscalationRule'] = true;
+        mmap['MatchingRule'] = true;
+        mmap['ManagedTopic'] = true;
+        var normalZip = new JSZip();
+        
+        var folderMap = {};
+        folderMap['DocumentFolder'] = 'Document';
+        folderMap['DashboardFolder'] = 'Dashboard';
+        folderMap['ReportFolder'] = 'Report';
+        folderMap['EmailFolder'] = 'EmailTemplate';
+        
+        $( document ).ready(function() {
+            getCompHistInfo();
+        });
+        
+        /*function updateContentOfCompHistory(){
+            if(editor != undefined){
+                var textContent = editor.getValue();
+                if(mmap[compHistDetail.metadataType] != undefined){
+                	textContent = vkbeautify.xmlmin(textContent);
+                }
+                if(textContent != undefined){
+                    var files = [];
+                    for(var keyFileName in compHistContentMap){
+                        var oneFile = {};
+                        oneFile.name = keyFileName;
+                        oneFile.data = compHistContentMap[keyFileName];
+                        if(keyFileName == compHistDetail.fileName)
+                            oneFile.data = textContent;
+                        files.push(oneFile);
+                    }
+                    
+                    var addIndex = 0;
+                    var tempWriter;
+                    function nextFile() {
+                        var file = files[addIndex];
+                        tempWriter.add(file.name, new zip.TextReader(file.data), function() {
+                            addIndex++;
+                            if (addIndex < files.length)
+                                nextFile();
+                            else{
+                                tempWriter.close(function(base64Data) {
+                                    base64Data = base64Data.slice(base64Data.indexOf(';base64,') + 8);
+
+                                    var tempZip = new JSZip(base64Data, {base64:true});
+                                    if(mmap[compHistDetail.metadataType] == undefined)
+							    	{ 
+						     			for(var fileName in tempZip.files)
+										{
+											if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+							            	{
+							            		var fileData = tempZip.files[fileName].asBinary();
+							            		compHistCrcMap[compHistDetail.metadataType+"#"+fileName] = getCrcWithData(fileData);
+							            	}
+										}
+							   		}
+							   		else
+							   		{
+						     			for(var fileName in tempZip.files)
+										{
+											if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+							            	{
+							            		getChildFileMap(compHistDetail.metadataType,tempZip.files[fileName].asText(),fileName);
+							            	}
+										}
+									}
+									var key = '';
+									var crc32;
+									var isFound = false;
+									if(mmap[compHistDetail.metadataType] == undefined)
+									{
+										key = compHistDetail.metadataType + "#" + compHistDetail.fileName;
+									}
+									else
+									{
+										key = compHistDetail.metadataType + "#" + compHistDetail.fullName;
+									}
+									if(compHistCrcMap[key] != undefined)
+									{										
+										crc32 = ''+compHistCrcMap[key].crc32;
+		                                if(compHistCrcMap[key+"-meta.xml"] != undefined)
+										{
+											crc32 = crc32+' '+compHistCrcMap[key+"-meta.xml"].crc32;
+										}
+										isFound = true;
+									}
+									if(isFound){
+										updateContent(base64Data,crc32);
+									}
+                                });
+                            }
+                        });
+                    }
+        
+                    function createZipWriter() {
+                    	zip.createWriter(new zip.Data64URIWriter(), function(writer2) {
+							tempWriter = writer2;
+                            nextFile();
+                        }, function(error) {
+                            // onerror callback
+                            console.log('Error while creating zip files for attachments.');
+                            console.log(error);
+                            console.log(JSON.stringify(error));
+                            showMessage(JSON.stringify(error),'ERROR');
+                        });
+                    }
+                    createZipWriter();
+               	}
+            }
+        }*/
+
+        function updateContentOfCompHistory()
+        {
+            compHistCrcMap = {};
+            console.log(codeEditorBlockLi);
+            if(codeEditorBlockLi != undefined && codeEditorBlockLi.length > 0 ){
+                var files = [];
+                for(var index=0; index < codeEditorBlockLi.length; index++){
+
+                    var editor = codeEditorBlockLi[index];
+                    var textContent = editor.getValue();
+                    var oneFile = {};
+                    console.log('editor.currentFileName--'+editor.currentFileName);
+                    oneFile.name = editor.currentFileName;
+                    oneFile.data = textContent;
+                    files.push(oneFile);
+                }
+
+                var addIndex = 0;
+                var tempWriter;
+                function nextFile() 
+                {
+                    var file = files[addIndex];
+                    tempWriter.add(file.name, new zip.TextReader(file.data), function() {
+                        addIndex++;
+                        if (addIndex < files.length)
+                            nextFile();
+                        else
+                        {
+                            tempWriter.close(function(base64Data) {
+                                base64Data = base64Data.slice(base64Data.indexOf(';base64,') + 8);
+
+                                    var tempZip = new JSZip(base64Data, {base64:true});
+                                    if(mmap[compHistDetail.metadataType] != undefined)
+                                    {
+                                        for(var fileName in tempZip.files)
+                                        {
+                                            if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+                                            {
+                                                getChildFileMap(compHistDetail.metadataType,tempZip.files[fileName].asText(),fileName);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for(var fileName in tempZip.files)
+                                        {
+                                            if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+                                            {
+                                                var fileData = tempZip.files[fileName].asBinary();
+                                                compHistCrcMap[compHistDetail.metadataType+"#"+fileName] = getCrcWithData(fileData);
+                                            }
+                                        }
+                                    }
+                                    var key = '';
+                                    var crc32;
+                                    var isFound = false;
+                                    if(mmap[compHistDetail.metadataType] != undefined)
+                                    {
+                                        key = compHistDetail.metadataType + "#" + compHistDetail.fullName;
+                                    }
+                                    else
+                                    {
+                                        key = compHistDetail.metadataType + "#" + compHistDetail.fileName;
+                                    }
+
+                                    if(bundleTypes[compHistDetail.metadataType] != undefined)
+                                    {
+                                        var map32 = {};
+                                        for(var mapKey in compHistCrcMap)
+                                        {
+                                            if(mapKey != undefined && mapKey.indexOf(key+'/') == 0)
+                                            {
+                                                var descriptor = {};
+                                                var fName = mapKey.replace(compHistDetail.metadataType+"#",'');
+                                                descriptor.fileName = fName;
+                                                descriptor.crc32 = compHistCrcMap[mapKey].crc32;
+                                                map32[mapKey] = descriptor;
+                                            }
+                                        }
+                                        crc32 = composeBundleCrc(map32);
+                                        isFound = true;
+                                    }
+                                    else if(compHistCrcMap[key] != undefined)
+                                    {                                       
+                                        crc32 = ''+compHistCrcMap[key].crc32;
+                                        if(compHistCrcMap[key+"-meta.xml"] != undefined)
+                                        {
+                                            crc32 = crc32+' '+compHistCrcMap[key+"-meta.xml"].crc32;
+                                        }
+                                        isFound = true;
+                                    }
+                                    if(isFound){
+                                        updateContent(base64Data,crc32);
+                                    }
+                                
+                            });
+                        }
+                    });
+                }
+    
+                function createZipWriter() {
+                       zip.createWriter(new zip.Data64URIWriter(), function(writer2) {
+                        tempWriter = writer2;
+                        nextFile();
+                    }, function(error) {
+                        // onerror callback
+                        console.log('Error while creating zip files for attachments.');
+                        console.log(error);
+                        console.log(JSON.stringify(error));
+                        showMessage(JSON.stringify(error),'ERROR');
+                    });
+                }
+                createZipWriter();
+            }
+        }
+        
+        //get information of patch manifest record.
+        function getCompHistInfo(){
+            if(compHistId != null && compHistId != ''){
+            	show();
+                compHistContentMap = {};
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.EditComponentHistoryController.getCompHistInfo}',
+                    compHistId,
+                    function(r,e){
+                        if(e.status && r) {
+                        	compHistDetail = r;
+                            getcompHistContent();
+                        }
+                        else if(e.message != undefined){
+                            showMessage(e.message,'ERROR');
+                        }
+                        else
+                            showMessage('Component not found.','ERROR');
+                });
+            }
+        }
+        
+        function getcompHistContent(){
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.EditComponentHistoryController.getcompHistContent}',
+                compHistId,
+                function(r,e){
+                    if(e.status && r) {
+                        // use a Data64URIReader to read the zip from a base64 string
+                        zip.createReader(new zip.Data64URIReader(r), function(reader) {
+                        	var EntryIndex = 0;
+                            // get all entries from the zip
+                            reader.getEntries(function(entries) {
+                            	if(entries.length){
+                                	var readSingleFile = function() {
+                                    	if (EntryIndex < entries.length) {
+                                        	var singleEntry = entries[EntryIndex];
+                                            var fileName = singleEntry.filename;
+                                           	entries[EntryIndex].getData(new zip.TextWriter(), function(TextContent) {
+                                           		if(fileName == compHistDetail.fileName){
+													if(mmap[compHistDetail.metadataType] != undefined){
+                                                      	var formatedXml1 = getChildXml(compHistDetail.metadataType,compHistDetail.fullName,TextContent);
+                                                        formatedXml1 = vkbeautify.xml(formatedXml1);
+                                                        compHistContentMap[fileName] = formatedXml1;
+                                                    }
+                                                    else    
+                                                    	compHistContentMap[fileName] = TextContent;
+												}
+												else if(fileName == compHistDetail.fileName+'-meta.xml'){
+													compHistContentMap[compHistDetail.fileName+'-meta.xml'] = TextContent;
+												}
+                                                else if(bundleTypes[compHistDetail.metadataType] != undefined && fileName.indexOf(compHistDetail.fileName+'/') == 0){
+                                                    compHistContentMap[fileName] = TextContent;
+                                                }
+												EntryIndex++;
+												readSingleFile();
+                                            });
+										}
+										else{
+											// close the zip reader
+                                            reader.close(function() {
+                                            	// onclose callback
+                                                console.log('Done.');
+                                                fillContentToEditor();
+											});
+                                        }
+                                   	}
+                                   	readSingleFile();
+								}
+                                else {
+                                	showMessage('Content of component not found.','ERROR');
+								}
+							});
+						},  	
+						function(error) {
+							// onerror callback
+                        	console.log('Error in reading file from attachments.');
+                        	console.log(error);
+                        	console.log(JSON.stringify(error));
+                        	if(error.message != undefined){
+                        		showMessage(error.message,'ERROR');
+                        	}
+							else{
+								showMessage('Unknown error.','ERROR');
+							}
+						});
+                    }
+                    else if(e.message != undefined){
+                        showMessage(e.message,'ERROR');
+                    }
+                    else
+                        showMessage('Content of component not found.','ERROR');
+            	});
+        }
+        
+        /*function fillContentToEditor(){
+            if(compHistContentMap != undefined && compHistDetail != undefined && compHistContentMap[compHistDetail.fileName] != undefined){
+                var con = compHistContentMap[compHistDetail.fileName];
+                editor = ace.edit("editor");
+                editor.setTheme("ace/theme/chrome");
+                editor.getSession().setMode(compHistDetail.editorMode);
+                editor.setValue(con,1);
+                hide();
+            }
+            else
+                showMessage('Content of component not found.','ERROR');
+        }*/
+        
+        function fillContentToEditor()
+        {
+            if(compHistContentMap != undefined && compHistDetail != undefined)
+            {
+                var mainDiv =$("[id$='editorSectionId']");
+                var containerDiv = document.createElement("div");
+
+                var editorCount = 1;
+                //tab div
+                var tabDiv = document.createElement("div");
+                tabDiv.setAttribute('class',"tab");
+                containerDiv.append(tabDiv);
+                for(var fileName in compHistContentMap){
+
+                    if(fileName != undefined){
+                        //tab button
+                        var button = document.createElement("Button");
+                        button.innerHTML = fileName;
+                        button.setAttribute('class',"tablinks "+"editDetailTabButton"+editorCount);
+                        button.setAttribute('type',"button");
+                        button.setAttribute('onclick', "viewDetail('editDetailTabButton"+editorCount+"'); return false;");
+                        tabDiv.append(button);
+
+                        //tab content
+                        var tabContent = document.createElement("div");
+                        tabContent.setAttribute('class',"tabcontent editDetailTabContent"+editorCount);
+                        tabContent.setAttribute("style", "display:none;");
+                        tabContent.style.display = "none";
+                        
+
+
+                        //edit detail section
+                        var childDiv = document.createElement("div");
+                        childDiv.setAttribute('class', 'codeEditorBlock'+editorCount);
+                        childDiv.setAttribute('id', 'codeEditorBlock'+editorCount);
+                        childDiv.setAttribute('fileName',fileName);
+                        childDiv.style.cssText = 'min-height: 100px;height: 600px;margin-top:2px';
+                        tabContent.append(childDiv);
+                        containerDiv.append(tabContent);
+
+                        editorCount++;
+                    }
+                }
+                
+                mainDiv.append(containerDiv);
+                editorCount = 1;
+                for(var fileName in compHistContentMap){
+
+                    if(fileName != undefined){
+                        var con = compHistContentMap[fileName];
+                        var tempId = 'codeEditorBlock'+editorCount;
+                        console.log('tempId--'+tempId);
+                        var editor = ace.edit(tempId);
+                        console.log('done--');
+                        editor.setTheme("ace/theme/chrome");
+                        editor.getSession().setMode(compHistDetail.editorMode);
+                        editor.setValue(con,1);
+                        editor.currentFileName = fileName ;
+                        codeEditorBlockLi.push(editor);
+                            
+                        if(editorCount == 1){
+                            
+                            var firstTabButon = document.getElementsByClassName("editDetailTabButton"+editorCount);
+                            firstTabButon[0].className += " active";
+                            var firstTabContent = document.getElementsByClassName("editDetailTabContent"+editorCount);
+                            firstTabContent[0].setAttribute("style", "display:block;");
+                        }
+                        editorCount++;
+                    }
+                }
+                hide();
+            }
+            else
+                showMessage('Content of component not found.','ERROR');
+        }
+        
+        function createFileMap(tempComponentType,tempZip)
+		{
+			if(tempComponentType == 'Profile' || tempComponentType == 'PermissionSet')
+			{
+				for(var fileName in tempZip.files)
+				{
+					if(fileName != undefined)
+					{
+	            		var fileData = tempZip.files[fileName].asBinary();
+	            		compHistCrcMap[tempComponentType+"#"+fileName] = getCrcWithData(fileData,{compress:true});
+            		}
+				}
+			}
+			else if(mmap[tempComponentType] == undefined)
+	    	{ 
+     			for(var fileName in tempZip.files)
+				{
+					if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+	            	{
+	            		var fileData = tempZip.files[fileName].asBinary();
+	            		compHistCrcMap[tempComponentType+"#"+fileName] = getCrcWithData(fileData);
+	            	}
+				}
+	   		}
+	   		else
+	   		{
+     			for(var fileName in tempZip.files)
+				{
+					if(fileName != undefined && fileName.charAt(fileName.length - 1) != '/' && fileName != 'package.xml' && fileName != 'undefined') 
+	            	{
+	            		getChildFileMap(tempComponentType,tempZip.files[fileName].asText(),fileName);
+	            	}
+				}
+			}
+		}
+
+        function viewDetail(idOfDiv){
+            console.log('idOfDiv--'+idOfDiv);
+            
+            
+            $(".tabcontent").css("display", "none");
+            $(".tablinks").removeClass("active");
+
+            var editorCount = idOfDiv.split('editDetailTabButton')[1];
+            $(".editDetailTabButton"+editorCount).addClass("active");
+            //var firstTabButon = document.getElementsByClassName("editDetailTabButton"+editorCount);
+            //firstTabButon[0].className += " active";
+            
+            $(".editDetailTabContent"+editorCount).css("display", "block");
+            
+            //var firstTabContent = document.getElementsByClassName("editDetailTabContent"+editorCount);
+            //firstTabContent[0].setAttribute("style", "display:block;");
+        }
+		
+		function getCrcWithData(zipData,flags)
+		{
+			var r = new Object();
+			if (zipData != undefined && flags != undefined && flags.isInnerType == true){
+				zipData = vkbeautify.xml(zipData);
+			}
+			r.crc32 = normalZip.crc32(zipData,32);
+			return r;
+		}
+
+        // analyse and return bundle's crc32 sum (see the specs for detail)
+        function composeBundleCrc(mapCrc32){
+            ////console.log('componentStack '+JSON.stringify(mapCrc32));
+            var crcCode = 0;
+            
+            // map name => crc32
+            var keys = Object.keys(mapCrc32).sort();
+            if (keys.length > 0 ) crcCode = mapCrc32[keys[0]];
+            for (var i = 1; i < keys.length; i++){
+                crcCode = Math.round((mapCrc32[keys[i]]+crcCode)/2);
+            }                                   
+                                                                
+            return crcCode;
+        }
+        
+        function showMessage(Message_Str,Message_Type) {
+            var parentVal = $("[id$='msg']");
+            if(parentVal != undefined){
+                parentVal.html('');
+                if(Message_Str != ''){
+                    if(Message_Type == 'ERROR'){
+                        var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+                                        '<div class="message errorM3 slds-notify slds-notify--alert slds-theme--error customMessage " role="alert">'+
+                                            '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                '<tbody>'+
+                                                    '<tr valign="top">'+
+                                                        /*'<td><img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"></td>'+*/
+                                                        '<td class="messageCell">'+
+                                                            '<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+                                                                '<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25" style="color:#cc0000">'+
+                                                                    '<h4>Error:</h4>'+
+                                                                '</span>'+Message_Str+'<br>'+
+                                                            '</div>'+
+                                                        '</td>'+
+                                                    '</tr>'+
+                                                    '<tr>'+
+                                                        '<td></td>'+
+                                                        '<td></td>'+
+                                                    '</tr>'+
+                                                '</tbody>'+
+                                            '</table>'+
+                                        '</div>'+
+                                    '</span>';
+                        parentVal.append(childVal);
+                    }
+                    else if(Message_Type == 'INFO'){
+                        var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+                                            '<div class="message infoM3 slds-notify slds-notify--toast customMessage " role="alert">'+
+                                                '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                    '<tbody>'+
+                                                        '<tr valign="top">'+
+                                                            /*'<td><img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"></td>'+*/
+                                                            '<td class="messageCell">'+
+                                                                '<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+                                                                    '<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25">'+
+                                                                        '<h4></h4>'+
+                                                                    '</span>'+Message_Str+'<br>'+
+                                                                '</div>'+
+                                                            '</td>'+
+                                                        '</tr>'+
+                                                        '<tr>'+
+                                                            '<td></td>'+
+                                                            '<td></td>'+
+                                                        '</tr>'+
+                                                    '</tbody>'+
+                                                '</table>'+
+                                            '</div>'+
+                                        '</span>';
+                        parentVal.append(childVal);
+                    }
+                }
+            }
+            hide();
+        }
+        
+        function getChildFileMap(metaType,xml,fileName)
+		{
+			var fullName = '';
+			if(metaType != 'CustomLabel')
+			{
+				fullName = fileName.slice(fileName.indexOf("/")+1,fileName.lastIndexOf('.'))+".";
+			}
+	
+	   		var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false});
+	   		var jsnMap ={};
+			var tempJSON = '';
+			var srcjson = x2js.xml_str2json(xml);
+			if(srcjson != undefined && srcjson != null)
+			{
+				var srcitems;
+				if(metaType == 'CustomLabel')
+				{
+					var srcMetaItem = srcjson.CustomLabels;
+					srcitems = srcMetaItem.labels;
+				}
+				else if(metaType == 'CustomField')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.fields;
+				}
+				else if(metaType == 'ListView')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.listViews;
+				}
+				else if(metaType == 'CompactLayout')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.compactLayouts;
+				}
+				else if(metaType == 'WebLink')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.webLinks;
+				}
+				else if(metaType == 'RecordType')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.recordTypes;
+				}
+				else if(metaType == 'FieldSet')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.fieldSets;
+				}
+				else if(metaType == 'ValidationRule')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.validationRules;
+				}
+				else if(metaType == 'AssignmentRule')
+				{
+					var srcMetaItem = srcjson.AssignmentRules;
+					srcitems = srcMetaItem.assignmentRule;
+				}
+				else if(metaType == 'AutoResponseRule')
+				{
+					var srcMetaItem = srcjson.AutoResponseRules;
+					srcitems = srcMetaItem.autoResponseRule;
+				}
+				else if(metaType == 'WorkflowTask')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.tasks;
+				}
+				else if(metaType == 'WorkflowOutboundMessage')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.outboundMessages;
+				}
+				else if(metaType == 'WorkflowFieldUpdate')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.fieldUpdates;
+				}
+				else if(metaType == 'WorkflowKnowledgePublish')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.knowledgePublishes;
+				}
+				else if(metaType == 'WorkflowAlert')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.alerts;
+				}
+				else if( metaType == 'WorkflowRule')
+				{
+					var srcMetaItem = srcjson.Workflow;
+					srcitems = srcMetaItem.rules;
+				}
+				else if(metaType == 'SharingCriteriaRule')
+				{
+					var srcMetaItem = srcjson.SharingRules;
+					srcitems = srcMetaItem.sharingCriteriaRules;
+				}
+				else if(metaType == 'SharingOwnerRule')
+				{
+					var srcMetaItem = srcjson.SharingRules;
+					srcitems = srcMetaItem.sharingOwnerRules;
+				}
+				else if(metaType == 'BusinessProcess')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.businessProcesses;
+				}
+				else if(metaType == 'SharingReason')
+				{
+					var srcMetaItem = srcjson.CustomObject;
+					srcitems = srcMetaItem.sharingReasons;
+				}
+				else if(metaType == 'EscalationRule')
+				{
+					var srcMetaItem = srcjson.EscalationRules;
+					srcitems = srcMetaItem.escalationRule;
+				}
+				else if(metaType == 'MatchingRule')    
+				{
+					var srcMetaItem = srcjson.MatchingRules;
+					srcitems = srcMetaItem.matchingRules;
+				}
+				else if(metaType == 'ManagedTopic')
+				{
+					var srcMetaItem = srcjson.ManagedTopics;
+					srcitems = srcMetaItem.ManagedTopic;
+				}
+				if(srcitems != undefined)
+				{
+					if(srcitems.fullName == undefined)
+				    {	
+				    	for(var i in srcitems)	
+				    	{
+				    		if(i < srcitems.length)
+				    		{
+				    			var v = srcitems[i];
+				    			jsnMap[v.fullName]= JSON.stringify(v);
+				    		}
+				    	}	    	 
+				    }
+				    else
+				    {
+					    jsnMap[srcitems.fullName] = JSON.stringify(srcitems);
+				    }
+			    }
+			}
+			for(var name in jsnMap)
+			{
+				var tempXml = '';
+				var tempJSON = jsnMap[name];
+				if(tempJSON != undefined)
+				{
+					//header
+					if(metaType == 'CustomLabel')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'AssignmentRule' )
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'AutoResponseRule')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'WorkflowAlert' || metaType == 'WorkflowFieldUpdate'|| metaType == 'WorkflowOutboundMessage'|| metaType == 'WorkflowTask' || metaType == 'WorkflowRule' || metaType == 'WorkflowKnowledgePublish')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><Workflow xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'SharingCriteriaRule' || metaType == 'SharingOwnerRule')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'EscalationRule')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><EscalationRules xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'MatchingRule')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><MatchingRules xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else if(metaType == 'ManagedTopic')
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><ManagedTopics xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					else
+					{
+						tempXml = '<?xml version="1.0" encoding="UTF-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">';
+					}
+					
+					//body
+					if(metaType == 'CustomLabel')
+					{
+						tempXml = tempXml +'<labels>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</labels>';
+					}
+					else if(metaType == 'CustomField')
+					{
+						tempXml = tempXml +'<fields>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</fields>';
+					}
+					else if(metaType == 'ListView')
+					{
+						tempXml = tempXml +'<listViews>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</listViews>';
+					}
+					else if(metaType == 'CompactLayout')
+					{
+						tempXml = tempXml +'<compactLayouts>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</compactLayouts>';
+					}
+					else if(metaType == 'WebLink')
+					{
+						tempXml = tempXml +'<webLinks>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</webLinks>';
+					}
+					else if(metaType == 'RecordType')
+					{
+						tempXml = tempXml +'<recordTypes>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</recordTypes>';
+					}
+					else if(metaType == 'FieldSet')
+					{
+						tempXml = tempXml +'<fieldSets>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</fieldSets>';
+					}
+					else if(metaType == 'ValidationRule')
+					{
+						tempXml = tempXml +'<validationRules>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</validationRules>';
+					}
+					else if(metaType == 'AssignmentRule')
+					{
+						tempXml = tempXml +'<assignmentRule>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</assignmentRule>';
+					}
+					else if(metaType == 'AutoResponseRule')
+					{
+						tempXml = tempXml +'<autoResponseRule>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</autoResponseRule>';
+					}
+					else if(metaType == 'WorkflowAlert')
+					{
+						tempXml = tempXml +'<alerts>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</alerts>';
+					}
+					else if(metaType == 'WorkflowFieldUpdate')
+					{
+						tempXml = tempXml +'<fieldUpdates>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</fieldUpdates>';
+					}
+					else if(metaType == 'WorkflowKnowledgePublish')
+					{
+						tempXml = tempXml +'<knowledgePublishes>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</knowledgePublishes>';
+					}
+					else if(metaType == 'WorkflowOutboundMessage')
+					{
+						tempXml = tempXml +'<outboundMessages>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</outboundMessages>';
+					}
+					else if(metaType == 'WorkflowTask')
+					{
+						tempXml = tempXml +'<tasks>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</tasks>';
+					}
+					else if(metaType == 'WorkflowRule')
+					{
+						tempXml = tempXml +'<rules>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</rules>';
+					}
+					else if(metaType == 'SharingCriteriaRule')
+					{
+						tempXml = tempXml +'<sharingCriteriaRules>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</sharingCriteriaRules>';
+					}
+					else if(metaType == 'SharingOwnerRule')
+					{
+						tempXml = tempXml +'<sharingOwnerRules>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</sharingOwnerRules>';
+					}
+					else if(metaType == 'EscalationRule')
+					{
+						tempXml = tempXml +'<escalationRule>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</escalationRule>';
+					}
+					else if(metaType == 'MatchingRule')
+					{
+						tempXml = tempXml +'<matchingRules>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</matchingRules>';
+					}
+					else if(metaType == 'ManagedTopic')
+					{
+						tempXml = tempXml +'<managedTopic>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</managedTopic>';
+					}
+					else if(metaType == 'BusinessProcess')
+					{
+						tempXml = tempXml +'<businessProcesses>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</businessProcesses>';
+					}
+					else if(metaType == 'SharingReason')
+					{
+						tempXml = tempXml +'<sharingReasons>'+x2js.json2xml_str($.parseJSON(tempJSON))+'</sharingReasons>';
+					}
+					
+					
+					//footer
+					if(metaType == 'CustomLabel')
+					{
+						tempXml = tempXml +'</CustomLabels>';
+					}
+					else if(metaType == 'AssignmentRule' )
+					{
+						tempXml = tempXml +'</AssignmentRules>';
+					}
+					else if(metaType == 'AutoResponseRule')
+					{
+						tempXml = tempXml +'</AutoResponseRules>';
+					}
+					else if(metaType == 'WorkflowAlert' || metaType == 'WorkflowFieldUpdate'|| metaType == 'WorkflowOutboundMessage'|| metaType == 'WorkflowTask' || metaType == 'WorkflowRule' || metaType == 'WorkflowKnowledgePublish')
+					{
+						tempXml = tempXml +'</Workflow>';
+					}
+					else if(metaType == 'SharingCriteriaRule' || metaType == 'SharingOwnerRule')
+					{
+						tempXml = tempXml +'</SharingRules>';
+					}
+					else if(metaType == 'EscalationRule')
+					{
+						tempXml = tempXml +'</EscalationRules>';
+					}
+					else if(metaType == 'MatchingRule')
+					{
+						tempXml = tempXml +'</MatchingRules>';
+					}
+					else if(metaType == 'ManagedTopic')
+					{
+						tempXml = tempXml +'</ManagedTopics>';
+					}
+					else
+					{
+						tempXml = tempXml +'</CustomObject>';
+					}
+					//tempXml = unescape(encodeURIComponent(tempXml));
+					compHistCrcMap[metaType+"#"+fullName+""+name]=	getCrcWithData(tempXml,{isInnerType:true});
+				}
+			}
+		}
+        
+        function getChildXml(metaType,fullName,data)
+        {
+            var typeTagNameMap = {};
+            typeTagNameMap['WorkflowAlert'] = 'alerts';
+            typeTagNameMap['AssignmentRule'] = 'assignmentRule';
+            typeTagNameMap['AutoResponseRule'] = 'autoResponseRule';
+            typeTagNameMap['BusinessProcess'] = 'businessProcesses';
+            typeTagNameMap['CompactLayout'] = 'compactLayouts';
+            typeTagNameMap['EscalationRule'] = 'escalationRule';
+            typeTagNameMap['CustomField'] = 'fields';
+            typeTagNameMap['FieldSet'] = 'fieldSets';
+            typeTagNameMap['WorkflowKnowledgePublish'] = 'knowledgePublishes';
+            typeTagNameMap['WorkflowFieldUpdate'] = 'fieldUpdates';
+            typeTagNameMap['CustomLabel'] = 'labels';
+            typeTagNameMap['ListView'] = 'listViews';
+            typeTagNameMap['ManagedTopic'] = 'ManagedTopic';
+            typeTagNameMap['MatchingRule'] = 'matchingRules';
+            typeTagNameMap['WorkflowOutboundMessage'] = 'outboundMessages';
+            typeTagNameMap['WorkflowRule'] = 'rules';
+            typeTagNameMap['RecordType'] = 'recordTypes';
+            typeTagNameMap['SharingCriteriaRule'] = 'sharingCriteriaRules';
+            typeTagNameMap['SharingOwnerRule'] = 'sharingOwnerRules';
+            typeTagNameMap['SharingReason'] = 'sharingReasons';
+            typeTagNameMap['WorkflowTask'] = 'tasks';
+            typeTagNameMap['ValidationRule'] = 'validationRules';
+            typeTagNameMap['WebLink'] = 'webLinks';
+
+            var typeParantTagNameMap = {};
+            typeParantTagNameMap['AssignmentRule'] = 'AssignmentRules';
+            typeParantTagNameMap['AutoResponseRule'] = 'AutoResponseRules';
+            typeParantTagNameMap['WebLink'] = 'CustomObject';
+            typeParantTagNameMap['FieldSet'] = 'CustomObject';
+            typeParantTagNameMap['ListView'] = 'CustomObject';
+            typeParantTagNameMap['RecordType'] = 'CustomObject';
+            typeParantTagNameMap['CustomField'] = 'CustomObject';
+            typeParantTagNameMap['CompactLayout'] = 'CustomObject';
+            typeParantTagNameMap['SharingReason'] = 'CustomObject';
+            typeParantTagNameMap['ValidationRule'] = 'CustomObject';
+            typeParantTagNameMap['BusinessProcess'] = 'CustomObject';
+            typeParantTagNameMap['CustomLabel'] = 'CustomLabels';
+            typeParantTagNameMap['EscalationRule'] = 'EscalationRules';
+            typeParantTagNameMap['ManagedTopic'] = 'ManagedTopics';
+            typeParantTagNameMap['MatchingRule'] = 'MatchingRules';
+            typeParantTagNameMap['SharingOwnerRule'] = 'SharingRules';
+            typeParantTagNameMap['SharingCriteriaRule'] = 'SharingRules';
+            typeParantTagNameMap['WorkflowRule'] = 'Workflow';
+            typeParantTagNameMap['WorkflowTask'] = 'Workflow';
+            typeParantTagNameMap['WorkflowAlert'] = 'Workflow';
+            typeParantTagNameMap['WorkflowKnowledgePublish'] = 'Workflow';
+            typeParantTagNameMap['WorkflowFieldUpdate'] = 'Workflow';
+            typeParantTagNameMap['WorkflowOutboundMessage'] = 'Workflow';
+            
+
+            var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false});
+            var childObj = {};
+            var parentObj = x2js.xml_str2json(data);
+
+            if(parentObj[typeParantTagNameMap[metaType]] != undefined)
+            {
+                var tempObj = parentObj[typeParantTagNameMap[metaType]];
+                if(tempObj[typeTagNameMap[metaType]] != undefined)
+                {
+                    var childDetails = tempObj[typeTagNameMap[metaType]];
+                    var childTypeActualName = fullName.indexOf('.') > -1 ? (fullName.substring(fullName.indexOf('.') + 1,fullName.length)) : fullName;
+                    console.log('childTypeActualName-'+childTypeActualName);
+                    if(Array.isArray(childDetails))
+                    {
+                        for(var index = 0; index < childDetails.length; index++)
+                        {
+                            var childVal = childDetails[index];
+                            if(childVal != undefined && childVal.fullName == childTypeActualName)
+                            {
+                                var childLiObj = {};
+                                childLiObj._xmlns = parentObj[typeParantTagNameMap[metaType]]._xmlns;
+
+                                var childLi = [];
+                                childLi.push(childVal);
+                                childLiObj[typeTagNameMap[metaType]] = childLi;
+                                childObj[typeParantTagNameMap[metaType]] = childLiObj;
+
+                                var childXmlBeforeFormat = x2js.json2xml_str(childObj);
+                                childXmlBeforeFormat ='<?xml version="1.0" encoding="UTF-8"?>'+childXmlBeforeFormat;
+                                if(childXmlBeforeFormat != undefined)
+                                    return childXmlBeforeFormat;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(childDetails != undefined && childDetails.fullName == childTypeActualName)
+                        {
+                            var childLiObj = {};
+                            childLiObj._xmlns = parentObj[typeParantTagNameMap[metaType]]._xmlns;
+
+                            var childLi = [];
+                            childLi.push(childDetails);
+                            childLiObj[typeTagNameMap[metaType]] = childLi;
+                            childObj[typeParantTagNameMap[metaType]] = childLiObj;
+
+                            var childXmlBeforeFormat = x2js.json2xml_str(childObj);
+                            childXmlBeforeFormat ='<?xml version="1.0" encoding="UTF-8"?>'+childXmlBeforeFormat;
+                            if(childXmlBeforeFormat != undefined)
+                                return childXmlBeforeFormat;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        
+        $(document).ready(function(){
+           overridePageMessages();    
+        });
+        
+        function overridePageMessages(){    
+            var textureEffect = '';
+            textureEffect = 'slds-theme--alert-texture';             
+            $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+            $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+            $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+            $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+                             
+            $('.errorM3').removeClass('errorM3'); 
+            $('.confirmM3').removeClass('confirmM3'); 
+            $('.infoM3').removeClass('infoM3');   
+            $('.warningM3').removeClass('warningM3');  
+        }
+    </script>
+</apex:page>

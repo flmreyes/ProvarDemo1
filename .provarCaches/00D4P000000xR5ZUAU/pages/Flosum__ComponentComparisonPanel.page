@@ -1,0 +1,686 @@
+<apex:page sidebar="false"  showHeader="false" doctype="html-5.0" cache="false" id="editpg">
+    <apex:slds />
+     <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/bootstrapSF.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery.min.js')}"/>  
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/bootstrap.min.js')}"/>  
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery-ui.min.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery.ui-contextmenu.min.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/diffxmllib.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/codemirror.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/xml.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/searchcursor.min.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/mergely.js')}"/>   
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/parser.js')}"/>
+
+    <script src="{!$Resource.X2JS}"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/jquery-ui.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/mergely.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/codemirror.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/dialog.css')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'beauty/forMatXML.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/pako.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/diffutils.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/dialog.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/search.js')}"/>
+
+    <style type="text/css" media="screen">
+        .grid {
+            display: flex;
+        }
+        .title {
+            flex: 1;
+            height: 20px;
+            text-align:center;
+        }
+        /************* ReWrite MODAL STYLES  *************/
+        .bootstrap-iso .modal-backdrop.in {
+            opacity: 0;
+        }
+        .bootstrap-iso .modal.fade .modal-dialog, .modal.in .modal-dialog {
+            position: fixed;
+            top: 30%;
+            left: 30%;
+            transition: 0.1s;
+        }
+        .bootstrap-iso .modal-open, .modal-open .navbar-fixed-top {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+/* Center the loader */
+.spinner {
+  position: absolute;
+  display: block;
+  left: 54%;
+  top: 55%;
+  z-index: 1000;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #646464;
+  border-right: 4px solid #e6e6e6;
+  border-left: 4px solid #e6e6e6;
+  border-bottom: 4px solid #646464;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+        
+    </style>
+    <div class="slds-scope">
+
+    <apex:form id="allCompForm">
+    <apex:pagemessages id="msg"/>
+        <!--            Mergely editor panel markup                          -->
+        <apex:pageBlock id="block1">
+
+          <div class="bPageTitle" style="padding: 0px 0 0;">
+            <div class="ptBody">
+                <div class="content">
+                    <h1 class="pageType" style="margin-top:0px;" id="compType">Type 1</h1>
+                    <h2 class="pageDescription" style="margin-top:0px;" id="compName">Class 1</h2>
+                </div>
+            </div>
+          </div>
+
+    <div class="Legend">
+        <div class="Created">&nbsp;</div> Created block
+        <div class="Deleted">&nbsp;</div> Deleted block
+        <div >◄ &nbsp; Add/Merge this line</div>          
+        <div >► &nbsp; Remove this line</div>          
+<!--        <div style="float: right;"><a id="spinner">Updating...</a></div> -->         
+    </div>
+
+    <div id="nav">
+        <ul>
+            <li class="item"><a id="prev" title="Previous diff"><span class="icon icon-arrow-up"></span></a></li>
+            <li class="item"><a id="next" title="Next diff"><span class="icon icon-arrow-down"></span></a></li>
+            <li class="separator"></li>
+            <li><a id="changes" style="padding-top: 4px;padding-left: 10px;padding-right: 10px;"><span class="icon"></span>&nbsp;&nbsp;</a></li>
+            <li class="separator"></li>         
+<!-- 
+            <li class="item"><a id="search" title="Search"><span class="icon search"></span></a></li>
+-->
+            <li><a id="ignorews"><span class="btnicon">&nbsp;</span>&nbsp;&nbsp;Ignore white space</a></li>
+            <li><button class="btn btn-success btn-footer" style="padding: 12px;font-size: 1.2em;font-weight: normal;padding-bottom: 1px;padding-top: inherit;display:block;"
+                        id="blockBtn" type="button" >Lines merge</button></li>
+            <li class="separator"></li>         
+            <li><button class="btn btn-success btn-footer" style="padding: 12px;font-size: 1.2em;font-weight: normal;padding-bottom: 1px;padding-top: inherit;display:block;" 
+                        id="toggleBtn" type="button"  onclick="toggleViewMode()">View as text</button></li>
+            <li><button class="btn btn-success btn-footer" style="padding: 12px;font-size: 1.2em;font-weight: normal;padding-bottom: 1px;padding-top: inherit;display:block;" 
+                        id="undoBtn" type="button"  onclick="undo()">Undo</button></li>
+        </ul>
+    </div>
+
+    <div class="compare-wrapper" >
+        <div id="compare-headers1" style="padding:5px">
+            <div style="position:relative;height:15px;width: 50%; float: left;" id="infoLineLeft1">
+            </div>
+            <a style="float: left;width: 10px;height: 15px;cursor: pointer;text-align: center;color: #170c0c;border: 1px solid #222;margin-right: 5px;margin-top: -2px;" class="ui-button ui-corner-all ui-widget ui-button-icon-only merge-button" id="merge-all" title="Merge all"><span class="ui-button-icon ui-icon ui-icon-triangle-1-w"></span></a>
+            &nbsp;&nbsp;
+            <div style="position:relative;height:15px;  float: left;     padding-left: 20px;"  id="infoLineRight1">
+            </div>
+        </div>
+        <div id="compare-headers2" style="padding:5px">
+            <div style="position:relative;height:15px;width: 50%; float: left;" id="infoLineLeft2">
+            </div>
+            &nbsp;&nbsp;
+            <div style="position:relative;height:15px;  float: left;     padding-left: 20px;"  id="infoLineRight2">
+            </div>
+        </div>
+        <div class="find">
+            <input type="text" />
+            <button class="find-close"><span class="icon icon-x-mark"></span></button>
+        </div>
+        <div id="compare"/>
+    </div>
+        
+        
+            <div style="float:center; text-align:center;margin:auto;" id="subblock1">
+                <button class="btn btn-warning btn-footer" style="font-size: 1.2em;padding-right: 12px;padding-left: 12px;font-weight: normal;padding-bottom: 2px;padding-top: inherit;" id="btn1" type="button" onclick="cancelManual()">Cancel</button>&nbsp; 
+                <button class="btn btn-success btn-footer" style="font-size: 1.2em;padding-right: 12px;padding-left: 12px;font-weight: normal;padding-bottom: 2px;padding-top: inherit;" id="btn2" type="button"  onclick="applyChanges()">Save</button> 
+            </div>
+            <apex:pageBlockSection columns="1">
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!--            end of block for Mergely editor -->
+
+<ul class='custom-menu'>
+<li data-action="edit"> 
+    <div>
+      Tag: &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="tag" disabled="disabled"/>&nbsp;&nbsp; Value: &nbsp;<input type="text" id="tagValue"/>
+    </div>
+</li>
+<!--  <li data-action="clone">Clone tag (with child nodes)</li> -->
+<!--  <li data-action="create">Create tag</li> -->
+  <li data-action="update">Update tag</li>
+<!--  <li data-action="delete">Delete tag</li> -->
+</ul>
+
+    
+    </apex:form>
+    </div>
+    <!-- Modal -->
+     <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-close"  style="opacity:0.9; visibility: visible; display: none;" id="myModal">
+        <div class="slds-modal__container" style="width:55%">
+            <div class="slds-modal__content">
+                <div class="slds-modal__header" style="background-color: #d8dde6;">
+                    <button class="slds-button slds-button--icon-inverse slds-modal__close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="slds-text-heading--medium" style="color: red;">Error</h2>
+                </div>
+                <div class="slds-modal__body" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;font-size: 15px;">
+                    <p> </p>
+                </div>
+                <div class="modal-footer" style="text-align:center;padding-bottom: 20px;">
+                    <button type="button"  data-dismiss="modal" class="btn slds-button slds-button_neutral">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- spinner -->
+    <div id="loader" class="spinner"></div>
+    
+    <script>
+    const DEBUG_MODE = false;
+    var button1 = document.getElementById('undoBtn');
+
+
+    var roMode = false;
+    // if components type TXT, then editMode = {TXT}
+    // if components type XML, then editMode = {TXT,XML} - extracted from url
+    // if params undefined, set editMode = mode
+    var editMode;
+    // current url
+    var url;
+    
+    var comp;
+    var userData;
+    
+    var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+    
+
+    function onBlurCustomFunction()
+    {
+        window.close();
+    }
+    
+    /* returns map of params */
+    function parseParams(parameters){
+        var hash       = {};
+        if (!parameters) return hash;
+        for(var i=0; i < parameters.length; i++) {
+            if(!parameters[i])
+                continue;
+
+            var ary      = parameters[i].split('=');
+            hash[ary[0]] = ary[1];
+        }
+
+        return hash;
+    }
+    
+    function URLAddParameter(url, param, value){
+        var hash       = {};
+        var parser     = document.createElement('a');
+
+        parser.href    = url;
+
+        var parameters = parser.search.split(/\?|&/);
+        hash = parseParams(parameters);
+        hash[param] = value;
+        console.log('hash='+JSON.stringify(hash)); 
+ 
+        var list = [];  
+        Object.keys(hash).forEach(function (key) {
+            list.push(key + '=' + hash[key]);
+        });
+        var search = '?' + list.join('&');
+        var base = (url.indexOf('?') > -1) ? url.substring(0,url.indexOf('?')) : url;
+        
+        return base + search;
+    }
+    
+    function getViewMode(){
+        var hash       = {};
+        var parser     = document.createElement('a');
+
+        parser.href    = url;
+
+        var parameters = parser.search.split(/\?|&/);
+        hash = parseParams(parameters);
+        console.log('hash='+JSON.stringify(hash)); 
+        if (hash['mode']){
+            editMode = hash['mode'];
+        }
+    }
+
+    function toggleViewMode(){
+        if (editMode == 'XML'){
+            editMode = 'RAWXML';
+        }else if (editMode == 'RAWXML'){
+            editMode = 'XML';
+        }else if (editMode == 'TXT'){
+            editMode = 'RAWTXT';
+        }else{
+            editMode = 'TXT';
+        }
+        var newurl = URLAddParameter(url, "mode", editMode);
+        console.log('newurl='+newurl);
+        setTimeout(function () {
+            window.location.href = newurl;
+            //location.reload()
+        }, 10);
+    }
+    
+    
+    function open(){
+        url = window.location.href;
+        getViewMode();
+        console.log('url='+url); 
+        console.log('editMode='+editMode); 
+
+        var uData = window.opener.$j("body").data("userData");
+        var opt;
+        if (uData != undefined && uData != null){
+            opt = uData.height;
+            if (editMode == undefined){
+                editMode = uData.mode;
+            }
+            if (editMode == 'RAWXML'){
+                label = 'View as tree';
+            }else if (editMode == 'XML'){
+                label = 'Edit as text';
+            }else if (editMode == 'RAWTXT'){
+                label = 'View difference';
+            }else if (editMode == 'TXT'){
+                label = 'Manual edit';
+            }
+            $('#toggleBtn').html(label);
+            /* disable toggle button in txt mode*/
+            if (editMode == 'RAWXML' || editMode == 'RAWTXT'){
+                $('#undoBtn').attr('disabled', true);
+                $('#undoBtn').addClass('disabled');
+            }
+
+        }else{
+            console.log('data not found!');
+            return;
+        }
+
+        console.log('editMode='+editMode); 
+        init(opt,editMode,uData.mode);
+        setDefinitions(uData);
+    }
+    
+    open();
+    
+    function setLabel(id,text){
+        if (id != undefined){
+            $('#'+id).html(text);
+        }
+    }
+    
+    function getLines(s,prefix,postfix){
+        var lines = [];
+        if (s){
+            if (s.indexOf('###') > -1){
+                lines = s.split('###');
+            }else{
+                lines.push(s);
+                lines.push(' ');
+            }
+        }else{
+            lines.push(' ');
+            lines.push(' ');
+        }
+        if (prefix && lines[0]){
+            lines[0] = prefix + ' ' + lines[0];  
+        }
+        if (postfix && lines[0]){
+            lines[0] = lines[0] + ' ' + postfix;  
+        }
+        return lines;
+    }
+    
+    
+    function setDefinitions(uData){
+        if (uData != undefined && uData != null){
+            try{
+
+                var leftView, rightView;
+                userData = uData;
+                
+                if (editMode == 'XML'){
+                    leftView = unpack(userData.tgt);
+                    rightView = unpack(userData.src);
+                }else{// RAWXML, RAWTXT, TXT
+                    leftView = unpack(userData.tgt);
+                    rightView = unpack(userData.src);
+                    if (userData.mode == 'XML'){
+                        leftView = normalizeXml(leftView);
+                        rightView = normalizeXml(rightView);
+                    }
+                }
+
+                setLabel('compName',userData.name);
+                setLabel('compType',userData.type);
+                var right = getLines(userData.rightTitle,'') 
+                var left = getLines(userData.leftTitle,'') 
+                
+                setLabel('infoLineRight2',right[1]);
+                setLabel('infoLineLeft2',left[1]);
+                setLabel('infoLineRight1',right[0]);
+                setLabel('infoLineLeft1',left[0]);
+                updateView(leftView,rightView,userData.mode);
+            }catch(e){
+                showError('Error when rendering components view: '+e);
+            }
+        }else{
+            showError('Empty component: unable to load data. Try to reload page.');
+        }
+        
+    }
+
+    function undo(data){
+        comp.mergely('undo');
+    }
+    
+    function unpack(data){
+        return pako.inflate(data, { to: 'string' });
+    }
+    
+    function updateView(left, right, mode){
+
+
+        try{
+            if (editMode == 'XML'){
+                var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+                var jleft = x2js.xml_str2json(left);
+                var jright = x2js.xml_str2json(right);
+                comp.mergely('ljson', jleft);
+                comp.mergely('rjson', jright); 
+            }else{
+                // async get lhs editor, then set lhs content
+                comp.mergely('lorig', left);
+                // async get rhs editor, then set rhs content
+                comp.mergely('rorig', right); 
+            }
+            
+            comp.mergely('setMode',editMode);
+
+            if (editMode == 'XML'){
+                comp.mergely('updateXml');
+            }else{
+                comp.mergely('update');
+            }
+        }catch(e){
+            showError('Problems during processing comparing components: ' + e);
+        }
+    }
+    
+    function normalizeXml(xmlTextLeft){
+            return xmlTextLeft;
+    }
+    
+    function restoreXml(json){
+        var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+        var lhsResponse = '<?xml version="1.0" encoding="UTF-8"?>\n' + vkbeautify.xml(x2js.json2xml_str(json), 4 );
+        return lhsResponse;
+    }
+    
+    function isValid(xml){
+        try{
+            var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+            var res = x2js.xml_str2json(xml);
+            return res != undefined && res != null;
+        }catch(e){
+            return false;
+        }
+    }
+    
+    function cancelManual(){
+        console.log('canceling');
+        onBlurCustomFunction();
+    }
+
+    function applyChanges(){
+        console.log('applyChanges');
+        var txt = '';
+        
+        var merged = comp.mergely('get', 'lhs');
+
+        if (editMode == 'XML'){
+            merged = restoreXml(merged);
+        }
+        if (userData.mode == 'XML'){
+            if (isValid(merged) == false){
+                showError('XML document is not well formed: syntax-check your XML');
+                return;
+            }
+        }
+        
+        var obj = {};
+        obj.isXml = userData.mode == 'XML';
+        obj.data = pako.deflate(merged, { to: 'string' });
+        window.opener.callBackText(obj);
+        onBlurCustomFunction();
+    }
+    
+    function showError(text){
+         $(".slds-modal__body").text(text); 
+        $('#myModal').modal('show');
+    }
+
+    function changeOptions(changer) {
+                var options = comp.mergely('options');
+                changer(options);
+
+                comp.mergely('options', options);
+                comp.mergely('update');
+    }
+        
+    function init(opt,mode,fileType) {
+        comp = $('#compare');
+        var highLight = 'text/plain';
+            console.log('mode '+mode);
+            console.log('fileType '+fileType);
+        const options = {
+                cmsettings: { 
+                    mode: mode,
+                    readOnly: (mode == 'XML' || mode == 'TXT'), 
+                    lineWrapping: true,
+                    ignorews: false
+                },
+                editor_width: 'calc(50% - 25px)',
+                editor_height: '80%',
+                editor_max_height: opt,
+                blocklines: false
+            };
+            comp.mergely(options);
+//          $('#ignorews span').addClass('icon-check');
+            console.log('created');
+
+            $('#prev').click(function() { comp.mergely('scrollToDiff', 'prev'); });
+            $('#next').click(function() { comp.mergely('scrollToDiff', 'next'); });
+            $('#ignorews').click(function() { 
+                changeOptions(function(x) { 
+                        x.ignorews = !x.ignorews; 
+                        if(x.ignorews) {
+                            $('#ignorews span').addClass('icon-check');
+                        } else {
+                            $('#ignorews span').removeClass('icon-check');
+                        }
+                    }); 
+            });
+
+        if (mode != 'TXT'){
+            $('#blockBtn').attr('disabled', true);
+            $('#blockBtn').addClass('disabled');
+        }
+        $('#blockBtn').click(function() {
+            changeOptions(function(x) {
+                x.blocklines = !x.blocklines;
+                if(x.blocklines) {
+                    $('#blockBtn').html('Block merge');
+
+                } else {
+                    $('#blockBtn').html('Lines merge');
+                }
+            });
+        });
+
+            $('#search').click(function() { $('.find').css('display', 'block');});
+
+            var find = $('.find');
+            var input = find.find('input[type="text"]');
+            //var side = column.attr('id').indexOf('-lhs') > 0 ? 'lhs' : 'rhs';
+            var side = 'lhs';
+            var origautoupdate = comp.mergely('options').autoupdate;
+            find.slideDown('fast', function () {
+                input.focus();
+            });
+            find.find('.find-next').click(function () {
+//              comp.mergely('search', side, input.val());
+            });
+            find.find('.find-close').click(function () {
+                find.css('display', 'none');
+                comp.mergely('search', side, '');
+                comp.mergely('options', { autoupdate: origautoupdate });
+            });
+
+            input.keydown(function (evt) {
+                if (evt.which != 13 && evt.which != 27) return true;
+                if (evt.which == 27) {
+                    find.css('display', 'none');
+                }
+                console.log(input.val());
+                comp.mergely('search', side, input.val());
+                return false;
+            });
+            $('.find').css('display', 'none');
+            
+            
+    }
+    
+    function showErrorMessage(str)
+    {
+        if($('#msg') != undefined)
+        {
+            $('#msg').remove();
+        }
+        var parentVal = $("[id$='msg']");
+        if(parentVal != undefined)
+        {
+            var childVal = '<span id="msg">'+
+                            '<span>'+
+                                '<div class="message errorM3" role="alert">'+
+                                    '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                        '<tbody>'+
+                                            '<tr valign="top">'+
+                                            '<td>'+
+                                                '<img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR">'+
+                                            '</td>'+
+                                            '<td class="messageCell">'+
+                                                '<div class="messageText">'+
+                                                    '<span style="color:#cc0000">'+
+                                                        '<h4>Error:</h4>'+
+                                                    '</span>'+
+                                                    str+'<br>'+
+                                                '</div>'+
+                                            '</td>'+
+                                            '</tr>'+
+                                            '<tr>'+
+                                                '<td></td>'+
+                                                '<td></td>'+
+                                            '</tr>'+
+                                        '</tbody>'+
+                                    '</table>'+
+                                '</div>'+
+                            '</span>'+
+                        '</span>';
+             parentVal.before(childVal);
+        }
+        unbindWindow();
+    }
+    
+    function clearMessage(){
+            console.log('clearMessage');
+//          setMessageOnPage('');
+            if($('#msg') != undefined){
+                 $('#msg').remove();
+            }
+    }
+    
+        
+    function unbindWindow()
+    {
+        $(window).unbind();
+    }
+
+            // If the document is clicked somewhere
+            $(document).bind("mousedown", function (e) {
+    
+                // If the clicked element is not the menu
+                if (!$(e.target).parents(".custom-menu").length > 0) {
+                    // Hide it
+                        $(".custom-menu").hide(100);
+                    }
+            });
+
+
+            // If the menu element is clicked
+            $(".custom-menu li").click(function(){
+                if (true) return;
+                // This is the triggered action name
+                switch($(this).attr("data-action")) {
+        
+                    // A case for each action. Your actions here
+                    case "update": console.log("update");comp.mergely('command', 'update');  break;
+                        case "delete": console.log("delete");comp.mergely('command', 'delete'); break;
+                        case "edit": console.log("edit"); return;
+                    }
+  
+                    // Hide it AFTER the action was triggered
+                    $(".custom-menu").hide(100);
+            });
+
+    
+    
+    </script>
+</apex:page>

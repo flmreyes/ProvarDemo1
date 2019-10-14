@@ -1,0 +1,3020 @@
+<apex:page standardController="Flosum__Branch__c" extensions="Flosum.MergeBranchesController" sidebar="false"  doctype="html-5.0" cache="false" tabStyle="Flosum__Branch__c">
+    <c:Wait />
+    <c:DynamicLookupScript />
+    
+    <apex:slds />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster,'jszip-master/flosumsf/flosumsf1.6.0.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.min.js')}"/>
+    <!--        added resources      -->
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp, 'res/ga.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp, 'res/js/zip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/js/workers/deflate.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/js/workers/inflate.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/js/workers/z-worker.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/bootstrapSF.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'beauty/forMatXML.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery-2.1.4.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular.min.js')}"/> 
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/difflib.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/diffxmllib.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular-base64.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/deep-diff-0.3.3.min.js')}"/>
+    <script src="{!$Resource.X2JS}"></script>
+    <script src="{!$Resource.DiffJS}"></script>
+
+    <!-- for new panel -->
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/bootstrap.min.js')}"/> 
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular-route.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular-aria.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular-messages.min.js')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/pako.min.js')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/angular-modal-service.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/editor.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/style.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/bkup.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/fullbkup.js')}"/>
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__bootstrapiso)}"/> 
+  
+    <style type="text/css" media="screen">
+        .activeTab {background-color:#236FBD; color:white;  tab-color:yellow; background-image:none}
+        .inactiveTab {background-color:white; color:black;  background-image:none}
+        body .bPageTitle .ptBody h1.noSecondHeader {
+            color: #FFF;
+        }
+        .pagination { 
+            padding: 1%; 
+        } 
+        div .pagination { 
+            text-align: center; 
+        } 
+        td .dataCell label { 
+            font-weight: normal; 
+        }  
+        .pagination input { 
+            margin-left: 4px; 
+        } 
+        hr.pBlockDescription {
+            margin-top: 0%;
+            border-bottom: 1px solid #DBDBDB;
+        }
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+        .EmpyBlock {
+            height: 18px;
+        }
+        .bundle_error_msg {
+            display: none;
+            padding: 5px;
+            color: #FF4500;
+            background-color: #ffffb3;
+            text-align: center;
+            font-size: 16px;
+            width: 100%;
+        }
+       .teamSelector{
+            display: block;
+            position: relative;
+            font-size: 1.8em;
+            overflow: hidden;
+            padding-right: 1.2em;
+            padding-left: 2em;
+            width: 100%;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .virtualRepeatdemoVerticalUsage .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+            padding-left: initial;
+            padding-top: initial;
+            vertical-align: sub;
+        }
+        .virtualRepeatVerticalUsageXml .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+            padding-left: initial;
+        }
+        .virtualRepeatVerticalUsageXml .header .headerTitle {
+            font-weight: bolder; font-size:14px; width:400px; float:left; text-align:center; 
+        }
+        .virtualRepeatVerticalUsageXml .header .headerButtonPlaceholder  {
+            width:400px; float:left; text-align:center;
+        }
+        .virtualRepeatVerticalUsageXml .headerButton  {
+            width:700px; float:left; text-align:center;
+        }
+        /************* ReWrite MODAL STYLES  *************/
+/*
+        .modal-backdrop.in {
+            opacity: 0;
+        }
+        .modal.fade .modal-dialog, .modal.in .modal-dialog {
+            position: fixed;
+            top: 20%;
+            left: 35%;
+            transform: translateY(-1000px);
+            transition: 0.1s;
+        }
+        .modal-open, .modal-open .navbar-fixed-top {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+*/
+        .bootstrap-iso .modal-backdrop.in {
+            opacity: 0;
+        }
+        .bootstrap-iso .modal.fade .modal-dialog, .modal.in .modal-dialog {
+            position: fixed;
+            top: 30%;
+            left: 30%;
+ //             transform: translateY(-1000px);
+            transition: 0.1s;
+        }
+        .bootstrap-iso .modal-open, .modal-open .navbar-fixed-top {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+        
+        #ruler { visibility: hidden; white-space: nowrap; font-family: monospace; font-size: 12px;}  
+        #ruler-xml { visibility: hidden; white-space: nowrap; font-family: monospace; font-size: 12px;}  
+  
+        .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open>.dropdown-toggle.btn-warning {
+            color: #000;
+        } 
+        .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open>.dropdown-toggle.btn-success {
+            color: #000;
+        }
+        /********************   SLDS   ************************/
+        .boxPadding {
+            padding: .5rem !important;
+        }
+        .topMargin {
+            margin-top: 5px !important;
+        }
+        .customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+            margin: 0px !important;
+            opacity: 1!important;
+            width: 100%;
+            font-size: 12px;
+            border: 0px;
+        } 
+        .paneltopMargin{
+            margin-top: 10px !important;
+        }
+        .paddingClass td, .paddingClass th {
+            padding: 0rem !important;
+            padding-left: 1.5rem !important;
+        }
+        .slds-scope .slds-section.slds-is-open .slds-section__content {
+            padding-top: 0rem !important;
+        }
+        .btnPanelMargin {
+            margin-top: -8px !important;
+            margin-bottom: -8px !important;
+        }
+        .leftMargin {
+            margin-left: 15px !important;
+        }
+        .btnBoredrClr {
+            border-color: silver !important;
+        }
+    </style>
+    
+    <div class="slds-scope" >
+        <apex:form >
+            <apex:actionfunction name="addToBranch" action="{!addToBranch}" onComplete="startZipCreation('{!errorCode}','{!JSENCODE(msg)}');" reRender="none">
+                <apex:param assignTo="{!targetBranchName}" value="" name="targetBranchName"/>
+            </apex:actionfunction>
+            <apex:actionfunction action="{!updateAttachments}"  name="uploadAttachments" onComplete="processResults('{!errorCode}');">
+                <apex:param assignTo="{!uploadJson}" value="" name="uploadJson"/>
+            </apex:actionfunction>
+            <apex:actionfunction name="insertMergeAttachment" action="{!insertMergeAttachment}" rerender="none" oncomplete="handleMergeDml();">
+                <apex:param assignTo="{!jsonStr}" value="" name="newstr"/>
+                <apex:param assignTo="{!patchId}" value="" name="patchId"/>
+            </apex:actionfunction>
+            <apex:actionfunction name="branchZipCreator" action="{!branchZipCreator}" onComplete="processZipCreation('{!errorCode}','{!logId}','{!logAttId}','{!patchListJSON}','{!logsListJSON}','{!validateOnly}', '{!srcBranchNameEsc}', '{!JSENCODE(message)}');" reRender="none"/>
+            <apex:actionfunction name="finalCall" action="{!finalCall}" onComplete="mergeComplete('{!errorCode}','{!JSENCODE(msg)}', '{!batchJobId}');" reRender="none">
+                <apex:param assignTo="{!isClosed}" value="" name="isClosed"/>
+                <apex:param assignTo="{!patchId}" value="" name="patchId"/>
+            </apex:actionfunction>
+            <apex:actionfunction name="complete" action="{!complete}" />
+            
+            <div ng-app="mergeCommit">               
+                <div ng-controller ="MergeBranchesControllerAJS" id="angularControllerId">
+                    <div class="ng-cloak">
+                        <div html-ng-show="isLoading" class="loading-indicator" ng-cloak="" id="spinner"/>
+                           <script type="text/ng-template" id="customL.html">
+                                <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-close"  style="opacity:0.9; visibility: visible;" id="idDialog">
+                                    <div class="slds-modal__container" style="width:55%">
+                    
+                                    <div class="slds-modal__content">
+                                        <div class="slds-modal__header" style="background-color: #d8dde6;">
+                                            <button class="slds-button slds-button--icon-inverse slds-modal__close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h2 class="slds-text-heading--medium">Resolving conflict</h2>
+                                        </div>
+                                        <div class="slds-modal__body" style="padding-left: 20px;padding-right: 20px;">
+                                            <p>The components with types Document, StaticResource are not editable in current version of Flosum.</p>
+                                            <p> Choose how to resolve the conflict:</p>
+                                        </div>
+                                        <div style="padding-left: 20px;"> 
+                                            <div ng-init="question.selected = 1">
+                                                <label data-ng-repeat="choice in question.choices">
+                                                    <input type="radio" name="response" data-ng-model="question.selected" data-ng-value="{{choice.id}}" />
+                                                    {{choice.text}}
+                                                    <br/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="slds-truncate slds-th__action slds-th__action_form" style="padding-left: 20px;padding-right: 20px;">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" class="slds-input psli" ng-model="alwaysDo"/>
+                                                <span class="slds-checkbox_faux"></span>
+                                                <span class="slds-assistive-text"></span>
+                                                <span class="slds-form-element__label">Apply the same action for all similar components</span>
+                                            </label>
+                                        </div>
+                                        <div class="modal-footer" style="text-align:center;padding-bottom: 20px;">
+                                            <button type="button" ng-click="close(false)" data-dismiss="modal" class="btn slds-button slds-button_neutral">Cancel</button>
+                                            <button type="button" ng-click="close(true)" data-dismiss="modal" class="btn slds-button slds-button_neutral">Apply</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                         </script>
+    
+                         <script type="text/ng-template" id="customC.html">
+                            <div class="bootstrap-iso modal" id="modalDialog1" style="transition: 0s; padding-right: 0px;">
+                                <div class="bootstrap-iso modal-dialog">
+                                     <div class="bootstrap-iso modal-content">
+                                        <div class="bootstrap-iso modal-header">
+                                            <button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title">Resolving conflict</h4>
+                                        </div>
+                                        <div class="bootstrap-iso modal-body">
+                                            <p>The components with types Document, StaticResource are not editable in current version of Flosum.</p>
+                                            <p> Choose how to resolve the conflict:</p>
+                                        </div>
+                                        <div style="padding-left: 20px;"> 
+                                            <div ng-init="question.selected = 1">
+                                                <label data-ng-repeat="choice in question.choices">
+                                                    <input type="radio" name="response" data-ng-model="question.selected" data-ng-value="{{choice.id}}" />
+                                                    {{choice.text}}
+                                                    <br/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div style="padding-left: 20px;"> 
+                                            <input type="checkbox" class="psli" ng-model="alwaysDo">Apply the same action for all similar components</input>
+                                        </div>
+                                        <div class="bootstrap-iso modal-footer" style="text-align:center;">
+                                            <button type="button" ng-click="close(false)" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                                            <button type="button" ng-click="close(true)" class="btn btn-success" data-dismiss="modal">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </script> 
+                        <apex:pagemessages id="msg"/>
+                            <!--  block for tables display  -->
+                        <apex:outputPanel html-ng-show="CommitStep == 0" layout="block" styleClass="slds-box slds-theme--default slds-container boxPadding"> 
+                            <div class="slds-page-header">
+                                <div class="slds-media">
+                                    <div class="slds-media__body">
+                                        <h1 class="slds-page-header__title slds-truncate slds-align-middle">Merge Branches</h1>
+                                        <p class="slds-text-body_small slds-line-height_reset topMargin">Used to merge branch</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <apex:outputPanel layout="block" styleClass="slds-box slds-theme--default slds-container">
+                                <apex:outputPanel layout="block" >
+                                    <apex:outputPanel id="pbb1">
+                                        <div class="slds-float--right" role="group">
+                                            <apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" action="{!back}" reRender="msg" id="button2" />
+                                            <apex:commandButton styleClass="slds-button slds-button_neutral" value="Merge To Branch" action="{!refresh}" onClick="mergeBranches();" onComplete="overridePageMessages();" reRender="msg" html-ng-disabled="mergeButton" id="button1"/>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                                        <apex:outputLabel value="{!$ObjectType.Flosum__Branch__c.fields.Name.label}" />
+                                        <div class="slds-form-element__control">
+                                            <apex:outputText style="background: #eef1f6;" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Name}"/>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 paneltopMargin" layout="block">
+                                        <apex:outputLabel value="{!$ObjectType.Flosum__Branch__c.fields.Flosum__Branch_Name__c.label}" />
+                                        <div class="slds-form-element__control" >
+                                            <apex:outputText style="background: #eef1f6;" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Flosum__Branch_Name__c}" id="srcBranch"/>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 paneltopMargin" layout="block" >
+                                        <apex:outputLabel styleClass="slds-text-heading_regular" value="Merge To Existing Branch :" />
+                                        <div class="slds-form-element__control slds-grid">
+                                            <apex:inputHidden id="branchTargetId" value="{!branchId}" />
+                                            <div class="slds-size--1-of-2">
+                                                <apex:inputText size="40" id="branchTargetName" onFocus="this.blur()" html-ng-disabled="branchNewTargetName != '' || disableAllUI" value="{!branchName}" styleClass="slds-input slds-text-heading_regular" html-callitafterchange=""/>
+                                            </div>
+                                            <div class="slds-size--1-of-2">
+                                                <img style="height: 45%;margin-left: 2%;margin-top: 3px;cursor: pointer;" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}" 
+                                                 onclick="openLookupPopup('{!$Component.branchTargetName}','{!$Component.branchTargetId}','{!$ObjectType.Branch__c.Name}',
+                                                    '{!$ObjectType.Branch__c.fields.Branch_Name__c.Name}','{!srcBranchNameEsc}','emptysearch'); return false" 
+                                                 class="disableitem"/>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" html-ng-show="!onlyExistingBranches">
+                                        <apex:outputLabel styleClass="slds-text-heading_regular" value="Merge To New Branch :" />
+                                        <div class="slds-form-element__control">
+                                            <apex:inputText styleClass="slds-input slds-text-heading_regular" size="40" html-ng-model="branchNewTargetName" id="branchNewTargetName"  html-ng-disabled="disableAllUI" />
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 topMargin" layout="block">
+                                        <div class="slds-truncate slds-th__action slds-th__action_form" html-ng-disabled="disableAllUI">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" ng-click="overallChanges();" class="slds-input psli" ng-model="bOverwriteAll" html-ng-disabled="disableAllUI"/>
+                                                <span >Force commit (commit the version in the Branch as-is)</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="slds-checkbox_faux"></span>
+                                                <span class="slds-assistive-text"></span>
+                                            </label>
+                                        </div>
+                                        <div class="slds-truncate slds-th__action slds-th__action_form" html-ng-disabled="disableAllUI">
+                                            <label class="slds-checkbox">
+                                                <input type="checkbox" ng-click="saveChanges();" class="slds-input psli" ng-model="saveToSource" html-ng-disabled="disableAllUI"/>
+                                                <span >Save Merged component on source branch</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="slds-checkbox_faux"></span>
+                                                <span class="slds-assistive-text"></span>
+                                            </label>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                
+                                <!-- start new table output  based on angularJs -->
+                            <apex:outputPanel layout="block" styleClass="slds-m-top--small" html-ng-show="enableTables && branchNewTargetName == ''">
+                                <apex:outputPanel layout="block" styleClass="slds-box slds-theme--default slds-container boxPadding">
+                                    <div class="slds-section" ng-show="enableTables">
+                                        <div class="slds-section__title">
+                                            <h3 class="slds-section__title-action">
+                                                <div class="slds-icon" >
+                                                    <img style="height:20px" id="changeMe" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/switch_60.png')}" />
+                                                </div>
+                                                {!$Label.Conflict_Merge_Components_Section_Title}
+                                                <div class="slds-m-left_xx-small mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+                                                    <img src="/s.gif" alt="" class="infoIcon" title="" />
+                                                    <div class="mouseOverInfo" id="searchInvoiceHelperText" style="display: none; opacity: -0.19999999999999996; left: 16px;">
+                                                        <div class="body">{!$Label.Conflict_Merge_Components_Section_Description} {!$Label.Repo_Conflict_Components_Section_Description_2}</div>
+                                                    </div>
+                                                </div>      
+                                            </h3>
+                                        </div>
+                                        <div class="slds-section__content slds-border_left slds-border_bottom slds-border_top slds-border_right">
+                                            <table ng-show="componentListPtr.length > 0 && componentListShow" class="slds-table slds-table_cell-buffer list paddingClass">
+                                                <thead>
+                                                    <tr class="headerRow">
+                                                        <th>No.</th>
+                                                        <th>
+                                                            <div class=" slds-truncate slds-th__action slds-th__action_form">
+                                                                <label class="slds-checkbox">
+                                                                    <input type="checkbox" ng-click="checkUncheck(componentListPtr,1);" class="slds-input psli" ng-model="isAllChecked1"/>
+                                                                    <span class="slds-checkbox_faux"></span>
+                                                                    <span class="slds-assistive-text"></span>
+                                                                </label>
+                                                            </div>
+                                                        </th>
+                                                        <th ng-repeat = "(key, value) in fieldSet1">
+                                                            <a ng-click="safe.refreshOrderBy(key)">{{ safe.orderByColumn == key ? safe.isReverse ? value+' ▼' : value+' ▲' : value }}</a>
+                                                        </th>
+                                                        <th class="Label" style="text-align: center;">
+                                                            <a ng-click="safe.refreshOrderBy('compare')">{{safe.orderByColumn == 'compare' ? safe.isReverse ? 'Compare ▼' : 'Compare ▲': 'Compare'}}</a>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat = "item in componentListPtr | orderBy: safe.orderByColumn : safe.isReverse | limitTo: safe.viewLimit" ng-if="$index >= safe.metaOffSet" class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} ">
+                                                        <td>{{ $index+1 }}</td>
+                                                        <td>
+                                                            <div class=" slds-truncate slds-th__action slds-th__action_form">
+                                                                <label class="slds-checkbox">
+                                                                    <input type="checkbox" name="selectedComps[]" class="slds-input" value="{{ item['compId'] }}" ng-model="item['check']" />
+                                                                    <span class="slds-checkbox_faux"></span>
+                                                                    <span class="slds-assistive-text"></span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                        <td ng-repeat = "(key, value) in fieldSet1Vis">
+                                                             {{ item[key] }}
+                                                        </td>
+                                                        <td style="text-align: center;">
+                                                            <span ng-show="true" ng-style="(item.isConflict && {'color':  'red'}) || (item.isAutoResolved && {'color':  'green'})" style="cursor:pointer;" ng-click="getMergeInfo(item);">{{item['compare']}}</span>
+                                                        </td> 
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <apex:outputPanel html-ng-show="componentListPtr.length > 0 && componentListShow" styleClass="slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded btnPanelMargin pagination" layout="block" style="text-align: center;">
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right" html-ng-click="safe.listPrevious();" onClick="return false;" value="Previous" reRender="none" html-ng-disabled="safe.isPrevious() || disableNextPrevious" />
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right" html-ng-click="safe.showFirst();" onClick="return false;" value="First" reRender="none" html-ng-disabled="safe.isPrevious() || disableNextPrevious" />
+                                                </div>
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 topMargin">
+                                                    Total {{(componentListPtr).length}} component(s), Page {{safe.currentPageNo((componentListPtr).length)}} of {{safe.totalPageCount((componentListPtr).length)}}
+                                                </div>
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="safe.listNext((componentListPtr).length);" onClick="return false;" value="Next" reRender="none" html-ng-disabled="safe.isNext((componentListPtr).length) || disableNextPrevious"/>
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="safe.showLast((componentListPtr).length);" onClick="return false;" value="Last" reRender="none" html-ng-disabled="safe.isNext((componentListPtr).length) || disableNextPrevious"/>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div style="width: 100%;float: center; padding: 5px;text-align: center;" ng-show="componentListPtr.length == 0 && componentListShow">
+                                                <strong>No records to display</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="block" styleClass="slds-box slds-theme--default slds-container paneltopMargin boxPadding">
+                                    <div class="slds-section">
+                                        <div class="slds-section__title">
+                                            <h3 class="slds-section__title-action">
+                                                <div class="slds-icon" >
+                                                    <img style="height:20px" id="changeMe" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/switch_60.png')}" />
+                                                </div>
+                                                {!$Label.Not_Merge_Components_Section_Title}
+                                                <div class="slds-m-left_xx-small mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+                                                    <img src="/s.gif" alt="" class="infoIcon" title="" />
+                                                    <div class="mouseOverInfo" id="searchInvoiceHelperText" style="display: none; opacity: -0.19999999999999996; left: 16px;">
+                                                        <div class="body">{!$Label.Not_Merge_Components_Section_Description}</div>
+                                                    </div>
+                                                </div>      
+                                            </h3>
+                                        </div>
+                                        <div class="slds-section__content slds-border_left slds-border_bottom slds-border_top slds-border_right">
+                                            <table ng-show="notMergeCompList.length > 0 && notMergeCompListShow" class="slds-table slds-table_cell-buffer list">
+                                                <thead>
+                                                    <tr class="headerRow">
+                                                        <th>No.</th>
+                                                        <th ng-repeat = "(key, value) in fieldSet2">
+                                                            <a ng-click="notCommit.refreshOrderBy(key)">{{ notCommit.orderByColumn == key ? notCommit.isReverse ? value+' ▼' : value+' ▲' : value }}</a>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat = "item in notMergeCompList |  orderBy: notCommit.orderByColumn : notCommit.isReverse | limitTo: notCommit.viewLimit" ng-if="$index >= notCommit.metaOffSet" class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} ">
+                                                        <td>{{ $index+1 }}</td>
+                                                        <td ng-repeat = "(key, value) in fieldSet2Vis">
+                                                             {{ item[key] }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <apex:outputPanel html-ng-show="notMergeCompList.length > 0 && notMergeCompListShow" styleClass="slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded btnPanelMargin pagination" layout="block" style="text-align: center;">
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right" html-ng-click="notCommit.listPrevious();" onClick="return false;" value="Previous" reRender="none" html-ng-disabled="notCommit.isPrevious() || disableNextPrevious" />
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right" html-ng-click="notCommit.showFirst();" onClick="return false;" value="First" reRender="none" html-ng-disabled="notCommit.isPrevious() || disableNextPrevious"/>
+                                                </div>
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 topMargin">
+                                                    Total {{(notMergeCompList).length}} component(s), Page {{notCommit.currentPageNo((notMergeCompList).length)}} of {{notCommit.totalPageCount((notMergeCompList).length)}}
+                                                </div>
+                                                <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                                    <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="notCommit.listNext((notMergeCompList).length);" onClick="return false;" value="Next" reRender="none" html-ng-disabled="notCommit.isNext((notMergeCompList).length) || disableNextPrevious"/>
+                                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="notCommit.showLast((notMergeCompList).length);" onClick="return false;" value="Last" reRender="none" html-ng-disabled="notCommit.isNext((notMergeCompList).length) || disableNextPrevious"/>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div style="width: 100%;float: center; padding: 5px;text-align: center;" ng-show="notMergeCompList.length == 0 && notMergeCompListShow">
+                                                <strong>No records to display</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        
+       
+                            <!--            Bundle Comparison panel markup                           -->
+                        <apex:outputPanel html-ng-show="CommitStep == 4" layout="block" styleClass="slds-box slds-theme--default slds-container boxPadding">
+                            <div class="bPageTitle" style="padding: 0px 0 0;">
+                                <div class="ptBody">
+                                    <div class="content">
+                                        <h1 class="slds-text-body_regular slds-truncate slds-align-middle leftMargin" style="margin-top:0px;">{{PopUpInfo.compType}}</h1>
+                                        <h2 class="slds-page-header__title slds-line-height_reset topMargin leftMargin" style="margin-top:0px;">{{PopUpInfo.compName}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sf-inner-container" style="width: 100%; padding-top: 0px; padding-bottom: 20px;">
+                                <div class ="bundle_error_msg"> Resolve conflicts for all bundle components first</div>
+                                <table ng-show="bundleList.length > 0" class="list">
+                                    <thead>
+                                        <tr class="headerRow">
+                                            <th style="text-align: center; width: 10%;">No.</th>
+                                            <th class="Label" style="text-align: center; width: 35%;">{{targetBranchName}}<br/>{{targetDetailsBundle}}&nbsp;</th>
+                                            <th class="Label" style="text-align: center; width: 5%;">&nbsp;Action</th>
+                                            <th class="Label" style="text-align: center; width: 35%;">{{sourceBranchName}}<br/>{{sourceDetailsBundle}}&nbsp;</th>
+                                            <th class="Label" style="text-align: center; width: 15%;">Compare&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat = "item in bundleList" class="dataRow">
+                                            <td style="text-align: center;">{{ $index+1 }}</td>
+                                            <td style="text-align: center;">{{ item['srcCompName'] }}</td>
+                                            <td style="text-align: center;">
+                                                <div ng-if="(item.conflictCode == 4 && item.moved) || (item.conflictCode == 3 && item.moved) || (item.conflictCode == 5 && item.moved)">
+                                                    <span class="teamSelector" ng-click="updateBundle(item)">◄</span>
+                                                </div>
+                                                <div ng-if="(item.conflictCode == 4 && !item.moved) || (item.conflictCode == 3 && !item.moved) || (item.conflictCode == 5 && !item.moved)">
+                                                    <span class="teamSelector" ng-click="updateBundle(item)">►</span>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <div ng-if="!((item.conflictCode == 3 || item.conflictCode == 5) && item.moved)">{{ item['tgtCompName'] }}  
+                                                </div>
+                                                <div style="background-color: #ffffb3;" ng-if="item.conflictCode == 3 && item.moved">Delete {{ item['tgtCompName'] }}   
+                                                </div>
+                                                <div style="background-color: #ffffb3;" ng-if="item.conflictCode == 4 && item.moved">Add {{ item['srcCompName'] }}  
+                                                </div>
+                                                <div style="background-color: #ffffb3;" ng-if="item.conflictCode == 5 && item.moved">Replaced {{ item['srcCompName'] }} 
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span style="cursor: pointer; color:green" ng-click="getMergeInfo(item);" ng-show="!item.isConflict && item.conflictCode == -1">Autoresolved</span>
+                                                <span style="cursor: pointer; color:red" ng-click="getMergeInfo(item);" ng-show="item.isConflict && item.conflictCode == 1">Conflict</span>
+                                                <span style="cursor: pointer; color:green" ng-click="getMergeInfo(item);" ng-show="!item.isConflict && item.conflictCode == 2">Merged</span>
+                                                <span  ng-show="item.conflictCode == 3">New</span>
+                                                <span  ng-show="item.conflictCode == 4">Deleted</span>
+                                                <span style="color:green" ng-show="item.conflictCode == 0">Equal</span>
+                                            </td> 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="text-align: center; width: 100%; padding-top: 20px;">
+                                    <button type="button" class="btn slds-button slds-button_neutral btnBoredrClr" ng-click="PopUpInfo.closeBundleManualMerge()">Cancel</button>
+                                    <button type="button" class="btn slds-button slds-button_neutral btnBoredrClr" ng-click="PopUpInfo.bundleManualMerge()">Apply Changes</button>
+                                </div>
+                            </div>   
+                        </apex:outputPanel>
+            
+                    </div>
+                </div>
+            </div>
+        </apex:form>
+    </div>
+
+    <script>
+        const DEBUG_MODE = false;
+        const ESCAPE_MODE = false;
+        const CONSIDER_META = false;
+    
+        const AUTORESOLVED = 'Autoresolved';
+        const CONFLICT = 'Conflict';
+        const NEW = 'New'; 
+        const MERGED = 'Merged';
+        const THEME = '{!$User.UIThemeDisplayed}';
+        
+        var sBranchName ='Branch ' + "{!JSENCODE(srcBranchName)}" +  '  (This component will be saved in the target branch)';
+        var tBranchName = 'Branch ' + "{!JSENCODE(targetBranchName)}";
+        const locale = '{!locale}';
+        const timezone = '{!timezone}';
+
+        var logIdSaveAtt = '';
+
+        console.log('tBranchName='+tBranchName);
+        
+    
+        var typesWithMeta = new Object();
+            typesWithMeta['ApexClass'] = true;
+            typesWithMeta['ApexTrigger'] = true;
+            typesWithMeta['ApexComponent'] = true;
+            typesWithMeta['ApexPage'] = true;
+            typesWithMeta['EmailTemplate'] = true;
+            typesWithMeta['StaticResource'] = true;
+            typesWithMeta['Document'] = true;
+    
+    
+        var notEditableLi = new Object();
+            notEditableLi['Document'] = true;
+//    notEditableLi['StaticResource'] = true;
+    
+        Visualforce.remoting.timeout = 120000;
+        var dataMap = {};
+        var Mergewrap;
+        var MergeBase64Str =[];
+        var attList = [];
+        var bundleComponentStack = [];
+        var itemType;
+        var dataProcessing = false;
+        var isModalOpen = false;
+
+        
+        if(typeof jQuery != 'undefined'){
+            $j =jQuery.noConflict();
+        }
+        function isLightningMode(){
+            if (THEME == 'Theme4d'){
+                return true;
+            }
+            return false;
+        }
+
+        
+        //****  SLDS  ****//
+        $j(document).ready(function() {
+            overridePageMessages();
+        });
+        
+        function overridePageMessages(){    
+            var textureEffect = '';
+            textureEffect = 'slds-theme--alert-texture';
+            $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+            $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+            $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+            $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+                             
+            $('.errorM3').removeClass('errorM3'); 
+            $('.confirmM3').removeClass('confirmM3'); 
+            $('.infoM3').removeClass('infoM3');   
+            $('.warningM3').removeClass('warningM3');  
+        }
+    
+        $j('.slds-section__title').parent().parent().find('.slds-section').addClass('slds-is-open');
+        $j('.slds-section__title').click(function(){
+            if($j(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+                if($j(this).parent().hasClass('slds-is-open')){
+                    $j(this).parent().removeClass('slds-is-open');
+                    $j(this).parent().find('.slds-section__content').hide();
+                }
+                else{
+                    $j(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+                    $j(this).parent().parent().find('.slds-section__content').hide();
+                    $j(this).parent().toggleClass('slds-is-open');
+                    $j(this).parent().find('.slds-section__content').show();
+                }    
+            }
+            else{
+                $j(this).parent().toggleClass('slds-is-open');
+                if($j(this).parent().hasClass('slds-is-open')){
+                    $j(this).parent().find('.slds-icon img').attr('src', "{!URLFOR($Asset.SLDS, 'assets/icons/utility/switch_60.png')}");
+                    $j(this).parent().find('.slds-section__content').show();
+                
+                }else{ 
+                    $j(this).parent().find('.slds-icon img').attr('src', "{!URLFOR($Asset.SLDS, 'assets/icons/utility/chevronright_60.png')}");
+                    $j(this).parent().find('.slds-section__content').hide();
+                }
+            }
+        });
+        //****  SLDS  ****//
+        
+        const apiVersion = {!localApiVersion};
+        var sessionId = "{!$Api.Session_Id}";
+    
+        function getCalcWidth(isXml)  
+        {
+            return (isXml)? document.getElementById('ruler-xml').offsetWidth: document.getElementById('ruler').offsetWidth;
+        }
+    
+        $j('[id$=branchTargetId]').on("change", function(){ //bind() for older jquery version
+    
+            getScope().brSelect = $j('[id$=branchTargetId]').val();
+            getScope().onChange();
+        }); 
+    
+        function openLookupPopup(branchTargetName,branchTargetId,Name,branchName,srcBranchNameEsc,emptysearch){
+            if (srcBranchNameEsc != undefined && srcBranchNameEsc != ''){
+                srcBranchNameEsc = srcBranchNameEsc.replace(/'/g, "\\'");
+            }
+            dlm_openLookupPopup(branchTargetName,branchTargetId,Name,branchName + '!=\'' + srcBranchNameEsc + '\'',emptysearch);
+        }
+    
+        function getDate(jsonDate){
+            try{
+                if (locale && timezone){
+                    return new Date(jsonDate).toLocaleString(locale, { timeZone: timezone })
+                }
+            }catch(e){}
+            return new Date(jsonDate).toUTCString();
+        }
+    
+        function correctDate(list){
+            for (var i = 0; i< list.length; i++ ){
+                var jsonDate = list[i].changedOn;
+                if (jsonDate != undefined){
+                    list[i].changedOnTxt = getDate(jsonDate);
+                }
+                jsonDate = list[i].tgtChangedOn;
+                if (jsonDate != undefined){
+                    list[i].tgtChangedOnTxt = getDate(jsonDate);
+                }
+            }
+        }
+    
+        var attempts = 3;
+        var max_wait_cycles = 100;
+        var inProgress = true;
+        var hStatusWrap;
+
+        var srcBranchId;
+        var tgtBranchId;
+        var branchLastUpdatedDate;
+        var errors = false;
+    
+        function setMessageOnPage1(str)
+        {
+             if($j('#msg') != undefined)
+             {
+                 $j('#msg').remove();
+             }
+             var parentVal = $j("[id$='msg']");
+             if(parentVal != undefined && str!='')
+             {
+                  var childVal = '<span id="msg">'+
+                                    '<span >'+
+                                        '<div class="message infoM3 slds-notify slds-notify--toast customMessage" role="alert">'+
+                                            '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                '<tbody>'+
+                                                    '<tr valign="top">'+
+                                                        '<td>'+
+                                                            /*'<img alt="warning" class="" src="/s.gif" title="warning">'+*/
+                                                        '</td>'+
+                                                        '<td class="messageCell">'+
+                                                            '<div id="j_id0:meta:j_id15:j_id16:j_id18" class="messageText">'+
+                                                                '<span>'+str+'</span>'+
+                                                            '</div>'+
+                                                        '</td>'+
+                                                    '</tr>'+
+                                                '</tbody>'+
+                                            '</table>'+
+                                        '</div>'+
+                                    '</span>'+
+                                '</span>';
+                  parentVal.before(childVal);
+             }
+        }
+
+        function showErrorMessage(str)
+        {
+            if($j('#msg') != undefined)
+            {
+                $j('#msg').remove();
+            }
+            var parentVal = $j("[id$='msg']");
+            if(parentVal != undefined)
+            {
+                var childVal = '<span id="msg">'+
+                                '<span>'+
+                                    '<div class="message errorM3 slds-notify slds-notify--alert slds-theme--error customMessage" role="alert">'+
+                                        '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                            '<tbody>'+
+                                                '<tr valign="top">'+
+                                                '<td>'+
+                                                    /*'<img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR">'+*/
+                                                '</td>'+
+                                                '<td class="messageCell">'+
+                                                    '<div class="messageText">'+
+                                                        '<span style="color:#cc0000">'+
+                                                            '<h4>Error:</h4>'+
+                                                        '</span>'+str+'<br>'+
+                                                    '</div>'+
+                                                '</td>'+
+                                                '</tr>'+
+                                                '<tr>'+
+                                                    '<td></td>'+
+                                                    '<td></td>'+
+                                                '</tr>'+
+                                            '</tbody>'+
+                                        '</table>'+
+                                    '</div>'+
+                                '</span>'+
+                            '</span>';
+                 parentVal.before(childVal);
+            }
+            unbindWindow();
+            getScope().enableMergeButton();
+        }
+        
+        function unbindWindow()
+        {
+            $j(window).unbind();
+        }
+    
+        function checkItemAll(ele) {
+            var changeClass = ele.getAttribute('styleclass');
+            var checkboxes = document.getElementsByClassName(changeClass);
+             if (ele.checked) {
+                 for (var i = 0; i < checkboxes.length; i++) {
+                     if (checkboxes[i].type == 'checkbox') {
+                         checkboxes[i].checked = true;
+                     }
+                 }
+             } else {
+                 for (var i = 0; i < checkboxes.length; i++) {
+                     if (checkboxes[i].type == 'checkbox') {
+                         checkboxes[i].checked = false;
+                     }
+                 }
+             }
+        }
+        
+        function startZipCreation(error, msg, branchId){
+            if (error > 0){
+                showErrorMessage(msg);
+            }else{// no errors
+                console.log('branchZipCreator starting...');
+                branchZipCreator();
+            }
+        }
+        
+        var SFURI = new Object();
+        SFURI.COLLECT_BKUP_INFO = '{!$RemoteAction.MergeBranchesController.collectBackupInfo}';
+        SFURI.GET_CHUNK_BLOCKS = '{!$RemoteAction.MergeBranchesController.getChunkBlocks}';
+        SFURI.POPULATE_PATCH = '{!$RemoteAction.MergeBranchesController.populatePatch}';
+        SFURI.SET_AUTH = '{!$RemoteAction.MergeBranchesController.setUpAuthentication}';
+        SFURI.GET_MERGE_DETAIL = '{!$RemoteAction.MergeBranchesController.getMergeDetail}';
+        SFURI.GET_ATT = '{!$RemoteAction.MergeBranchesController.getMergeAttachments}';
+        SFURI.SOURCE_TYPE = 'Branch';
+        SFURI.SOURCE_NAME = 'Not set';
+        
+        function processZipCreation(errorCode,logId,logAttId,patchListJSON,logsListJSON,validateOnly, sourceName, msg){
+        
+            if (errorCode != 0){
+                if (msg != undefined && msg.indexOf('Corrupted Repository record') < 0){
+                    showErrorMessage('First error: ' + msg);
+                    console.log('error');
+                }else if (!isEmpty(logAttId)){
+                    composeDeployZip(logAttId);
+                }else{// wrong settings on repository, then go ahead
+                    console.log('finalCall');// continue as usual
+                    finalCall();
+                }
+            }else{
+                if (validateOnly == null || validateOnly == undefined) validateOnly = false;
+                SFURI.SOURCE_NAME = sourceName;
+                if (!isEmpty(logId) && !isEmpty(logAttId) && logAttId.length == 18 && !isEmpty(patchListJSON) && !isEmpty(logsListJSON)){//prepare backup
+                    logIdSaveAtt = logId;
+                    var backUp = new BackUp(logAttId, logId, patchListJSON, logsListJSON, SFURI, sessionId);
+                    patchId = backUp.getPatchId();
+                    backUp.createBackUp(validateOnly,function(err){
+                        if (err && err.length > 0){
+                            showErrorMessage(err[0]);
+                        }else{
+                            composeDeployZip(logAttId);
+                        }
+                    })
+                }else{// go ahead
+                    console.log('nothing to merge');// continue as usual
+                    finalCall();
+                }
+            }
+        }
+        
+        var MergeBase64Li = [];
+        
+        function composeDeployZip(logAttachmentId)
+        {
+            console.log('composeDeployZip');
+            var deployZip = new DeployZip(logAttachmentId, SFURI);
+            deployZip.create(true, function(err){
+                if (err && err.length > 0){
+                    showMessage(err[0]);
+                }else{// no errors
+                    MergeBase64Li = deployZip.getMergeList();
+                    var isClosed =  deployZip.bClosed();// true if the size of zip exceeds max set limit
+                    if (isClosed){
+                        window.alert('The size of the attachment more than 6 MB: deploy the patch manually');
+                    }
+                    console.log('isClosed? '+isClosed);
+                    console.log('patchId? '+patchId);
+                    if (MergeBase64Li.length > 0 && isClosed == false){
+                        patchSingleFileSaver();
+                        //saveAttachment();
+                    }else{
+                        finalCall(isClosed,patchId);
+                    }
+                }
+            })
+        }
+        function patchSingleFileSaver()
+        {
+            if(MergeBase64Li.length > 0)
+            {
+                var selfConn = new flosumsf.Connection({ accessToken: '{!$Api.Session_Id}' });
+                selfConn.sobject('Attachment').create({
+                        ParentId: patchId,
+                        Name : 'Build',
+                        Body: MergeBase64Li[0],
+                        ContentType : 'application/zip',
+                        Description :  'Build'+logIdSaveAtt
+                    },
+                    function(err, result){
+                        if(err)
+                        {
+                            setMessageOnPage(err.errorCode);
+                        }
+                        else
+                        {
+                            patchSingleFileSaver();
+                        }
+                    });
+                MergeBase64Li.shift();
+            }
+            else
+            {
+                finalCall();
+            }
+        }
+
+        function saveAttachment()
+        {
+            if(MergeBase64Li.length > 0)
+            {
+                var str = MergeBase64Li[0];
+                insertMergeAttachment(str,patchId);
+                MergeBase64Li.shift();
+            }
+            
+        }
+        
+        function handleMergeDml()
+        {
+            if(MergeBase64Li.length > 0)
+            {
+                saveAttachment();
+            }
+            else
+            {
+                finalCall();
+            }
+        }
+    
+        /**         call every time when combo box updated          **/
+        function reLoad(){
+            getScope().initLoad();
+        }
+    
+        function refreshStatus(batchJobId){
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.MergeBranchesController.getApexJobStatus}',
+                batchJobId, 
+                function(r, e)
+                {
+                    if(e.status) 
+                    {
+                        if (r == undefined || r == null) return;// no active jobs - all completed or aborted
+                        setMessageOnPage('Merge branches job status: ' + r);
+                        if(r !== 'Completed' && r !== 'Aborted' && r !== 'Failed' ){// end of wait cycle, change message and exit
+                            setTimeout(function(){ refreshStatus(batchJobId) }, 5000);
+                        }else if (r === 'Completed'){// job complete - goto target merged branch
+                            complete();
+                        }
+                    }
+                    else
+                    {
+                        showErrorMessage(e.message);
+                    }
+                    overridePageMessages();
+             });
+             
+        }
+        
+        function mergeComplete(error, msg, batchJobId){
+            if (errors) return;
+            if (error > 0){
+                showErrorMessage(msg);
+            }else{
+                setMessageOnPage(msg);// init job message
+            }
+            if (error > 10 || error < 0){// uncorrectable error || complete; disable all page elements
+                getScope().disableUI(true);
+                // goto refresh status cycle
+                refreshStatus(batchJobId);
+            }else{
+                getScope().disableUI(false);
+            }
+            overridePageMessages();
+        }
+    
+        /******             start the apex part of merging functionality        ******/
+        function mergeBranches(){
+            var brId = $j('[id$=branchTargetId]').val();
+            //verify is conflicts
+            var isConflicts = false;
+            var filledName = getScope().branchNewTargetName;
+            var srcName = $j("[id$='srcBranch']").text()
+            var selectedBranch = {}
+                
+            if ((filledName == undefined || filledName == '') && (brId == null || brId == undefined || brId == '')){
+                errors = true;
+                showErrorMessage('Select branch for merge');
+                return;
+            }
+            else if (srcName === filledName){
+                errors = true;
+                showErrorMessage('Branch with such name already exists');
+                return;
+            } 
+            commit();
+        }
+    
+        function processResults(data){
+            //console.log('uploadResult='+data);
+            getScope().processUploadResults(data);
+        }
+      
+        /******             update data before commit                       ******/
+        function commit(){
+            getScope().commit();
+        }
+    
+        /******             angularJs modules description               ******/
+        var myApp = angular.module("mergeCommit", ['base64', 'ngMessages', 'angularModalService']);
+    
+        // this variable holds the difference object
+        var diff3 = {};
+        
+        function clearMessage(){
+            console.log('clearMessage');
+            if($j('#msg') != undefined){
+                 $j('#msg').remove();
+            }
+        }
+        
+        var changedValues = {};
+        var uid = 0;
+        var directCopy = false;
+
+        function initStack(){
+            changedValues = {};
+            uid = 0;
+        }
+
+        // if bFirst = true, add 2 stack
+        // else update
+        function add2stack(obj, bFirst){
+            if (bFirst){
+                changedValues[uid] = obj;
+                uid++;
+                return (uid-1);
+            }
+            var id = obj.id;
+            if (id != undefined)
+                changedValues[id] = obj;
+            return id;
+        }
+
+        function updateCRC32(Item,newCRC32){
+            if (typesWithMeta[Item.compType]){// detect which part is edited, and update only this
+                if (Item.crc32 != undefined && Item.crc32 != ''){
+                    var crc32 = ''+Item.crc32;
+                    var crcArray = crc32.split(' ');
+                    if (crcArray.length == 2){
+                        if (Item.compType.indexOf('(meta)') > -1){// update only 2nd part
+                            Item.crc32 =  crcArray[0] + ' ' + newCRC32;
+                        }else{
+                            Item.crc32 = newCRC32 + ' ' + crcArray[1];
+                        }
+                        return;
+                    }
+                }
+                Item.crc32 = newCRC32;
+            }else{
+                Item.crc32 = newCRC32;
+            }
+        }
+        
+        
+        // analyse and return bundle's crc32 sum (see the specs for detail)
+        function composeBundleCrc(mapCrc32){
+            var crcCode = 0;
+            
+            // map name => crc32
+            var keys = Object.keys(mapCrc32).sort();
+            if (keys.length > 0 ) crcCode = mapCrc32[keys[0]];
+            for (var i = 1; i < keys.length; i++){
+                crcCode = Math.round((mapCrc32[keys[i]]+crcCode)/2);
+            }                                   
+                                                                
+            return crcCode;
+        }
+        
+        
+        var Page = function(obj){
+            this.staticLimit = 20;
+               this.orderByColumn = 'compName';
+            this.isReverse = false;
+            this.metaOffSet = 0;
+            this.totalRecords = 0;
+            this.viewLimit = this.staticLimit;
+            if (obj != undefined){
+                if (obj.OrderByColumn != undefined){ this.orderByColumn = obj.OrderByColumn;}
+                if (obj.isReverse != undefined){ this.isReverse = obj.isReverse;}
+                if (obj.metaOffSet != undefined){ this.metaOffSet = obj.metaOffSet;}
+                if (obj.totalRecords != undefined){ this.totalRecords = obj.totalRecords;}
+                if (obj.viewLimit != undefined){ this.viewLimit = obj.viewLimit;}
+            }
+        }
+            
+        Page.prototype.refreshOrderBy = function(orderVal) {
+            this.metaOffSet = 0;
+            this.viewLimit = this.metaOffSet + this.staticLimit;
+            if(orderVal === this.orderByColumn)
+                this.isReverse = !this.isReverse;
+            else
+            {
+                this.isReverse = false;
+                this.orderByColumn = orderVal;
+            }
+        };
+        Page.prototype.showFirst = function() {
+            this.metaOffSet = 0;
+            this.viewLimit = this.staticLimit;
+        };
+        Page.prototype.listPrevious = function() {
+            this.metaOffSet = this.metaOffSet - this.staticLimit;
+            if(this.metaOffSet < 0)
+                this.metaOffSet = 0;
+            this.viewLimit = this.metaOffSet + this.staticLimit;
+        };
+        Page.prototype.listNext = function(tempTotal) {
+            if((this.metaOffSet + this.staticLimit) < tempTotal)
+            {
+                this.metaOffSet = this.metaOffSet + this.staticLimit;
+                this.viewLimit = this.metaOffSet + this.staticLimit;
+            }
+        };
+        Page.prototype.showLast = function(tempTotal) {
+            this.metaOffSet = tempTotal - (tempTotal % this.staticLimit);
+            if(this.metaOffSet == tempTotal && this.metaOffSet != 0)
+            {
+                this.metaOffSet = tempTotal - this.staticLimit;
+            }
+            this.viewLimit = this.metaOffSet + this.staticLimit;
+        };
+        Page.prototype.isPrevious = function() {
+            if(this.metaOffSet < 1) 
+                return true;
+            else {
+                return false;
+            }
+        };
+        Page.prototype.isNext = function(tempTotal){
+            if(tempTotal > this.metaOffSet+this.staticLimit){
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
+        Page.prototype.totalPageCount = function(tempTotal){
+            var totalPage = parseInt(tempTotal % this.staticLimit > 0 ? (tempTotal / this.staticLimit)+1 : (tempTotal / this.staticLimit));
+            return totalPage;
+                
+        };
+        Page.prototype.currentPageNo = function(tempTotal){
+            var currentPage = 1;
+            if(this.metaOffSet <  this.staticLimit)
+                currentPage =  1;
+            else
+            {
+                currentPage = Math.ceil(this.metaOffSet / this.staticLimit)+1;
+            }
+            return currentPage;
+        };
+ 
+        myApp.service('dataManager', function($q) {
+            return {
+                getData : function(block,tgtBranchId) {
+                    var deferred = $q.defer();
+                                        
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.getAllData}',
+                        JSON.stringify(block),
+                        tgtBranchId,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                },
+                getAllBranchData : function() {
+                    var deferred = $q.defer();
+                    
+                    branchId ='{!srcBranchId}';
+                    
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.getAllBranchData}',
+                        branchId,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                },
+                getAttachments : function(compAttId, repCompAttId) {
+                    var deferred = $q.defer();
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.getAttachmentPair}',
+                        compAttId,
+                        repCompAttId,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                },
+                updateSet : function(jsonList) {
+                    var deferred = $q.defer();
+                    var srcBranchId = '{!srcBranchId}';
+                    var mergeSetName = '{!mergeSetName}';
+                    if (mergeSetName == undefined || mergeSetName == '') mergeSetName = 'MERGEBRANCHSET';
+                    
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.updateSet}',
+                        mergeSetName,
+                        srcBranchId,
+                        jsonList,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                },
+                getCached : function(attId) {
+                    var deferred = $q.defer();
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.getCached}',
+                        attId,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                },
+                checkDup : function(name) {
+                    var deferred = $q.defer();
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.MergeBranchesController.checkDups}',
+                        name,
+                        function(result, event) {
+                            if (event.status) {
+                                deferred.resolve(result);
+                            }
+                            else {
+                                deferred.reject(event);
+                            }
+                        });
+                    return deferred.promise;
+                }
+            }
+        });
+        
+        var isUploadSuccess = true;
+        var uploadError;
+  
+        myApp.$inject = ['$scope', '$filter','$controller','CacheService','ModalService', 'ShareService', 'ArchiveService'];
+        
+        myApp.factory('ShareService', function(){
+            var _x = {};
+
+            return {
+                getX: function () {
+                return _x;
+            },
+                setX: function (value) {
+                _x = value;
+                }
+            };
+        });
+        
+        
+        myApp.controller('CustomController', ['$scope',  'close','ShareService', function($scope, close, ShareService) {
+            $scope.question = {
+                selected: 1,
+                choices:[{
+                            id: 1,
+                            text: "Replace component in target branch with component from  source branch"
+                        },{
+                            id: 2,
+                            text: "Leave component in target branch untouched"
+                        }]
+            };
+            $scope.replace1 = ShareService; 
+            var params =  $scope.replace1.getX();
+            if (params != undefined){
+                $scope.question.selected = params.selected == undefined ? 1 :params.selected;
+                $scope.alwaysDo = params.alwaysDo;
+            }else{
+                $scope.question.selected = 1;
+                $scope.alwaysDo = false;
+            }
+            
+            $scope.close = function(result) {
+                var choice;
+                if (result){//apply clicked
+                    choice = $scope.question.selected;
+                }else{// no choice
+                    choice = 0;
+                }
+                $scope.replace1.setX({selected : choice, alwaysDo: $scope.alwaysDo});
+                close(choice, 150); // close, but give 500ms for bootstrap to animate
+            };
+
+        }]);
+        
+        var app = myApp.controller("MergeBranchesControllerAJS", function($scope, $base64, $controller, dataManager, CacheService,  ModalService, ShareService, ArchiveService, $filter,  $interval, $timeout, filterFilter) {
+        
+            angular.extend(this, $controller('CustomController', {
+                $scope: $scope,
+                close: close
+            }));
+            
+            $scope.AlgorithmSet = [{'id':'1','name':'Default'},{'id':'2','name':'Alternative'}];
+            $scope.selectedAlg = '1';
+            $scope.branchNewTargetName = '';
+
+            $scope.replace2 = ShareService;
+            $scope.isLoading = false;
+            $scope.AllowMergeForComponents = true;
+            $scope.mergeButton = false;
+            
+            $scope.componentList = []; // type ConflictWrapper
+            $scope.newCompList = []; // type SafeCommitCompWrapper
+            $scope.notMergeCompList = []; // type NotCommitCompWrapper
+            $scope.bundleList = [];
+            
+            // list of pointers to first 2 aforementioned arrays
+            $scope.newCompListPtr = [];
+            $scope.componentListPtr = [];
+            
+            $scope.componentListShow = true;
+            $scope.newCompListShow = true;
+            $scope.notMergeCompListShow = true;
+            
+            $scope.enableTables = false;
+            $scope.CommitStep = 0;
+            $scope.EditBundle = false;
+            $scope.EditMode = false;
+            $scope.disableNextPrevious = false;
+            
+            var tempObj1 = {};
+            tempObj1['compName'] = 'Component Name';
+            tempObj1['compType'] = 'Component Type';
+            tempObj1['changedBy'] = 'Changed By';
+            tempObj1['changedOn'] = 'Changed On';
+            $scope.fieldSet1 = tempObj1;
+            
+            var tempObj2 = {};
+            tempObj2['compName'] = 'Component Name';
+            tempObj2['compType'] = 'Component Type';
+            tempObj2['changedBy'] = 'Changed By';
+            tempObj2['changedOn'] = 'Changed On';
+            $scope.fieldSet2 = tempObj2;
+
+            var tempObj1Vis = {};
+            tempObj1Vis['compName'] = 'Component Name';
+            tempObj1Vis['compType'] = 'Component Type';
+            tempObj1Vis['changedBy'] = 'Changed By';
+            tempObj1Vis['changedOnTxt'] = 'Changed On';
+            $scope.fieldSet1Vis = tempObj1Vis;
+            
+            var tempObj2Vis = {};
+            tempObj2Vis['compName'] = 'Component Name';
+            tempObj2Vis['compType'] = 'Component Type';
+            tempObj2Vis['changedBy'] = 'Changed By';
+            tempObj2Vis['changedOnTxt'] = 'Changed On';
+            $scope.fieldSet2Vis = tempObj2Vis;
+            
+            /*********************************************/
+
+            $scope.IsErrorNotBS = false;
+            $scope.groupedItems = [];
+            $scope.itemsPerPage = 20;
+            $scope.pagedItems = [];
+            $scope.currentPage = 0;
+
+            $scope.selectionConflict = [];
+            $scope.isAllChecked1 = false;
+            $scope.selectionNew = [];
+            $scope.isAllChecked2 = false;
+            $scope.bIgnoreLocal = false;
+            $scope.dataProcessing = false;
+            
+            $scope.loading = false;
+            $scope.brSelect == '';
+            $scope.targetBranchName;
+            $scope.sourceBranchName;
+            $scope.targetDetails;
+            $scope.sourceDetails;
+            $scope.targetDetailsBundle;
+            $scope.sourceDetailsBundle;
+            $scope.alwaysDo = false;
+            
+            $scope.bOverwriteAll = false;
+            $scope.saveToSource = false;
+
+            $scope.disableAllUI = false;
+            $scope.onlyExistingBranches = false;
+
+
+            $scope.saveChanges = function() {
+                console.log($scope.saveToSource);
+            }
+            $scope.overallChanges = function() {
+                for (var x = 0; x < $scope.componentListPtr.length; x++){
+                    var rec =  $scope.componentListPtr[x];
+                    if ($scope.bOverwriteAll){
+                        if (rec.isConflict){
+                            rec.bkUp4Conflict = rec.isConflict;//save old value
+                            rec.isConflict = false;
+                            rec.isAutoResolved = true;
+                            rec.compare = AUTORESOLVED;
+                        }
+                    }else{
+                        if (rec.bkUp4Conflict != undefined){
+                            rec.isConflict = rec.bkUp4Conflict;
+                            rec.isAutoResolved = !rec.isConflict;
+                            rec.bkUp4Conflict = undefined;
+                            rec.compare = CONFLICT;
+                        }
+                    }
+                }
+            }
+            
+            $scope.updatePages = function() {
+                $scope.safe = new Page({orderByColumn:'changedOn',isReverse : true});
+                $scope.notCommit = new Page({orderByColumn:'compName', isReverse : true});
+            }
+            
+            $scope.showHideComponentList = function(){
+                $timeout(function() {
+                    $scope.componentListShow = ($scope.componentListShow)? false:true;
+                });
+            }
+
+            $scope.showHideNewCompList = function(){
+                $timeout(function() {
+                    $scope.newCompListShow = ($scope.newCompListShow)? false:true;
+                });
+            }
+
+            $scope.showHidenotMergeCompList = function(){
+                $timeout(function() {
+                       $scope.notMergeCompListShow = ($scope.notMergeCompListShow)? false:true;
+                });
+            }
+            
+            $scope.verify = function(name){
+                //console.log(name +' aganst '+JSON.stringify($scope.allBranches));
+                if ($scope.allBranches != undefined && $scope.allBranches.length > 0){
+                    for (var x = 0; x< $scope.allBranches.length; x++){
+                        if ($scope.allBranches[x].branchName === name){
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+    
+            function getMetaCRC(crcA){
+                if (crcA == undefined || crcA == '') return -1;
+                var i =  crcA.indexOf(' ');
+                if ( i > -1){
+                    return crcA.substr(i);
+                }
+                return -1;
+            }
+
+            function getMainCRC(crcA){
+                if (crcA == undefined || crcA == '') return -1;
+                var i =  crcA.indexOf(' ');
+                if ( i > -1){
+                    return crcA.substr(0,i);
+                }
+                return -1;
+            }
+            
+            function splitPairs(componentList){
+                var newList = [];
+                if (componentList != undefined && componentList.length > 0){
+                    for (var x = 0; x < componentList.length; x ++){
+                        var rec = componentList[x];
+                        if (typesWithMeta[rec.compType]){// verify is meta equals, if true, do NOT add it
+                            if (CONSIDER_META){
+                                if (getMetaCRC(rec.crc32) !== getMetaCRC(rec.crc32C)){
+                                    var newRec = JSON.parse(JSON.stringify(rec));// clone a record
+                                    newRec.fileName += '-meta.xml' 
+                                    newRec.compType += '(meta)';
+                                    newRec.isMeta = true;// to detect that is meta - they must not be rendered
+                                    newRec.compId += '1'; // add 1 digit to Id, remove it when making operations with SF
+                                    rec.meta =  newRec;// add pointer to meta extension
+                                    newList.push(newRec);
+                                }
+                                rec.compId += '0';
+                                if (getMainCRC(rec.crc32) !== getMainCRC(rec.crc32C)){// add main component only if they are different
+                                    newList.push(rec);
+                                }else{
+                                    rec.hidden = true;
+                                    newList.push(rec);
+                                }
+                            }else{
+                                rec.compId += '0';
+                                if (getMainCRC(rec.crc32) === getMainCRC(rec.crc32C) && getMetaCRC(rec.crc32) !== getMetaCRC(rec.crc32C)){// correct flags only in 1 case
+                                    rec.isConflict = false;
+                                    rec.isAutoResolved = true;
+                                    rec.compare = AUTORESOLVED;
+                                }
+                                newList.push(rec);
+                            }
+                        }else{
+                            rec.compId += '0';
+                            newList.push(rec);
+                        }
+                    }
+                }
+                return newList;
+            }
+    
+            var left_to_resolve = 0;
+            $scope.loadData = function(brId,callback){
+                left_to_resolve = 0;
+                dataManager.getAllBranchData().then(
+                    function (data) {
+                        if (brId == undefined){
+                            showErrorMessage('Target branch does not exist or not specified');
+                            callback();
+                        }else if (data != undefined){
+                            $scope.componentList = [];
+                            $scope.newCompList = [];
+                            $scope.notMergeCompList = [];
+                            left_to_resolve ++;
+                            $scope.loadBlockofData(data, brId,  function(){callback();});
+                            if  (left_to_resolve == 0){
+                                callback();
+                            }  
+                        }else{
+                            callback();
+                        }
+                    },
+                    function (error) {
+                        $j('#spinner').css('display','none');
+                        $scope.loading = false;
+                        $scope.isLoading = false;
+                        $scope.enableTables = false;
+                    }
+                );
+            }
+            
+            $scope.loadBlockofData = function(IdBlockList,tgtbranch,callback){
+                if (IdBlockList.length > 0){
+                    var block = IdBlockList.shift();
+                    dataManager.getData(block,tgtbranch).then(
+                        function (data) {
+                          if (data != null && data != undefined){
+                                $scope.componentList = add($scope.componentList,data.conflictsList);
+                                $scope.newCompList = add($scope.newCompList,data.newList);
+                                $scope.notMergeCompList = add($scope.notMergeCompList,data.notCommitList);
+                          } 
+                          $timeout(function() {
+                                $scope.loadBlockofData(IdBlockList,tgtbranch,callback);
+                          });
+                        },
+                        function (error) {
+                            $j('#spinner').css('display','none');
+                            $scope.loading = false;
+                            $scope.isLoading = false;
+                        }
+                    );
+                }else{
+                    joinThreads(callback);
+                }
+                
+                function add(base,part){
+                    if (part != undefined && part.length > 0){
+                        return base.concat(part);
+                    }
+                    return base;
+                }
+            }
+            
+            // Joining threads, meaning that the callback only will
+            // be performed when ALL parallel threads have executed
+            function joinThreads(callback) {
+                left_to_resolve--;
+
+                if ((left_to_resolve == 0) && (callback !== null)) {
+                    callback();
+                }
+            }
+            
+            $scope.finalLoad = function(){
+                $scope.componentListPtr = [];
+                $scope.componentList = splitPairs($scope.componentList);
+                correctDate($scope.componentList);
+                correctDate($scope.newCompList);
+                correctDate($scope.notMergeCompList);
+                // generate the tables of pointers - component from componentList always will be in 1st  table 
+                for (var x = 0; x < $scope.componentList.length; x++){
+                    var comp =  $scope.componentList[x];
+                    if (comp.isAutoResolved){
+                        comp.compare = AUTORESOLVED;
+                    }else if (comp.isConflict){
+                        comp.compare = CONFLICT;
+                    }
+                        $scope.componentListPtr.push(comp);
+                }
+                // add all new components
+                for (var x = 0; x < $scope.newCompList.length; x++){
+                    var comp =  $scope.newCompList[x];
+                    comp.compare = NEW;
+                    $scope.componentListPtr.push(comp);
+                }
+                //debug('retrieve data:'+JSON.stringify($scope.componentListPtr));
+                $j('#spinner').css('display','none');
+                $scope.isLoading = false;
+                $scope.loading = false;
+                $scope.enableTables = true;
+            }
+            
+            // this function load raw data tied with specific component, then add it to  components stack
+            $scope.loadComponent = function(item){
+                if (item != undefined && item.repCompAttId != undefined  && item.compAttId != undefined){
+                    dataManager.getAttachments(item.compAttId,item.repCompAttId).then(
+                        function (data) {
+                            if (data != undefined && data.length == 2){// extract files from zip
+                                var zipStr0 = data[0];
+                                var zipStr1 = data[1];
+                                if (isBundle(item.compType) ==  true){
+                                    ArchiveService.addZips(zipStr0,zipStr1,item);
+                                    $scope.openPopUpInfo(item);
+                                }else{
+                                    ArchiveService.addZips(zipStr0,zipStr1,item);
+                                    $scope.getMergeInfo(item);
+                                }
+                            }
+                        },
+                        function (error) {
+                        }
+                    );
+                }
+            }
+        
+            $scope.uploadIdSet = function(mList,newBranch){
+                var newList  = [];
+                if (mList != undefined && mList.length > 0){// remove last digit from id
+                    for (var x = 0; x < mList.length; x++){
+                        newList.push(mList[x].slice(0,18));
+                    }
+                }
+                $scope.disableMergeButton();
+
+                dataManager.updateSet(JSON.stringify(newList)).then(
+                    function (data) {
+                        if (data != undefined && data){// extract files from zip
+                            isUploadSuccess = true;
+                            //debug('updateSet - success, next addToBranch');
+                            if (newBranch == undefined){
+                                $scope.updateMergedData();
+                            }else{// never exectuted
+                                addToBranch(newBranch);
+                            }
+                        }else{
+                            isUploadSuccess = false;
+                            showErrorMessage('update fails');
+                            $scope.enableMergeButton(); 
+                        }
+                    },
+                    function (error) {
+                        isUploadSuccess = false;
+                        showErrorMessage(error);
+                        $scope.enableMergeButton(); 
+                    }
+                );
+            }
+        
+            $scope.processUploadResults = function(uploadResult){
+                //console.log('uploadResult='+uploadResult);
+                if (uploadResult === 0 || uploadResult === '0'){// extract files from zip
+                    isUploadSuccess = true;
+                    if ($scope.complete){
+                        $scope.finalize();
+                    }else{//continue upload
+                        $scope.chainUpload();
+                    }
+                }else{
+                    isUploadSuccess = false;
+                    showErrorMessage('update fails');
+                }
+            }
+        
+            $scope.finalize = function(){
+                //console.log('update was successful');
+                $scope.enableTables = false;//set 'need update' flag to false === disable the further edit of components 
+                $scope.disableMergeButton(); 
+                addToBranch($scope.branchNewTargetName);
+                            
+            }
+        
+            $scope.chainUpload = function(){
+                var attTotalSize = 0;
+                var mergeList = [];
+
+                    while ($scope.index < $scope.selectionConflict.length) {
+                        var conflictComp = $scope.allCompMap[$scope.selectionConflict[$scope.index]];// get info about component
+                        //debug(JSON.stringify(conflictComp));
+                        if (conflictComp != undefined && isBundle(conflictComp.compType) == false) {
+                            if (conflictComp.replace != undefined && conflictComp.replace == 1) {
+                                // replace compAttId => repCompAttId
+                                // no need in attachment updating
+                            } else {
+                                var attDescriptor = ArchiveService.getZipDescription($scope.selectionConflict[$scope.index]); // get info about attachment
+                                //debug(JSON.stringify(attDescriptor));
+                                // form list of MergeWrapper
+                                if (attDescriptor != undefined) {
+                                    var mergeItem = {};
+                                    if (attTotalSize + attDescriptor.length > 2500000) {
+                                        uploadAttachments(JSON.stringify(mergeList));
+                                        return;
+                                    }
+                                    attTotalSize += attDescriptor.length;
+                                    mergeItem.compId = conflictComp.compId.slice(0, 18);
+                                    mergeItem.lastCompHistoryId = conflictComp.lastCompHistoryId;
+                                    if (conflictComp.isAutoResolved && attDescriptor.crc32 == undefined) {
+                                        mergeItem.crc32 = conflictComp.crc32;
+                                        //debug('null replaced with:'+mergeItem.crc32);
+                                    } else {
+                                        mergeItem.crc32 = attDescriptor.crc32;
+                                    }
+                                    mergeItem.attId = attDescriptor.compAttId;
+                                    mergeItem.base64 = ArchiveService.getZip(attDescriptor.compAttId);
+                                    mergeItem.saveSource = $scope.saveToSource;
+                                    mergeList.push(mergeItem);
+                                }
+                            }
+                        } else if (conflictComp != undefined && ArchiveService.getLength(conflictComp.compAttId) !== 0) {
+                            //debug(JSON.stringify(conflictComp));
+                            var mergeItem = {};
+                            if (attTotalSize + ArchiveService.getLength(conflictComp.compAttId) > 2500000) {
+                                uploadAttachments(JSON.stringify(mergeList));
+                                return;
+                            }
+                            attTotalSize += ArchiveService.getLength(conflictComp.compAttId);
+                            mergeItem.compId = conflictComp.compId.slice(0, 18);
+                            mergeItem.lastCompHistoryId = conflictComp.lastCompHistoryId;
+                            mergeItem.crc32 = conflictComp.crc32;
+                            mergeItem.attId = conflictComp.compAttId;
+                            mergeItem.base64 = ArchiveService.getZip(conflictComp.compAttId);
+                            mergeItem.saveSource = $scope.saveToSource;
+                            mergeList.push(mergeItem);
+                        }
+                        $scope.index++;
+                    }
+                    $scope.complete = true;
+                    if (mergeList.length > 0) {
+                        uploadAttachments(JSON.stringify(mergeList));
+                    } else {
+                        $scope.finalize();
+                    }
+            }
+        
+            $scope.updateMergedData = function(){
+                setMessageOnPage('Updating Data... Please Wait');
+                $scope.disableMergeButton(); 
+                //debug('selectionConflict.length'+$scope.selectionConflict.length);
+                if ($scope.selectionConflict.length > 0){
+                    $scope.index = 0;
+                    $scope.complete = false;
+                    $scope.chainUpload();
+                    return;
+                }
+                //debug('no selected with conflicts, but may exists a new components');
+                $scope.enableTables = false;//set 'need update' flag to false === disable the further edit of components 
+                $scope.finalize();
+                overridePageMessages();
+            }
+        
+            // commit functionality
+            $scope.commit = function(){
+                // reset errors flag
+                errors = false;
+                // clear messages
+                clearMessage();
+                $scope.disableMergeButton(); 
+                dataManager.checkDup($scope.branchNewTargetName).then(
+                    function (data) {
+                        if (data == true){
+                            showErrorMessage('Branch already exists with the same name');
+                            $scope.enableMergeButton(); 
+                        }else{
+                            $scope.continueCommit();
+                        }
+                    },
+                    function (err) {
+                        showErrorMessage(err);
+                        $scope.enableMergeButton(); 
+                    }
+                );
+            }
+        
+            // commit functionality
+            $scope.continueCommit = function(){
+                
+                if (!$scope.enableTables){ //completion commit (usually after errors)
+                    addToBranch($scope.branchNewTargetName);
+                    return;
+                }
+                if (!$scope.getStatusConflicts()){// all conflicts resolved
+                    // collect items to commit
+                    if (($scope.selectionConflict.length + $scope.selectionNew.length) == 0){
+                        showErrorMessage('Select at least one component');
+                        errors = true;
+                        return;
+                    }
+                    $scope.allCompMap = {};
+                        for(var l = 0; l < $scope.componentList.length; l++){
+                            $scope.allCompMap[$scope.componentList[l].compId] = $scope.componentList[l];
+                        }
+                        // update attachments and components history
+                        // choose only components that were changed
+                        var newConflictList = [];
+                        for (var x = 0; x < $scope.selectionConflict.length; x++){
+                            var conflictComp = $scope.allCompMap[$scope.selectionConflict[x]];
+                            if (conflictComp.replace != 0  && conflictComp.replace != 2){// == 1 or undefined
+                                newConflictList.push($scope.selectionConflict[x]);
+                            }
+                        }
+                        $scope.selectionConflict = newConflictList;
+                    var allSelected = newConflictList.concat($scope.selectionNew);
+
+
+                    //debug('allSelected:'+allSelected.length);
+                    if (allSelected.length > 0){
+                        isUploadSuccess = false;
+                        $scope.uploadIdSet(allSelected);
+                    }else{
+                        $scope.enableTables = false;//set 'need update' flag to false === disable the further edit of components 
+                        $scope.disableMergeButton(); 
+                        setMessageOnPage('Complete');
+                    }
+                }else{
+                    showErrorMessage('Resolve conflicts for selected components OR exclude them from merge');
+                    errors = true;
+                }
+            }
+            
+            /******             PopUp methods           ******/
+            function isEditable(fileName){
+                if (fileName == undefined) return false;
+                var n = fileName.lastIndexOf('.');
+                if (n < 0) return false;
+                var ext = fileName.substr(n);
+                ////console.log('check:'+ext);
+                return (EDITABLE_EXT[ext] != undefined);
+            }
+
+            // edit aura bundle component
+            $scope.openPopUpInfo = function(param) {
+                
+                if  (!ArchiveService.inStack(param.compId)){
+                    $scope.loadComponent(param);
+                    $scope.loading = true;
+                    return;
+                }
+
+                $scope.PopUpInfo = {};
+                $scope.PopUpInfo.bundleTitle = param.compName;
+                $scope.PopUpInfo.compName = param.compName;
+                $scope.PopUpInfo.compType = param.compType;
+                $scope.targetDetailsBundle = 'changed by'+ formatDetail(param.tgtChangedBy) + ' on'+formatDetail(param.tgtChangedOnTxt);
+                $scope.sourceDetailsBundle = 'changed by'+ formatDetail(param.changedBy) + ' on'+formatDetail(param.changedOnTxt);
+                $scope.PopUpInfo.Info = param;
+                
+                // create a backup of zip with aura bundle before work - when the cancel btn will be clicked, zip file left untouched
+                if (ArchiveService.inStack(param.compId)){
+                    CacheService.push('BACKUP'+ param.compId,ArchiveService.getZipDescription(param.compId)[1]);
+                }
+                
+                if (CacheService.isCached(param.compId)){
+                    CacheService.pop(param.compId, function(data){
+                        $scope.bundleList = data.bundleList;
+                        bundleComponentStack = data.bundleComponentStack;
+                    });
+                }else{//not possible to restore from cache
+                   $scope.bundleList = [];
+                    var bundles =  ArchiveService.getZipDescription(param.compId);
+                    var srcMap = bundles[0];
+                    var tgtMap = bundles[1];
+                    var index = 0; // counter which is = uid in bundleComponentStack 
+                    // clear bundle stack from previous components
+                    bundleComponentStack = [];
+                    // form bundleComponentStack from retrieved data with UID = index of bundle elements, use this UID for access a descriptor
+
+                    for (var key in srcMap) {
+                        if (srcMap.hasOwnProperty(key)) {
+                            var row = {};
+                            var srcDescriptor, tgtDescriptor = null,descriptor;
+                            //establish the descriptor
+                            row.srcCompName = key;
+                            srcDescriptor = srcMap[key];
+                            descriptor = srcDescriptor;
+                            if (tgtMap.hasOwnProperty(key)) {
+                                row.tgtCompName = key;
+                                tgtDescriptor = tgtMap[key];
+                                if (descriptor != undefined){
+                                    descriptor.target = tgtDescriptor.target;//update target file if pair (the only difference)
+                                }else{
+                                    descriptor = tgtDescriptor;//never executed
+                                }
+                            }
+                            descriptor.isManualMerge = false;
+                            //establish the record
+                            
+                            row.uid = index;
+                            row.compId = param.compId;
+                            row.compAttId = param.compAttId;
+                            row.fileName = descriptor.fileName
+                            row.compName = key;
+                            row.compType = param.compType;
+                            row.isEditable = isEditable(row.fileName);// can be edited, if ext in file allows that
+                            row.changedBy = param.changedBy;
+                            row.tgtChangedBy = param.tgtChangedBy;
+                            row.changedOnTxt = param.changedOnTxt;
+                            row.tgtChangedOnTxt = param.tgtChangedOnTxt;
+                            if (param.isAutoResolved == true){
+                                row.conflictCode = -1;// 0 - equals, 1 - conflict, 2 - merged, 3 - new, 4 -deleted, 5 - replaced from target
+                                row.isConflict = false;
+                            }else{
+                                row.conflictCode = 1;// 0 - equals, 1 - conflict, 2 - merged, 3 - new, 4 -deleted, 5 - replaced from target
+                                row.isConflict = true;
+                            }
+                            if (srcDescriptor != undefined && tgtDescriptor != undefined){// part of Aura with name compName exists in both containers
+                                if (srcDescriptor.source === tgtDescriptor.target){//they are equals
+                                    row.conflictCode = 0;
+                                    row.isConflict = false;
+                                    descriptor.isManualMerge = true;
+                                }
+                            }else if (srcDescriptor != undefined && tgtDescriptor == undefined){
+                                row.conflictCode = 4;// deleted part of composite component (Aura, Static)
+                                row.isConflict = false;
+                                row.moved = false;// initial value is always false
+                            }// left code = 1, if no block execs
+                            // check case conflictCode = 5 :  isConflict && !isEditable
+                            if (row.isEditable == false && row.isConflict == true){// set autoresolved with ability to replace component from the target
+                                row.conflictCode = 5;
+                                row.isConflict = false;
+                            }
+                        
+                            if (descriptor != undefined){
+                                $scope.bundleList.push(row);
+                                bundleComponentStack.push(descriptor);
+                                index++;// index plays role of UID
+                            } 
+                        }
+                    }
+                
+ 
+                    for (var key in tgtMap) {// add keys which are not present in srcMap
+                     if (tgtMap.hasOwnProperty(key)) {
+                            var row = {};
+                            var descriptor;
+                            if (!srcMap.hasOwnProperty(key)) {
+    
+                                descriptor = tgtMap[key];
+                                descriptor.isManualMerge = false;
+                                descriptor.source = '';
+                            
+                                row.tgtCompName = key;
+                                row.uid = index;
+                                row.compId = param.compId;
+                                row.compAttId = param.compAttId;
+                                row.fileName = descriptor.fileName
+                                row.compName = key;
+                                row.compType = param.compType;
+                                row.conflictCode = 3;// added part of composite component (Aura, Static)
+                                row.isEditable = false;// only move/remove possible - always
+                                row.isConflict = false;
+                                row.moved = false;// initial value is always false
+                                row.changedBy = param.changedBy;
+                                row.tgtChangedBy = param.tgtChangedBy;
+                                row.changedOnTxt = param.changedOnTxt;
+                                row.tgtChangedOnTxt = param.tgtChangedOnTxt;
+                                if (descriptor != undefined){
+                                    $scope.bundleList.push(row);
+                                    bundleComponentStack.push(descriptor);
+                                    index++;// index plays role of UID
+                                } 
+                            }
+                        }
+                    }
+                }
+                delete bundles;
+                
+                $scope.PopUpInfo.closeBundleManualMerge = function() {
+                    var backUpKey = 'BACKUP'+ param.compId;
+                    if (CacheService.isCached(backUpKey)){
+                        CacheService.pop(backUpKey, function(data){
+                            ArchiveService.updateTargetZip(param.compId, data);
+                        });
+                    }
+                    $scope.EditBundle = false;
+                    $scope.CommitStep = 0;
+                    delete $scope.PopUpInfo;
+                }
+                
+                $scope.PopUpInfo.bundleManualMerge = function() {// update original component - ( param)
+                    // verify IsManualMerge flags for all  bundle Components
+                    if ($scope.bundleList != undefined){
+                        for (var i = 0; i < $scope.bundleList.length; i++){
+                            if ($scope.bundleList[i].isConflict){
+                                //set error message
+                                $j('.bundle_error_msg').fadeIn().delay(5000).fadeOut();
+                                return;
+                            }
+                        }
+                        //no conflicts, merge passed
+                    }
+                    
+                    var comp = $scope.PopUpInfo.Info;
+                    
+                    ArchiveService.setMergeFiles(param, $scope.bundleList);
+                        
+                    param.isConflict = false;
+                    param.compare = MERGED;
+                    $scope.EditBundle = false;
+                    $scope.CommitStep = 0;
+                    var archive = {};
+                    archive.bundleComponentStack = bundleComponentStack;
+                    archive.bundleList = $scope.bundleList
+                    CacheService.push(param.compId,archive);
+                    
+                }
+                clearMessage();
+                $scope.CommitStep = 4;
+                $scope.EditBundle = true;
+            }
+            
+            function setParameter(list, value){
+                for (var x  = 0 ; x < list.length; x ++){
+                    var rec =  list[x];
+                    if (rec != undefined && notEditableLi[rec.metaType] != undefined && rec.isConflict){
+                        rec.isConflict = false;
+                        rec.isManualMerge = true;
+                        rec.replace = value;
+                        rec.compare = RESOLVED;
+                    }
+                }
+            }
+            
+            function formatDetail(data){
+                if (data == undefined || data == ''){
+                    return ' N/A';
+                }
+                return ' '+data;
+            }
+            
+            /**
+             *  Define the class to edit a general component of any elemental type
+             */
+            $scope.getMergeInfo = function(param) {
+                $scope.targetDetails =  $scope.targetBranchName + '###' + 'changed by'+ formatDetail(param.tgtChangedBy) + ' on'+formatDetail(param.tgtChangedOnTxt);
+                $scope.sourceDetails = sBranchName + '###' + 'changed by'+ formatDetail(param.changedBy) + ' on'+formatDetail(param.changedOnTxt);
+
+                if (isBundle(param.compType) == true && !$scope.EditBundle){
+                    $scope.openPopUpInfo(param);
+                    return;
+                }
+                
+                if (notEditableLi[param.compType]){
+                    if (isModalOpen) return;
+                    isModalOpen = true;
+
+                    var template = (isLightningMode() == true) ? 'customL.html':'customC.html';
+                    $scope.replace2.setX({selected: param.replace, alwaysDo: $scope.alwaysDo});
+                    
+                    ModalService.showModal({
+                        templateUrl: template,
+                        controller: 'CustomController',
+                        preClose: (modal) => { modal.element.modal('hide'); isModalOpen = false;}
+                    }).then(function(modal) {
+                        modal.element.one('hidden.bs.modal', function () {
+                             isModalOpen = false;                 
+                        });                         
+                        modal.element.modal();
+                        modal.close.then(function(result) {
+                            isModalOpen = false;
+                            result = $scope.replace2.getX();
+                            ////console.log('choice from service:'+JSON.stringify(result));
+                            if (result != undefined){
+                                if (result.selected != 0 ){
+                                    param.isConflict = false;
+                                    param.isManualMerge = true;
+                                    param.compare = MERGED;
+                                    param.replace = result.selected; // set flag to replace att by scheme: compAttId => repCompAttId
+                                    $scope.alwaysDo = result.alwaysDo;
+                                    if (result.alwaysDo){
+                                        ////console.log('do for all');
+                                        setParameter($scope.componentListPtr,result.selected);
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    return;
+                }
+                
+                $scope.loading = false;
+                
+                if(!ArchiveService.inStack(param.compId)){
+                    $scope.loadComponent(param);
+                    $scope.loading = true;
+                    return;
+                }
+                
+                if (isBundle(param.compType) == false){             
+                    var MergeInfo = ArchiveService.getZipDescription(param.compId);// get descriptor for edited component 
+                    var compId =  param.compId;   
+                }else{                          //      use alternative stack if aura component
+                    var MergeInfo = bundleComponentStack[param.uid];
+                    var compId =  param.uid;   
+                }
+                var component = param;
+
+                if (MergeInfo != undefined){
+                    itemType = (MergeInfo.IsXML)?'XML':'TEXT';
+                    $scope.PopUp = {}; // its an object to hold info about edited component
+                    $scope.PopUp.title = param.compType + ' : ' + param.compName;
+                    $scope.PopUp.compName = param.compName;
+                    $scope.PopUp.compType = param.compType;
+
+                    $scope.PopUp.base = MergeInfo.source;
+                    $scope.PopUp.newfile = (MergeInfo.mergeFile) ? MergeInfo.mergeFile : MergeInfo.target;
+
+                    $scope.PopUp.EtalonValue = '';
+                    $scope.PopUp.BackUp = MergeInfo.bkUp;
+                    $scope.PopUp.ItemId = compId;
+                    $scope.PopUp.isXml = MergeInfo.IsXML;
+                    //console.log('--$scope.PopUp--');
+                    //console.log($scope.PopUp);
+                    openMergeEditor($scope.PopUp);
+
+                    $scope.PopUp.ManualMerge = function(txt) {
+                        ArchiveService.setMergeFile(compId, txt);
+                        $timeout(function() {
+                            component.isConflict = false;
+                            component.isManualMerge = true;
+                            component.compare = MERGED;
+                            if ($scope.EditBundle) param.conflictCode = 2; 
+                            $scope.CommitStep = $scope.EditBundle?4:0;
+                        });
+                    }
+                    $scope.PopUp.ManualMergeXml = function(xml, xmlBk) {
+                        ArchiveService.setMergeFile(compId, xml);
+                        ArchiveService.setBkUp(compId, xmlBk);
+                        $timeout(function() {
+                            component.isConflict = false;
+                            component.isManualMerge = true;
+                            component.compare = MERGED;
+                            if ($scope.EditBundle) param.conflictCode = 2; 
+                            $scope.CommitStep = $scope.EditBundle?4:0;
+                            $scope.dataProcessing = false;
+                            delete param;
+                        });
+                    }
+                    
+                    $scope.PopUp.closeManualMerge = function() {
+                        $scope.CommitStep = $scope.EditBundle?4:0;
+
+                        delete param;
+                        delete $scope.PopUp;
+                    }
+                    $scope.PopUp.closeManualMergeXml = function(xmlBk) {
+                        $scope.CommitStep = $scope.EditBundle?4:0;
+                        setBkUp(compId, xmlBk);
+                        $scope.dataProcessing = false;
+
+                        delete param;
+                        delete $scope.PopUp;
+                    }
+                    
+                    if (MergeInfo.IsXML) {
+                        $scope.isLoading = true;
+                    }
+                    else {
+                        $scope.isLoading = true;
+                    }
+                }
+                
+                function openMergeEditor(o){
+                    var windowWidth = $(window).width();
+                    var windowHeight = $(window).height();                  
+                    var editorPageUrl = '{!editMetaDataPageName}';
+                    var link = editorPageUrl;
+                    var obj = {};
+                    obj.type = o.compType;
+                    obj.name = o.compName;
+                    obj.mode = o.isXml == true ? 'XML' : 'TXT';
+                    obj.tgt = pako.deflate(o.newfile, { to: 'string' });
+                    obj.src = pako.deflate(o.base, { to: 'string' }); 
+                    obj.rightTitle  = $scope.targetDetails;
+                    obj.leftTitle   = $scope.sourceDetails;
+                    // set dimensions for popup, both inner and outer
+                    obj.width = (windowWidth < 600) ? 600 : windowWidth - 150; 
+                    obj.height = (windowHeight < 500) ? 500 : windowHeight - 270; 
+                    var popupParams = 'width=' + (obj.width + 50) + ',height=' + (obj.height + 250) + ',resizable=1,scrollbars=1'
+                    
+                    $j("body").data( "userData", obj);
+
+                    var windowTitle = o.compType + ' ' + o.compName;
+                    //console.log('link='+link);
+                    //console.log('popupParams='+popupParams);
+                    var w = window.open(link, 'RW', popupParams);
+                    setTitle(w,windowTitle);
+                }
+                
+                clearMessage();
+                //debug('step:'+$scope.CommitStep);               
+            };
+
+            // verify are all conflicts for selected components resolved   
+            $scope.getStatusConflicts = function() {
+                for (var x = 0; x < $scope.componentList.length; x++) {
+                    if ($scope.componentList[x].check){// verify only checked
+                        if ($scope.componentList[x].isConflict){
+                            return true;
+                        }else if (CONSIDER_META && $scope.componentList[x].meta != undefined && $scope.componentList[x].meta.isConflict){
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            $scope.disableNextPreviousButton = function() {
+                $scope.$apply(function() {
+                       $scope.disableNextPrevious = true;
+                });
+            };
+            
+            $scope.enableNextPreviousButton = function() {
+                $scope.$apply(function() {
+                       $scope.disableNextPrevious = false;
+                });
+            };
+
+            $scope.setDataProcessFlag = function() {
+                $timeout(function() {
+                       $scope.dataProcessing = true;
+                });
+            };
+            
+            $scope.clearDataProcessFlag = function() {
+                  $timeout(function() {
+                       $scope.dataProcessing = false;
+                });
+            };
+            
+            // Helper method to get selected items
+            $scope.selectedComps = function selectedComps() {
+                return filterFilter($scope.componentList, { selected: true });
+            };
+
+            // Helper method to get selected items
+            $scope.selectedComps2 = function selectedComps2() {
+                return filterFilter($scope.newCompList, { selected: true });
+            };
+            
+            $scope.selectRelated = function(item,list){
+                var i = item.compType.indexOf('(meta)');
+                var filterValue = i == -1 ? (item.compType + '(meta)'):item.compType.slice(0,i);
+                //////console.log('filterValue:'+filterValue);
+                setAll(filterFilter(list, { compType: filterValue, compName: item.compName }),item.check);
+            }
+            
+            // Watch componentList for changes
+            $scope.$watch('componentList|filter:{check:true}', function (nv) {
+                $scope.selectionConflict = nv.map(function (c) {
+                    return c.compId;
+                });
+            }, true);
+            
+            // Watch componentList for changes
+            $scope.$watch('newCompList|filter:{check:true}', function (nv) {
+                $scope.selectionNew = nv.map(function (c) {
+                    return c.compId;
+                });
+            }, true);
+            
+            $scope.checkUncheck = function(compLi,nList) {
+                if (nList == 1){
+                    isAllChecked1 = $scope.isAllChecked1;
+                    setAll(compLi,isAllChecked1); 
+                }else if (nList == 2){
+                    isAllChecked2 = $scope.isAllChecked2;
+                    setAll(compLi,isAllChecked2); 
+                }else{
+                    isAllChecked1 = false; 
+                    isAllChecked2 = false;
+                    setAll(compLi,false);
+                }   
+            };
+            
+            $scope.disableMergeButton = function(){
+                $timeout(function() {
+                    $scope.mergeButton = true;
+                });
+            }
+
+            $scope.disableUI = function(flag){
+                $timeout(function() {
+                    $scope.mergeButton = flag;
+                    $scope.enableTables = false;
+                    $scope.disableAllUI = flag;
+                });
+            }
+
+            $scope.enableMergeButton = function(){
+                $timeout(function() {
+                    $scope.mergeButton = false;
+                });
+            }
+            
+            function showMainBlock(){
+                getScope().setDataProcessFlag();
+            }
+            
+            function setAll(array,isAllChecked){
+                for(var index = 0; index < array.length; index++) {
+                    if(isAllChecked)
+                        array[index].check = true;
+                    else
+                        array[index].check = false;  
+                 }
+            }
+            
+            function mergeArray(array,arrayToMerge){
+                
+                if (arrayToMerge.length > 0){
+                    for (var i = 0; i < arrayToMerge.length; i++){
+                        array.push(arrayToMerge[i]);
+                    }
+                }
+            }
+            
+            /************************           Init section                ****************************/    
+            // init the variables for controller
+
+            $scope.initLoad = function(){ 
+                $scope.updatePages();
+                var err = {!errorCode};
+            
+                if (err === 0){
+                    if ($scope.brSelect != '' && $scope.brSelect != undefined){
+                        $scope.targetBranchName = 'Branch '+ getBranchName($scope.brSelect,$scope.allBranches);
+                        
+                        setMessageOnPage('Loading Data...');
+                        $scope.isLoading = true;
+                        $j('#spinner').css('display','initial');
+                    
+                        $scope.loadData($scope.brSelect, function(){
+                                            $scope.finalLoad();
+                                            clearMessage();
+                                        });
+                        
+                        CacheService.initCacheService();
+                    }else{// for empty branchid
+                            $j('#spinner').css('display','none');
+                            $scope.isLoading = false;
+                            $scope.enableTables = false;
+                    }
+                }else if (err === 1 || err === 2){// merge in process
+                    $scope.disableMergeButton();
+                    $j('#spinner').css('display','none');
+                    $scope.isLoading = false;
+                    $scope.enableTables = false;
+                }else {
+                    $scope.disableMergeButton();
+                    $j('#spinner').css('display','none');
+                    $scope.isLoading = false;
+                    $scope.enableTables = false;
+                }
+                overridePageMessages();
+            }
+        
+            $scope.initLoad();
+            function getBranchName(id,array){
+                if (array != undefined && array.length > 0){
+                    for( var x = 0; x < array.length; x++){
+                        if (array[x].branchId === id) return array[x].branchName;
+                    }
+                }
+            }
+        
+            if ({!errorCode} === 0){
+                $scope.allBranches = JSON.parse('{!JSENCODE(allBranchesStr)}');
+                $scope.sourceBranchName = 'Branch '+'{!JSENCODE(srcBranchName)}' + '(This component will be saved in the target repository)';
+            }
+        
+            $scope.onChange = function(){
+                if ($scope.brSelect === '' || $scope.brSelect == undefined){
+                    CacheService.initCacheService();
+                    $timeout(function(){
+                        $scope.onlyExistingBranches = false;
+                        $scope.enableTables = false;
+                    });
+                }else{
+                    $scope.onlyExistingBranches = true;
+                    $scope.initLoad();
+                }
+            }
+        
+            /* code for the new comparison panel */
+        
+            var windowSize = getWidth();
+
+            $scope.isLoading = false;
+            $scope.STYLE_UPDATED = {"background-color":COLOR_CHANGED};
+
+            $scope.editor = {};
+            $scope.editor.viewCollection = []; // pointers to elems of rowCollection
+            $scope.editor.counter = 0;
+            var counter = 0;
+            var guidCounter = 0;
+            
+            $scope.editor.copyAllFlag = false;
+            $scope.editor.changesOnly = true;
+            $scope.editor.ignoreWS = true;
+            $scope.editor.isEquivalent = false; // set initial value to true, if obj are different, this value will be reseted
+            $scope.isEqual = false;
+            $scope.isXmlValid = true;
+            
+            $scope.diffXML;
+            $scope.file;
+
+            var isEqual;
+            var editedInAce = false;
+            var editor;
+
+           
+            const DEFAULT_HEIGHT = 592;
+            const MIN_HEIGHT = 150;
+            const LINE_HEIGHT = 22;
+            const FULL_NAME = 'fullName';
+            const TAGS_ALWAYS_SHOWN = new Object();
+            TAGS_ALWAYS_SHOWN[FULL_NAME] = true;
+            
+
+            $scope.copyAll = function(directCopy) {
+                editor.updateAll(directCopy);
+            }
+            
+             
+            $scope.updated = function (id) {
+                editor.updateRow(id - 1);
+            }
+
+            $scope.updateBundle = function (item) {
+                item.moved = !item.moved;
+            }
+            
+            var aceEditor;
+            var fileType;
+             
+            function setTitle(w, title){
+                if (w){
+                    w.onload = function(){
+                        setTimeout(function(){
+                            w.document.getElementsByTagName('head')[0].appendChild(document.createElement('title')).appendChild(document.createTextNode(title));
+                        }, 5);
+                    }
+                }
+            }
+            
+             
+            $scope.cancel = function () {
+                // empty all arrays, clear reset vars
+                editor.resetVars();
+                $scope.PopUp.closeManualMerge();
+            }
+
+            
+              
+            var code = '{!errorCode}';
+    
+            if (code !== '0'){
+                $scope.disableUI(true);
+                $j('#spinner').css('display','none');
+                $scope.loading = false;
+                $scope.isLoading = false;
+                $scope.enableTables = false;
+            }
+        });
+        
+        const EDITABLE = {
+            'application/javascript':true,
+            'text/css':true,
+            'text/plain':true
+        };
+
+        const EDITABLE_EXT = {
+            '.js':true,
+            '.css':true,
+            '.txt':true,
+            '.cmp':true,
+            '.app':true,
+            '.design':true,
+            '.evt':true,
+            '.intf':true,
+            '.auradoc':true,
+            '.tokens':true,
+            '.xml':true,
+            '.cls':true,
+            '.trigger':true,
+            '.page':true,
+            '.object':true,
+            '.label':true,
+            '.labels':true,
+            '.profile':true,
+            '.tab':true,
+            '.workflow':true,
+            '.layout':true,
+            '.component':true,
+            '.remoteSite':true,
+            '.settings':true
+        };
+        
+
+        myApp.directive('postrenderAction', postrenderAction); 
+
+        /* @ngInject */
+        function postrenderAction($timeout) {
+        // Directive Interface
+        // Defines base properties for the directive.
+            var directive = {
+                restrict: 'A',
+                priority: 101,
+                link: link
+            };
+            return directive;
+    
+        // Link Function
+        // Provides functionality for the directive during the DOM building/data binding stage.
+            function link(scope, element, attrs) {
+                $timeout(function() {
+                    scope.$evalAsync(attrs.postrenderAction);
+                }, 0);
+            }
+        } 
+    
+        String.prototype.isXml = function () {
+            return this.substr(0, 10).indexOf('<?xml') > -1 ? true : false;
+        }
+
+        function getWidth() {
+            var width = $j(window).innerWidth() - 100;
+            //debug('w='+width);
+            return width;
+        }
+        
+        var maxWidth =  getWidth();
+            
+        $j(window).on("resize",function() {
+            maxWidth =  getWidth();
+    
+        });
+
+        function isBundle(type){
+            return (type == 'AuraDefinitionBundle' || type == 'StaticResource' || type == 'LightningComponentBundle');
+        }
+    
+        myApp.factory('ArchiveService', function($q) {
+        var componentStack = {};     // detail info about merged component
+        var zipMap = {};    // map attId=>attachment
+        var counter = 0; // number of saved attachments
+        var mapCrc32 = {};
+        
+        function extractFile(zip1,zip2,comp){
+            
+
+            if (zip1.Id == comp.compAttId){
+                var tempSrcZip = new JSZip(zip2.base64, {base64:true});
+                var tempTgtZip = new JSZip(zip1.base64, {base64:true});
+                if (zipMap[comp.compAttId] == undefined){
+                    zipMap[comp.compAttId] = zip1.base64;
+                }
+            }else{
+                var tempSrcZip = new JSZip(zip1.base64, {base64:true});
+                var tempTgtZip = new JSZip(zip2.base64, {base64:true});
+                if (zipMap[comp.compAttId] == undefined){
+                    zipMap[comp.compAttId] = zip2.base64;// contains archive with [last version of] file
+                }
+            }
+            if (isBundle(comp.compType) == false){
+                var descriptor = {};
+                descriptor.compAttId = comp.compAttId; // set Attachment's ID which later will be used for update 
+                descriptor.compType = comp.compType;
+                descriptor.compName = comp.compName;
+                descriptor.fileName = comp.fileName;// extract only file specified in fileName field
+                descriptor.length = zipMap[comp.compAttId].length;
+                descriptor.crc32 = comp.crc32;
+                descriptor.mime = isEditable(comp.fileName);//detect type of extracted file
+                try{
+                    if (descriptor.mime == true){
+                        descriptor.source = tempSrcZip.file(comp.fileName).asText();
+                        descriptor.target = tempTgtZip.file(comp.fileName).asText();
+                    }else{
+                        descriptor.source = tempSrcZip.file(comp.fileName).asBinary();
+                        descriptor.target = tempTgtZip.file(comp.fileName).asBinary();
+                    }
+                }catch(e){
+                    ////console.log(e);
+                }
+                descriptor.IsXML = false;
+                if (descriptor.target != undefined && descriptor.target != ''){
+                    descriptor.IsXML = descriptor.target.isXml();
+                }
+                return descriptor;// for non-aura return descriptor
+            }else{//return array of descriptors for each file in AuraDefinitionBundle (in general: any dir with files)
+                var srcDescrMap;
+                var tgtDescrMap;
+                if (comp.compType == 'AuraDefinitionBundle'  || comp.compType == 'LightningComponentBundle'){
+                    var srcLst = Object.keys(tempSrcZip.files);
+                    srcDescrMap = getDescriptionMap(tempSrcZip, comp, 'source',false);
+                    var tgtLst = Object.keys(tempTgtZip.files);
+                    tgtDescrMap = getDescriptionMap(tempTgtZip, comp, 'target',false);
+                }else{// Static type
+                    srcDescrMap = parseResource(comp, tempSrcZip, 'source');
+                    tgtDescrMap = parseResource(comp, tempTgtZip, 'target');
+                }
+
+                var lst = [];
+                lst.push(srcDescrMap);
+                lst.push(tgtDescrMap);
+                return lst;
+            }
+        }
+        
+        
+        function parseResource(comp, rZip, type){
+            var compName = 'staticresources/' + comp.compName + '.resource';
+            var metaName = compName + '-meta.xml';
+
+            var tgtDescrMap = {};
+            if (rZip.files[metaName]){// process content if and only if it contains  meta.xml file
+                var meta = rZip.file(metaName).asBinary();
+                var x2js = new X2JS({useDoubleQuotes: true, stripWhitespaces: false, escapeMode: true});
+                metaObj = x2js.xml_str2json(meta);
+                comp.contentType = metaObj.StaticResource.contentType;
+                var innerZip = metaObj.StaticResource.contentType == 'application/zip';
+                
+                if (innerZip == true){//unpack inner zip
+                    var zip1 = rZip.file(compName).asBinary(); 
+                    var rZip = new JSZip(zip1, {base64:false});
+                }
+                var srcLst = Object.keys(rZip.files);
+                tgtDescrMap = getDescriptionMap(rZip,comp,type,innerZip,metaName);
+            }
+            return tgtDescrMap;
+        }
+        
+        
+        
+        function getDescriptionMap(zip,comp,type,displayFullName,excluded){
+                var tgtDescrMap = {};
+                var files = Object.keys(zip.files).sort();
+
+                
+                for (var x = 0; x < files.length; x++){
+                    var fileName = files[x];
+                    if (fileName == excluded) continue;
+                    if (fileName.lastIndexOf('/') == (fileName.length - 1)) continue;// omit paths like css/, etc 
+                    var descriptor = {};
+                    descriptor.compAttId = comp.compAttId; // set Attachment's ID which later will be used for update 
+                    descriptor.compType = comp.compType;
+                    descriptor.compName = (displayFullName == true) ? fileName : comp.compName;
+                    descriptor.fileName = fileName;
+                    descriptor.length = zipMap[comp.compAttId].length;
+                    descriptor.mime = isEditable(fileName);//detect type of extracted file
+                    if (descriptor.mime == true){
+                        descriptor[type] = zip.file(fileName).asText();
+                    }else{
+                        descriptor[type] = zip.file(fileName).asBinary();
+                    }
+                    if (descriptor[type] != null && descriptor[type] != ''){
+                        descriptor.IsXML = descriptor.compName.indexOf('-meta.xml') == -1 ? false : true;// set xml flag only for meta
+                        descriptor.crc32 = zip.crc32(descriptor[type],32);
+                        tgtDescrMap[descriptor.fileName] = descriptor;//return not-null only if target != null
+                    }
+                }
+            return  tgtDescrMap;            
+        }
+        
+        function isEditable(fName){
+            var res = false;
+            if (fName != undefined && fName != ''){
+                var extPos = fName.lastIndexOf('.');
+                if (extPos > -1){
+                    var ext = fName.substr(extPos);
+                    res = EDITABLE_EXT[ext] != undefined;
+                }
+                
+            }
+            return res;
+        }
+        
+        function setFile(Item,File){
+
+             if (File != undefined && File != '' && Item != undefined){
+                 if (Item.IsXML) {
+                    var resultXML = File;
+                    if (resultXML.isXml()) {
+                        Item.mergeFile = resultXML;
+                    }else{
+                        resultXML = vkbeautify.xmlmin(resultXML, true);
+                        Item.mergeFile = '<?xml version="1.0" encoding="UTF-8"?>\n' + vkbeautify.xml(resultXML);
+                    }
+                 }else {
+                    Item.mergeFile = File;
+                 }
+                Item.conflictCode = 2;// set flag indicated that new merge File in Bundle has been updated at least once
+             }else if (Item != undefined){
+                Item.mergeFile = File;
+                Item.conflictCode = 2;// set flag indicated that new merge File in Bundle has been updated at least once
+             }else{
+                // nothing todo
+                return;
+             }
+       } 
+             
+       function persistFile(Item,tempZip){      
+             var isBinary = Item.mime == false;
+
+             if (Item.mergeFile != '' && Item.mergeFile != undefined){//empty file means delete operation
+
+                         tempZip.file(Item.fileName,Item.mergeFile,{binary:isBinary});// if component with fileName does not exist, create it
+                         var crc32 = tempZip.crc32(Item.mergeFile,32);
+                         mapCrc32[Item.fileName] = crc32;
+                         updateCRC32(Item, crc32);
+             }else{
+
+                         //TODO: verify existence
+                         tempZip.remove(Item.fileName);
+                         Item.crc32 = '';
+             }
+
+        }
+        
+        // save 1 merged file back to zip, updates crc32
+        function setMergeFile(ItemId, File){// patch var - depricated
+            var len = '' + ItemId;
+
+            if (len < 15){
+                var bundleItem = bundleComponentStack[ItemId];// pick up component from ephemeral bundle stack
+                setFile(bundleItem, File); 
+                return;
+            } 
+             
+            var Item = componentStack[ItemId];// long id - general component, short - bundle; short id always temporal (valid only during edition)
+             
+             //set file and  update archive
+             var archive = zipMap[Item.compAttId];// for bundle case - updates contents of bundle zip
+             if (archive != undefined){
+                 var tempZip = new JSZip(archive, {base64:true});
+                 setFile(Item, File);
+                 persistFile(Item, tempZip);
+                 zipMap[Item.compAttId] = tempZip.generate({type:"base64",compression:"DEFLATE"});//repack zip
+             }
+             //debug('updated,new crc='+Item.crc32);
+             Item.isManualMerge = true; // set flag indicated that new merge File has been updated at least once
+        }
+        
+        function setMergeFiles(masterItem, bundleList){
+                    // update archive with data from records with moved = true flag
+            var archive = zipMap[masterItem.compAttId];// for bundle case - updates contents of bundle zip
+            if (archive != undefined){
+                var attZip = new JSZip(archive, {base64:true});
+                
+                var tempZip = null;
+                var isIntermediate = false;
+                // for Aura components and StaticResource with contentType != 'application/zip' add all bundle files directly
+                if (masterItem.compType == 'AuraDefinitionBundle' || masterItem.compType == 'LightningComponentBundle' || (masterItem.compType == 'StaticResource' && masterItem.contentType != 'application/zip')){
+                    tempZip = attZip;
+                }else if (masterItem.compType == 'StaticResource' && masterItem.contentType == 'application/zip'){// use itermediate zip, add it as masterItem.fileName to attZip
+                    tempZip = new JSZip();
+                    isIntermediate = true;
+                }else{
+                    console.log('setMergeFiles: empty zip');
+                }
+                
+                
+                mapCrc32 = {};// empty crc map
+                    
+                for (var i = 0; i < bundleList.length; i++){
+                        var bundleComponent = bundleList[i];
+                        var bundleItem = bundleComponentStack[i];
+                        
+                        if (isIntermediate == false){// update zip with existing components
+                            if (bundleComponent.moved == true){
+                                if (bundleComponent.conflictCode == 3){//remove comp with uid = i, set MergedFile to null in order to trigger deletion
+                                    setFile(bundleItem, '');
+                                }else if (bundleComponent.conflictCode == 4 || bundleComponent.conflictCode == 5){//added because they are new or replaced
+                                    setFile(bundleItem, bundleItem.source);
+                                }
+                            }else if (bundleComponent.conflictCode != 4){// add all from source
+                                if (bundleComponent.conflictCode != 2){
+                                    setFile(bundleItem, bundleItem.target);
+                                }
+                            }
+                        }else{// fill zip with all source components, process only those which change the content: with conflictCode  = 0,4,5
+                            if (bundleComponent.moved == true){
+                                if (bundleComponent.conflictCode == 3){
+                                    // do nothing with component if code is 3 and moved
+                                }else if (bundleComponent.conflictCode == 4 || bundleComponent.conflictCode == 5){//added because they are new or replaced
+                                    setFile(bundleItem, bundleItem.source);
+                                }
+                            }else if (bundleComponent.conflictCode != 4){// add all from source
+                                if (bundleComponent.conflictCode != 2){
+                                    setFile(bundleItem, bundleItem.target);
+                                }
+                            }
+                        }
+                        persistFile(bundleItem, tempZip);
+                        
+                }
+                // calc and set the composite crc32 sum 
+                // Aura - use polynomial summing
+                // Static - use JSZip method
+                if (isIntermediate == true){
+                    var z = tempZip.generate({ base64: false, compression:"DEFLATE"});
+                    attZip.file(masterItem.fileName, z, {binary:true});// put zip inside zip
+                }
+                var b64 = attZip.generate({type:"base64",compression:"DEFLATE"});//repack zip
+                zipMap[masterItem.compAttId] = b64;
+                if (masterItem.compType == 'AuraDefinitionBundle'  || masterItem.compType ==  'LightningComponentBundle'){
+                    masterItem.crc32 = composeBundleCrc(mapCrc32);
+                }else{
+                    if (bundleComponentStack != undefined && bundleComponentStack.length > 0){
+                        var crc32_1 = bundleComponentStack[0].crc32;
+                        updateCRC32(masterItem, crc32_1);
+                    }
+                }
+            }
+        }
+        
+        
+        
+        function setBkUp(Id, xmlBk){
+             if (Id.length > 4){    
+                var descriptor = componentStack[Id];
+             }else{
+                var descriptor = bundleComponentStack[Id];
+             }
+             if (descriptor != undefined){
+                descriptor.bkUp = xmlBk;
+             }else{
+                console.log('error: descriptor is null');
+             }
+        }
+        
+            
+        
+        
+        return {
+                addZips: function(zip1,zip2,comp) {// adds the zip; if exists, update with a new data
+                    if (componentStack[comp.compId] != undefined){
+                        counter++;
+                    }
+                    componentStack[comp.compId] = extractFile(zip1,zip2,comp);
+                },
+                updateTargetZip: function(compId, data) {//  update with a new data
+                    if (componentStack[compId] != undefined){
+                        componentStack[compId][1] = data;
+                    }
+                },
+                setMergeFile: function(ItemId, File, patch){
+                    setMergeFile(ItemId, File, patch);
+                },
+                setMergeFiles: function(item, bundle){
+                    setMergeFiles(item, bundle);
+                },
+                setBkUp: function(Id, xmlBk){
+                    setBkUp(Id, xmlBk);
+                },
+                getZipDescription: function(compId){
+                    return componentStack[compId];
+                },
+                getZip: function(attId){
+                    return zipMap[attId];
+                },
+                setZip: function(attId, data){
+                    zipMap[attId] = data;
+                },
+                getLength: function(attId){
+                    if (zipMap[attId] != undefined){
+                        return zipMap[attId].length;
+                    }else{
+                        return 0;
+                    }
+                },
+                initArchiveService: function() {
+                      componentStack = {};
+                      zipMap = {};
+                      counter = 0;
+                },
+                inStack: function(compId){
+                    return componentStack[compId] != undefined;
+                }
+    
+        };
+        });
+    
+        myApp.factory('CacheService', function($q) {
+            var archive = {};// map compId => compressed data
+            var counter = 0;
+            var callFunct;
+        
+            function _getData(compId,callback){
+                callFunct = callback; // set function to return data
+                var returnObj = {};
+                if (archive[compId] != undefined){
+                    returnObj = JSON.parse(pako.inflate(archive[compId], { to: 'string' }));
+                }
+                callFunct(returnObj);
+            }
+        
+            return {
+                pop: function(compId, callback) {
+                    _getData(compId,  function(data){
+                            callback(data);
+                     });
+                },
+                push: function(compId, data) {
+                      var compressedData =  JSON.stringify(data);
+                      if (archive[compId] == undefined){
+                        counter++;
+                      }
+                      archive[compId] =  pako.deflate(compressedData, { to: 'string' }); 
+                },
+                initCacheService: function() {
+                      archive = {};
+                      counter = 0;
+                },
+                isCached: function(compId){
+                    return archive[compId] != undefined;
+                }
+            };
+        });
+        
+        // restore all original view of special symboles in xml file - adopted for SF     
+        function unescape1XmlChars(str) {
+            return str.replace(/&#x27;/g, "'");
+        }
+        
+        // wrapper for debug, works if flag DEBUG_MODE == true 
+        function debug(msg){
+            if (DEBUG_MODE){
+                ////console.log(msg);
+            }
+        }
+    
+        // global function called after branch is changed 
+        function onChange(){
+                //console.log('branch changed!');
+        }
+               
+        function callBackText(updated){
+        var s = getScope();
+            var merged = pako.inflate(updated.data, { to: 'string' });
+            console.log('merged:');
+            if (updated.isXml == true){
+                s.PopUp.ManualMergeXml(merged);
+            }else{
+                s.PopUp.ManualMerge(merged);
+            }
+        }
+        
+        function isEmpty(val){
+            return val == undefined || val == null || val == '';
+        }
+        
+        function getScope(){
+            return angular.element(document.getElementById('angularControllerId')).scope();
+        }
+    </script>
+</apex:page>

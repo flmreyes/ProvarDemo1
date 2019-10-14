@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite failures="0" hostname="CPX-RN92EDPMEQ0" id="0" name="ProvarDemo1/tests" package="" skipped="0" tests="1" time="182.916" timestamp="Mon Oct 14 11:25:34 BST 2019">
+	    <properties>
+		      <property name="excludeCallableTestCases" value="true" />
+
+		      <property name="testEnvironment" value="" />
+
+		      <property name="pluginOutputLevel" value="WARNING" />
+
+		      <property name="projectPath" value=".." />
+
+		      <property name="salesforceMetadataCache" value="Reuse" />
+
+		      <property name="resultsPathDisposition" value="Replace" />
+
+		      <property name="testOutputLevel" value="WARNING" />
+
+		      <property name="webBrowserType" value="Google Chrome" />
+
+		      <property name="resultsPath" value="../ANT/Results" />
+
+		      <property name="webBrowserConfiguration" value="Full Screen" />
+
+		      <property name="projectCachePath" value="C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1\ANT\..\..\.provarCaches" />
+
+	    </properties>
+
+	    <testcase classname="tests/Test Cases\Contact-Machine.testcase" name="Contact-Machine.testcase" time="182.91">
+	</testcase>
+
+  </testsuite>
+</testsuites>

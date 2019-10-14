@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testCase id="25" registryId="3a8434fc-fd8b-4cf3-8227-a5498086a48b" visibility="Internal">
+  <summary/>
+  <steps>
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexConnect" name="ApexConnect" testItemId="9" title="Salesforce Connect: ProvarDemo1 (Global)">
+      <arguments>
+        <argument id="connectionName">
+          <value class="value" valueClass="string">ProvarDemo1</value>
+        </argument>
+        <argument id="resultName">
+          <value class="value" valueClass="string">ProvarDemo1</value>
+        </argument>
+        <argument id="reuseConnectionName"/>
+        <argument id="resultScope">
+          <value class="value" valueClass="string">Global</value>
+        </argument>
+        <argument id="alreadyOpenBehaviour">
+          <value class="value" valueClass="string">Reuse</value>
+        </argument>
+        <argument id="uiApplicationName"/>
+        <argument id="closeAllPrimaryTabs">
+          <value class="value" valueClass="boolean">true</value>
+        </argument>
+        <argument id="quickUiLogin">
+          <value class="value" valueClass="boolean">true</value>
+        </argument>
+        <argument id="privateBrowsingMode"/>
+        <argument id="enableObjectIdLogging">
+          <value class="value" valueClass="boolean">true</value>
+        </argument>
+        <argument id="autoCleanup"/>
+        <argument id="cleanupConnectionName"/>
+        <argument id="logFileLocation"/>
+        <argument id="username"/>
+        <argument id="password"/>
+        <argument id="securityToken"/>
+        <argument id="environment"/>
+        <argument id="lightningMode">
+          <value class="value" valueClass="string">default</value>
+        </argument>
+        <argument id="webBrowser"/>
+      </arguments>
+    </apiCall>
+  </steps>
+  <outputParams/>
+  <outputArgs>
+    <outputArgument id="contactId">
+      <name class="value" valueClass="string">contactId</name>
+    </outputArgument>
+    <outputArgument id="ProvarDemo1">
+      <name class="value" valueClass="string">ProvarDemo1</name>
+    </outputArgument>
+  </outputArgs>
+  <parameterValueSources/>
+</testCase>

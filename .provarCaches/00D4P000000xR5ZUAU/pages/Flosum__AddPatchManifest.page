@@ -1,0 +1,636 @@
+<apex:page standardController="Flosum__Patch_Manifest__c" standardStylesheets="false" extensions="Flosum.AddPatchManifestExtension" sidebar="false" doctype="html-5.0">
+    <c:TrackPanel />
+    <c:CommitToPatch />
+    <c:Wait />
+    <c:DynamicLookupScript />
+    <apex:slds />
+    
+    <style>
+        .message .messageText {
+            color: white !important;
+        }
+        .message .messageText h4{
+            color: white !important;
+        }
+        .lbcls {
+            font-weight: 700 !important;
+        }
+        td .dataCell label {
+            font-weight: normal;
+        }
+        .pagination input {
+            margin-left: 4px;
+        } 
+        body .searchRow {
+            margin-left: 1%;
+        }
+        body .searchRowLast {
+            margin-left: .5%;
+        }
+        .customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+            margin: 0px !important;
+            opacity: 1!important;
+            width: 100%;
+            font-size: 13px;
+            border: 0px;
+            padding-left: 10px;
+        }
+        .slds-scope .slds-notify--alert, .slds-scope .slds-notify_alert {
+            padding: 1rem 2rem 1rem 1rem !important;
+        }
+        .slds-scope .slds-notify--toast, .slds-scope .slds-notify--toast {
+            padding: 1rem 2rem 1rem 1rem !important;
+        }
+        .btnMargin {
+            margin-top: 0.5rem !important;
+            margin-bottom: -9px !important;
+        }
+        div .pagination {
+            text-align: center;
+        }
+        .pagination {
+            line-height: 1.875rem;
+        }
+    </style>
+    
+    <div class="slds-scope">
+        <apex:form styleClass="slds-form--stacked" id="form">
+            <apex:pagemessages id="msg"/>
+            <div class="slds-page-header">
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!If(IsNewPatch,$Label.flosum__create_patch_title,$Label.flosum__add_to_patch_title)}">{!If(IsNewPatch,$Label.flosum__create_patch_title,$Label.flosum__add_to_patch_title)}</h1>
+            </div>
+            <fieldset class="slds-box slds-theme--default">
+                <apex:actionfunction name="selectAllItems" action="{!selectAll}" reRender="msg,tb" onComplete="hide();checkUnCheck();">
+                    <apex:param assignTo="{!selectAllFlag}" value="" name="selectAllFlag"/>
+                </apex:actionfunction>
+                <apex:actionFunction name="listComponentTypes" reRender="pBlock,msg" action="{!listComponentTypes}" oncomplete="hide();overridePageMessages();"/>
+                <apex:outputPanel layout="block" id="pBlock">
+                    <div class="slds-float--right" role="group">
+                        <apex:commandButton styleClass="slds-button slds-button_neutral" value="Refresh List" action="{!refereshList}" rendered="{!if(compTypeOptions.size>0,true,false)}" oncomplete="hide();overridePageMessages();" rerender="pBlock,msg" onclick="show();"/>
+                        <apex:commandButton styleClass="slds-button slds-button_neutral" value="Add To Deployment" action="{!addToPatch}" rendered="{!if(compTypeOptions.size>0,true,false)}" oncomplete="overridePageMessages(); hide(); createPatchManifestItem({!IsFromOrgComponent},{!IsFromSnapshot},'{!JSENCODE(metaIdJSON)}','{!JSENCODE(newPatchId)}');" rerender="msg" onclick="show();"/>
+                    </div>
+                    <apex:outputPanel layout="block" id="pbSectionBlock">
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!if(!IsNewPatch,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Deployment Name :" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" value="{!patchName}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Source :" />
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList styleClass="slds-select slds-text-heading_regular" label="Source :" size="1" value="{!selectedSource}" >
+                                        <apex:selectOptions value="{!sourceOptions}" />
+                                        <apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!listSourceComponents}" oncomplete="hide();overridePageMessages();" onsubmit="show();"/> 
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedSource == RepositoryVal,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Repository :" />
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList styleClass="slds-select slds-text-heading_regular" label="Repository :" size="1" value="{!selectedRepository}" >
+                                        <apex:selectOptions value="{!RepositoryOptions}" />
+                                        <apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!listComponentTypes}" oncomplete="hide();overridePageMessages();" onsubmit="show();"/> 
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!if(orgOptions.size>0,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organization :" />
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList styleClass="slds-select slds-text-heading_regular" label="Organization :" size="1" value="{!selectedOrg}" >
+                                        <apex:selectOptions value="{!orgOptions}" />
+                                        <apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!listSnapshot}" oncomplete="hide();overridePageMessages();" onsubmit="show();"/> 
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(snapOptions.size > 0,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Snapshot :" />
+                            <div class="slds-form-element__control slds-grid">
+                                <apex:inputHidden id="snapTargetId" value="{!selectedSnap}"/>
+                                <div class="slds-size--1-of-2">
+                                    <apex:inputText styleClass="slds-input slds-text-heading_regular" size="25"  value="{!selectedSnapLabel}" id="snapTargetName" onFocus="this.blur()" disabled="false" html-callitafterchange="listComponentTypes"/>
+                                </div>
+                                <div class="slds-size--1-of-2">
+                                    <img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}" 
+                                    onclick="dlm_openLookupPopup('{!$Component.snapTargetName}', '{!$Component.snapTargetId}','{!$ObjectType.Snapshot__c.Name}',
+                                    '{!$ObjectType.Snapshot__c.fields.Organisation__c.Name} =\'{!selectedOrg}\' AND {!$ObjectType.Snapshot__c.fields.Is_Completed__c.Name} = true'); return false" 
+                                    alt="Snapshot Name Lookup (New Window)" />
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedSource == BranchVal,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Branch :" />
+                            <div class="slds-form-element__control slds-grid">
+                                <apex:inputHidden id="branchTargetId" value="{!selectedBranch}"/>
+                                <div class="slds-size--1-of-2">
+                                    <apex:inputText styleClass="slds-input slds-text-heading_regular" size="25" value="{!selectedBranchLabel}" id="branchTargetName" onFocus="this.blur()" disabled="false" html-callitafterchange="listComponentTypes"/>
+                                </div>
+                                <div class="slds-size--1-of-2">
+                                    <img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}" 
+                                    onclick="dlm_openLookupPopup('{!$Component.branchTargetName}', '{!$Component.branchTargetId}','{!$ObjectType.Branch__c.Name}',''); return false"
+                                    alt="Snapshot Name Lookup (New Window)" />
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedSource == OrgVal,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organization :" />
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList styleClass="slds-select slds-text-heading_regular" label="Organization :" size="1" value="{!selectedOrganization}" >
+                                        <apex:selectOptions value="{!organizationOption}" />
+                                        <apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!listComponentTypes}" oncomplete="hide();overridePageMessages();" onsubmit="show();"/> 
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedSource == CommitVal,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Commit :" />
+                            <div class="slds-form-element__control slds-grid">
+                                <apex:inputHidden id="commitTargetId" value="{!selectedCommit}"/>
+                                <div class="slds-size--1-of-2">
+                                    <apex:inputText styleClass="slds-input slds-text-heading_regular" size="25"  value="{!selectedCommitLabel}" id="commitTargetName" onFocus="this.blur()" disabled="false" html-callitafterchange="listComponentTypes"/>
+                                </div>
+                                <div class="slds-size--1-of-2">
+                                    <img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}"
+                                    onclick="dlm_openLookupPopup('{!$Component.commitTargetName}', '{!$Component.commitTargetId}','{!$ObjectType.Commit__c.Name}',''); return false" 
+                                    alt="Commit Name Lookup (New Window)" />
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!if(compTypeOptions.size>0 && IsNewPatch,true,false)}">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Deployment Name :" />
+                            <div class="slds-form-element__control">
+                                <apex:InputText styleClass="slds-input slds-text-heading_regular" value="{!patchName}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(compTypeOptions.size > 0,true,false)}">
+                            <apex:outputLabel styleClass="slds-m-top--medium slds-form-element__label slds-text-heading_regular lbcls" value="{!$Label.flosum__component_type}" />
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <apex:selectList styleClass="slds-select slds-text-heading_regular" label="{!$Label.flosum__component_type} :" size="1" value="{!selectedType}" >
+                                        <apex:selectOptions value="{!compTypeOptions}" />
+                                        <apex:actionSupport event="onchange"  reRender="pBlock,msg" action="{!defaultPagination}" oncomplete="hide();overridePageMessages();checkUnCheck();" onsubmit="show();"/> 
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                            <div class="slds-m-top--medium slds-m-bottom--medium slds-grid">
+                                <div class="slds-size--1-of-2 slds-m-right--small">
+                                    <apex:inputText value="{!searchText}" styleClass="searchRow slds-text-heading_regular slds-input slds-float_left"/>
+                                </div>
+                                <div class="slds-size--1-of-2">
+                                    <apex:commandButton action="{!searchComponent}" value="Search" onClick="show();" onComplete="hide();overridePageMessages();" reRender="pBlock,msg" styleClass="searchRow btn slds-button slds-button_neutral slds-float_left" />
+                                    <apex:commandButton action="{!hideSearch}" value="Hide Search" onClick="show();" onComplete="hide();overridePageMessages();" reRender="pBlock,msg" rendered="{!if(IsSearch,true,false)}" styleClass="searchRowLast btn slds-button slds-button_neutral slds-float_left" />
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    
+                    <!-- <apex:outputPanel >
+                        <apex:inputCheckbox onclick="checkItemAllGlobal(this); return false;" value="{!selectAllFlag}"  styleclass="globalCheck" rendered="{!if(metaItemList.size>0 || componentList.size>0 || commitManifestList.size>0,true,false)}" style="margin-left: 10px;">
+                            <apex:outputLabel value="Select / Deselect All"/>
+                        </apex:inputCheckbox>
+                    </apex:outputPanel>  -->
+                    
+                    
+                    
+                    
+                    <apex:outputPanel layout="block" id="tb">
+                    
+                        <div class="slds-form-element__control slds-p-bottom_x-large">
+                            <span class="slds-checkbox slds-float--left" style="margin-left: 24px;">
+                                <apex:inputCheckbox onclick="checkItemAllGlobal(this); return false;" styleclass="slds-input globalCheck" id="checkbox-2" value="{!selectAllFlag}" rendered="{!if(metaItemList.size>0 || componentList.size>0 || orgCompWrapList.size>0 || commitManifestList.size>0,true,false)}"/>
+                                <apex:outputLabel for="checkbox-2" styleClass="lbcls slds-checkbox__label" rendered="{!if(metaItemList.size>0 || orgCompWrapList.size>0 || componentList.size>0 || commitManifestList.size>0,true,false)}" >
+                                    <span class="slds-checkbox--faux"></span>
+                                    <span class="slds-form-element__label">Select / Deselect All</span>
+                                </apex:outputLabel>
+                            </span>
+                        </div>
+                    
+                        <apex:dataTable value="{!metaItemList}" var="mi" rendered="{!if(metaItemList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <apex:column headervalue="Select">
+                                <apex:facet name="header" >
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" class="psli" id="selectall" name="options" onclick="checkItemAll(this);" />
+                                                <label class="slds-checkbox__label" for="selectall">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                    <span class="slds-form-element__label"></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </apex:facet>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-checkbox">
+                                            <apex:inputCheckbox onClick="checkUnCheck();" id="divsup" styleclass="sli slds-input" value="{!mi.checkStatus}"></apex:inputCheckbox>
+                                            <apex:outputLabel for="divsup" styleClass="slds-checkbox__label">
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"></span>
+                                            </apex:outputLabel>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'API_Name__c',If(Order == 'ASC',$Label.flosum__component_name+' ▲',$Label.flosum__component_name+' ▼') ,$Label.flosum__component_name)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="API_Name__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.meta.Flosum__API_Name__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'RecordType.Name',If(Order == 'ASC',$Label.flosum__component_type+' ▲',$Label.flosum__component_type+' ▼') ,$Label.flosum__component_type)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="RecordType.Name" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.meta.RecordType.Name}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Updated_By__c',If(Order == 'ASC',$Label.flosum__developer+' ▲',$Label.flosum__developer+' ▼') ,$Label.flosum__developer)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Updated_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.meta.Flosum__Last_Updated_By__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Modified_Date__c',If(Order == 'ASC',$Label.flosum__changed_on+' ▲',$Label.flosum__changed_on+' ▼') ,$Label.flosum__changed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Modified_Date__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.meta.Flosum__Last_Modified_Date__c}" />
+                            </apex:column>
+                        </apex:dataTable>
+                        
+                        
+                        <apex:dataTable value="{!orgCompWrapList}" var="mi" rendered="{!if(orgCompWrapList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <apex:column headervalue="Select">
+                                <apex:facet name="header" >
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" class="psli" id="selectallOrgComp" name="options" onclick="checkItemAll(this);" />
+                                                <label class="slds-checkbox__label" for="selectallOrgComp">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                    <span class="slds-form-element__label"></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </apex:facet>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-checkbox">
+                                            <apex:inputCheckbox onClick="checkUnCheck();" id="divsupOrgComp" styleclass="sli slds-input" value="{!mi.checkStatus}"></apex:inputCheckbox>
+                                            <apex:outputLabel for="divsupOrgComp" styleClass="slds-checkbox__label">
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"></span>
+                                            </apex:outputLabel>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'API_Name__c',If(Order == 'ASC',$Label.flosum__component_name+' ▲',$Label.flosum__component_name+' ▼') ,$Label.flosum__component_name)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="API_Name__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.orgComp.Flosum__API_Name__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_Type__c',If(Order == 'ASC',$Label.flosum__component_type+' ▲',$Label.flosum__component_type+' ▼') ,$Label.flosum__component_type)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_Type__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.orgComp.Flosum__Component_Type__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Updated_By__c',If(Order == 'ASC',$Label.flosum__developer+' ▲',$Label.flosum__developer+' ▼') ,$Label.flosum__developer)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Updated_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.orgComp.Flosum__Last_Updated_By__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Modified_Date__c',If(Order == 'ASC',$Label.flosum__changed_on+' ▲',$Label.flosum__changed_on+' ▼') ,$Label.flosum__changed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Modified_Date__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.orgComp.Flosum__Last_Modified_Date__c}" />
+                            </apex:column>
+                        </apex:dataTable>
+                        
+                        
+                        
+                        
+                        <apex:dataTable value="{!commitManifestList}" var="mi" rendered="{!if(commitManifestList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <apex:column headervalue="Select">
+                                <apex:facet name="header">
+                                    <div class="slds-form-element">
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" class="psli" name="options" id="checkbox_manifest" onclick="checkItemAll(this);" />
+                                                <label class="slds-checkbox__label" for="checkbox_manifest">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                    <span class="slds-form-element__label"></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </apex:facet>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-checkbox">
+                                            <apex:inputCheckbox id="manifestRecord" value="{!mi.checkStatus}" styleclass="sli slds-input" onClick="checkUnCheck();"></apex:inputCheckbox>
+                                            <apex:outputLabel for="manifestRecord" styleClass="slds-checkbox__label">
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"></span>
+                                            </apex:outputLabel>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Component__r.Component_Name__c',If(Order == 'ASC',$Label.flosum__component_name+' ▲',$Label.flosum__component_name+' ▼') ,$Label.flosum__component_name)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Component__r.Component_Name__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Component__r.Flosum__Component_Name__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Component__r.Component_Type__c',If(Order == 'ASC',$Label.flosum__component_type+' ▲',$Label.flosum__component_type+' ▼') ,$Label.flosum__component_type)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Component__r.Component_Type__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Component__r.Flosum__Component_Type__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Version__c',If(Order == 'ASC',$Label.flosum__version+' ▲',$Label.flosum__version+' ▼') ,$Label.flosum__version)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Version__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Flosum__Version__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Changed_By__c',If(Order == 'ASC',$Label.flosum__developer+' ▲',$Label.flosum__developer+' ▼') ,$Label.flosum__developer)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Changed_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Flosum__Changed_By__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Changed_On__c',If(Order == 'ASC',$Label.flosum__changed_on+' ▲',$Label.flosum__changed_on+' ▼') ,$Label.flosum__changed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Changed_On__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Flosum__Changed_On__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Committed_By__c',If(Order == 'ASC',$Label.flosum__committed_by+' ▲',$Label.flosum__committed_by+' ▼') ,$Label.flosum__committed_by)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Committed_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Flosum__Committed_By__c}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_History__r.Committed_On__c',If(Order == 'ASC',$Label.flosum__committed_on+' ▲',$Label.flosum__committed_on+' ▼') ,$Label.flosum__committed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_History__r.Committed_On__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.commitManifest.Component_History__r.Flosum__Committed_On__c}" />
+                            </apex:column>
+                        </apex:dataTable>
+                        
+                        <apex:actionFunction name="refreshVersion" action="{!refreshLastModified}" reRender="tb,msg" oncomplete="hide();">
+                            <apex:param assignTo="{!componentHistoryId}" value="" name="componentHistoryId"/>
+                        </apex:actionFunction>
+                        <apex:dataTable value="{!componentList}" var="mi" rendered="{!if(componentList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <apex:column headervalue="Select">
+                                <apex:facet name="header">
+                                    <div class="slds-form-element"> 
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-checkbox">
+                                                <input type="checkbox" class="psli" name="options" id="checkbox_comp_records" onclick="checkItemAll(this);" />
+                                                <label class="slds-checkbox__label" for="checkbox_comp_records">
+                                                    <span class="slds-checkbox_faux"></span>
+                                                    <span class="slds-form-element__label"></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </apex:facet>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-checkbox">
+                                            <apex:inputCheckbox onClick="checkUnCheck();" id="comp_records" styleclass="sli slds-input" value="{!mi.checkStatus}"></apex:inputCheckbox>
+                                            <apex:outputLabel for="comp_records" styleClass="slds-checkbox__label">
+                                                <span class="slds-checkbox--faux"></span>
+                                                <span class="slds-form-element__label"></span>
+                                            </apex:outputLabel>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_Name__c',If(Order == 'ASC',$Label.flosum__component_name+' ▲',$Label.flosum__component_name+' ▼') ,$Label.flosum__component_name)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_Name__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.componentName}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Component_Type__c',If(Order == 'ASC',$Label.flosum__component_type+' ▲',$Label.flosum__component_type+' ▼') ,$Label.flosum__component_type)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Component_Type__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.componentType}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Version__c',If(Order == 'ASC',$Label.flosum__version+' ▲',$Label.flosum__version+' ▼') ,$Label.flosum__version)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Version__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:selectList value="{!mi.selectedHistoryId}" multiselect="false" size="1" onchange="refreshVersion(this.value);show();">
+                                    <apex:selectoptions value="{!mi.historyOptions}"/> 
+                                </apex:selectList>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Updated_By__c',If(Order == 'ASC',$Label.flosum__developer+' ▲',$Label.flosum__developer+' ▼') ,$Label.flosum__developer)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Updated_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.ChangedBy}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Modified_Date__c',If(Order == 'ASC',$Label.flosum__changed_on+' ▲',$Label.flosum__changed_on+' ▼') ,$Label.flosum__changed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Modified_Date__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.ChangedOn}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Last_Modified_By__c',If(Order == 'ASC',$Label.flosum__committed_by+' ▲',$Label.flosum__committed_by+' ▼') ,$Label.flosum__committed_by)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Last_Modified_By__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.LastModifiedBy}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!If(OrderByFieldName == 'Committed_On__c',If(Order == 'ASC',$Label.flosum__committed_on+' ▲',$Label.flosum__committed_on+' ▼') ,$Label.flosum__committed_on)}" action="{!orderByComponents}" onClick="show();" onComplete="hide();" reRender="tb,msg">
+                                        <apex:param assignTo="{!TempOrderByFieldName}" value="Committed_On__c" name="OrderByFieldName"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputLabel value="{!mi.LastModifiedDate}" />
+                            </apex:column>
+                        </apex:dataTable>
+                        <apex:outputPanel rendered="{!if((metaItemList.size > 0 || componentList.size > 0 || orgCompWrapList.size > 0 || commitManifestList.size > 0),true,false)}" layout="block" styleClass="btnMargin pagination slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded">
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="Previous" action="{!previous}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="First" action="{!FirstPage}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+                            </div>
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                <apex:outputText value="{!paginationStr}" styleClass="pagination"/>
+                            </div>
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Next" action="{!next}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Last" action="{!LastPage}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <apex:outputText styleClass="slds-input" value="No records to display." rendered="{!if((metaItemList.size == 0 && orgCompWrapList.size == 0 && componentList.size == 0 && commitManifestList.size == 0 && IsSearch),true,false)}"/>
+                </apex:outputPanel>
+            </fieldset>
+        </apex:form>
+    </div> 
+    
+    <script>
+        $( document ).ready(function() {
+            checkUnCheck();
+            overridePageMessages();
+        });
+        
+        function checkItemAll(ele) {
+        	console.log(ele);
+            var checkboxes = document.getElementsByClassName('sli');
+             if (ele.checked) {
+                 for (var i = 0; i < checkboxes.length; i++) {
+                     if (checkboxes[i].type == 'checkbox') {
+                         checkboxes[i].checked = true;
+                     }
+                 }
+             } else {
+                 for (var i = 0; i < checkboxes.length; i++) {
+                     if (checkboxes[i].type == 'checkbox') {
+                         checkboxes[i].checked = false;
+                     }
+                 }
+             }
+        }
+        
+        function checkItemAllGlobal(ele){
+            show();
+            console.log('ele.checked---'+ele.checked);
+            selectAllItems(ele.checked);
+        }
+        
+        function checkUnCheck()
+        {   
+            var checkboxes = document.getElementsByClassName('sli');
+            if(checkboxes != undefined && checkboxes.length > 0)
+            {
+                var allUnChecked = true;
+                var allChecked = true;
+                for(var i = 0; i < checkboxes.length; i++) 
+                {
+                    if(checkboxes[i].type == 'checkbox' && checkboxes[i].checked) 
+                    {
+                        allUnChecked = false;
+                    }
+                    else if(checkboxes[i].type == 'checkbox' && !checkboxes[i].checked)
+                    {
+                        allChecked = false;
+                    }
+                }
+                if(allChecked)
+                {
+                    var parentCheckboxes = document.getElementsByClassName('psli');
+                    if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+                    {
+                        parentCheckboxes[0].checked = true;
+                    }
+                }
+                else if(allUnChecked || (!allUnChecked && !allChecked))
+                {
+                    var parentCheckboxes = document.getElementsByClassName('psli');
+                    if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+                    {
+                        parentCheckboxes[0].checked = false;
+                    }
+                }
+            }
+        }
+        
+                
+        function createPatchManifestItem(IsFromOrgComponent,IsFromSnapshot,metaIdJSON,newPatchId)
+        {
+            if(IsFromSnapshot)
+            {
+                CTP_startAddToPatch(metaIdJSON,newPatchId);
+            }
+            else if(IsFromOrgComponent){
+            	CTP_startAddToPatchOrgComponent(metaIdJSON,newPatchId);
+            }
+            else
+            {
+                CTP_startCompHistoryAddToPatch(metaIdJSON,newPatchId);
+            }
+        }
+                
+        function overridePageMessages(){    
+            var textureEffect = '';
+            textureEffect = 'slds-theme--alert-texture';             
+            $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+            $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+            $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+            $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+                             
+            $('.errorM3').removeClass('errorM3'); 
+            $('.confirmM3').removeClass('confirmM3'); 
+            $('.infoM3').removeClass('infoM3');   
+            $('.warningM3').removeClass('warningM3');  
+        }
+    </script>
+</apex:page>

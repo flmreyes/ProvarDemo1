@@ -1,0 +1,83 @@
+<apex:page controller="Flosum.RetrievalTypeController" sidebar="false">
+	<c:Wait />
+	<apex:slds />
+	
+	<style>
+		.msgIcon {
+			display: none!important
+		}
+		.customMessage * {
+			color: #fff!important
+		}
+		.customMessage {
+				margin: 0px !important;
+				opacity: 1!important;
+				width: 100%;
+				font-size: 13px;
+				border: 0px;
+				padding-left: 10px;
+			}
+		.message {
+			opacity: 0;
+		}
+	</style>
+	
+     <div class="slds-scope">
+     	<apex:form styleClass="slds-form--stacked" id="form">
+     		<apex:pagemessages id="msg"/>
+     		<div class="slds-page-header">
+				<div class="slds-grid">
+					<div class="slds-col slds-has-flexi-truncate">
+						<div class="slds-media slds-no-space slds-grow">
+							<div class="slds-media__body">
+								<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Retrieval Setting">Retrieval Setting</h1>
+							</div>
+						</div>
+					</div>
+					<apex:outputPanel >
+						<div class="slds-col slds-no-flex slds-grid slds-align-top">
+							<div class="slds-button-group" role="group">
+								<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+								<apex:commandbutton value="Update" action="{!updateRetrievalType}" rerender="msg" onClick="show();" styleClass="slds-button slds-button_neutral" onComplete="overridePageMessages();hide();"/>
+							</div>
+						</div>
+					</apex:outputPanel>
+				</div>
+			</div>
+			<div class="myapp">
+				<fieldset class="slds-box slds-theme--default">
+					<apex:outputPanel layout="block" id="pBlock">
+						<apex:outputPanel layout="block" id="pbSectionBlock">
+							<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+								<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular" value="Retrieval Type :" />
+								<div class="slds-form-element__control">
+									<div class="slds-select_container">
+										<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!selectedRetrievalType}">
+		                					<apex:selectOptions value="{!retrievalTypeOptions}" />
+		            					</apex:selectList>
+									</div>
+								</div>
+	            			</apex:outputPanel>
+	            		</apex:outputPanel>
+	            	</apex:outputPanel>
+	            </fieldset>
+	    	</div>
+	    </apex:form>
+	</div>
+	
+	<script>
+		function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM4').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM4').removeClass('infoM4');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>
+</apex:page>

@@ -1,0 +1,97 @@
+<apex:page standardController="Flosum__Trail_Component__c" recordSetVar="recs" extensions="Flosum.RetrieveControllerExtension" action="{!retrieveTrailComponents}" sidebar="false" doctype="html-5.0">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+	
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message table ul li{
+		    color: white !important;
+		}
+		.infoMessage {
+			margin: 4px 20px !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+	</style>
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form styleClass="slds-form--stacked">
+			<apex:pagemessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Settings">Retrieve Changes</h1>
+				</div>
+			</apex:outputPanel>
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block">
+					<div class="slds-float--right" role="group">
+					  <apex:commandButton styleClass="slds-button slds-button_neutral" action="{!back}" value="Back"/>
+	        		</div>
+					<apex:outputPanel layout="block">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organization Name" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!parentOrg.Name}" id="orgName"/>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="User Full Name" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!parentOrg.Flosum__User_Full_Name__c}" id="usrFullName"/>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Username" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!parentOrg.Flosum__Username__c}" id="usrName"/>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organization Type" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!parentOrg.Flosum__Organisation_Type__c}" id="orgty"/>
+							</div>
+            			</apex:outputPanel>
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</fieldset>
+		</apex:form>
+	</apex:outputPanel>
+	
+	<script>
+		
+		$(document).ready(function(){
+			overridePageMessages();    
+	    });
+		
+		function overridePageMessages(){    
+			var textureEffect = '';
+			textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage infoMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>	
+</apex:page>

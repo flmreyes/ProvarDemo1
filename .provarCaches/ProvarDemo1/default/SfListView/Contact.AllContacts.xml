@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sfListView n="AllContacts" s="List View" sfListId="00B4P0000071xvAUAQ" t="All Contacts">
+  <actions/>
+  <columns>
+    <sfListColumn boundToField="Name" boundToObject="Contact" fieldNameOrPath="Name" metadataColName="FULL_NAME" n="Name" s="" sortable="true"/>
+    <sfListColumn boundToField="Name" boundToObject="Account" fieldNameOrPath="Account_Name" metadataColName="ACCOUNT.NAME" n="Account Name" s="" sortable="true"/>
+    <sfListColumn boundToField="Title" boundToObject="Contact" fieldNameOrPath="Title" metadataColName="CONTACT.TITLE" n="Title" s="" sortable="true"/>
+    <sfListColumn boundToField="Phone" boundToObject="Contact" fieldNameOrPath="Phone" metadataColName="CONTACT.PHONE1" n="Phone" s="" sortable="true"/>
+    <sfListColumn boundToField="Email" boundToObject="Contact" fieldNameOrPath="Email" metadataColName="CONTACT.EMAIL" n="Email" s="" sortable="true"/>
+    <sfListColumn boundToField="Alias" boundToObject="User" fieldNameOrPath="Owner_Alias" metadataColName="CORE.USERS.ALIAS" n="Contact Owner Alias" s="" sortable="true"/>
+    <sfListColumn metadataColName="CONTACT.ALLOW_PORTAL_SELF_REG" n="CONTACT.ALLOW_PORTAL_SELF_REG" s="" sortable="true"/>
+  </columns>
+</sfListView>

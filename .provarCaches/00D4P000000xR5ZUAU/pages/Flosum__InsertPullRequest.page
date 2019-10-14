@@ -1,0 +1,61 @@
+<apex:page standardController="Flosum__Branch__c" extensions="Flosum.InsertPullRequestController" sidebar="false">
+    <apex:form >
+        <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+            <apex:slds />
+            <div class="slds-page-header">
+                <div class="slds-media__body">
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Transfer To Deployment">Create Pull Request</h1>
+                </div>
+            </div>
+            <apex:outputPanel styleClass="slds-box slds-theme--default" layout="block" id="toPatch" >
+            <apex:pageMessages />
+                <div class="slds-float--right" role="group">
+                    <apex:commandButton styleClass="slds-button slds-button_neutral" value="Create Pull Request" action="{!savePullRequest}"/>
+                </div>
+                <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                    <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="{!$ObjectType.Flosum__Pull_Request__c.fields.Name.Label}" />
+                    <div class="slds-form-element__control">
+                        <apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!pullRequestName}" required="true"/>
+                    </div>
+                    <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="{!$ObjectType.Flosum__Pull_Request__c.fields.Flosum__Comment__c.Label}" />
+                    <div class="slds-form-element__control">
+                        <apex:inputTextarea styleClass="slds-input slds-text-heading_regular" value="{!comment}"/>
+                    </div>
+                    <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Branch" />
+                    <div class="slds-form-element__control">
+                        <apex:outPutText style="background-color: #eef1f6" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Flosum__Branch_Name__c}"/>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Branch Number:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Name}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="{!$ObjectType.Flosum__Branch__c.fields.Flosum__Branch_Description__c.Label}" />
+                <div class="slds-form-element__control">
+                    <apex:outputText styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Flosum__Branch_Description__c}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Repository:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Branch__c.Repository__r.name}"/>
+                </div>
+            </apex:outputPanel>
+                <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                    <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Users For Approval:" />
+                    <div class="slds-form-element__control">
+                        <c:MultiSelectComponent leftLabel="Available Users"
+                                    leftOption="{!leftOptionList}"
+                                    rightLabel="Selected Users"
+                                    rightOption="{!rightOptionList}"
+                                    size="5"
+                                    width="150px"/>
+                    </div>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </html>
+    </apex:form>
+</apex:page>

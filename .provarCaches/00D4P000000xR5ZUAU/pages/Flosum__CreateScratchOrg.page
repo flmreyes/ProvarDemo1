@@ -1,0 +1,389 @@
+<apex:page standardController="Flosum__Organisation__c"
+	extensions="Flosum.CreateScratchOrgController" sidebar="false"
+	doctype="html-5.0" cache="false" tabStyle="Flosum__Organisation__c" id="pg">
+	<c:Wait />
+	<apex:slds />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery-2.1.4.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster,'jszip-master/flosumsf/flosumsf1.6.0.js')}" />
+	
+	<style>
+        .message {
+		    list-style-type: none;
+		}
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message span {
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.imgLookup {
+			height: 27px !important;
+			margin-left: 2%;
+			margin-top: 3px;"
+		}
+	</style>
+
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form styleClass="slds-form--stacked">
+			<apex:pagemessages id="msg" />
+			
+			<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium topMargin">
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media" id="pBlock">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle"
+						title="CreateScratchorg">Create Scratch org</h1>
+				</div>
+			</apex:outputPanel>
+			<apex:outputPanel layout="block" styleClass="slds-form--stacked"
+				id="pBlock">
+				<apex:outputPanel styleClass="slds-grid slds-wrap" layout="block">
+
+					<apex:outputPanel styleClass="slds-size_5-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls"
+							value="Scratch org name:" />
+						<div class="slds-form-element__control">
+							<apex:inputText styleClass="slds-input slds-text-heading_regular"
+								value="{!template.OrgName}" required="false"
+								style="border-left-color: red;" />
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-size_2-of-12 slds-p-right_small" />
+					<apex:outputPanel styleClass="slds-size_5-of-12 " layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls"
+							value="Admin's Email:" />
+						<div class="slds-form-element__control">
+							<apex:inputText styleClass="slds-input slds-text-heading_regular"
+								value="{!template.adminEmail}" required="false"
+								style="border-left-color: red;" />
+						</div>
+					</apex:outputPanel>
+
+					<apex:outputPanel styleClass=" slds-size_5-of-12">
+						<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular"
+							value="Country:" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList value="{!template.country}" multiselect="false"
+									size="1"
+									styleClass="slds-select slds-text-heading_regular disableitem"
+									id="selectedCntrOption">
+									<apex:selectOptions value="{!countryOptionList}" />
+								</apex:selectList>
+							</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-size_2-of-12 slds-p-right_small" />
+					<apex:outputPanel styleClass=" slds-size_5-of-12">
+						<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular"
+							value="Language:" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList value="{!template.language}"
+									multiselect="false" size="1"
+									styleClass="slds-select slds-text-heading_regular disableitem"
+									id="selectedLangOption">
+									<apex:selectOptions value="{!langOptionList}" />
+								</apex:selectList>
+							</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass=" slds-size_5-of-12">
+						<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular"
+							value="Namespace:" />
+						<div class="slds-form-element__control slds-list_horizontal">
+							<div class="slds-select_container  slds-size_4-of-12" id="ns">
+								<apex:selectList value="{!template.namespace}"
+									multiselect="false" size="1"
+									styleClass="slds-select slds-text-heading_regular disableitem"
+									id="selectedNSOption">
+									<apex:selectOptions value="{!nsOptionList}" />
+								</apex:selectList>
+							</div>&nbsp;&nbsp;
+								<div class="mouseOverInfoOuter" id="searchInvoiceHelper"
+									onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)"
+									tabindex="0">
+									<img src="/s.gif" alt="" class="infoIcon" title="" />
+									<div class="mouseOverInfo" id="searchInvoiceHelperText"
+										style="display: none; opacity: -0.19999999999999996; left: 16px;">
+										<div class="body">The namespace typed here must be
+											already registered in Dev Hub org. Use the Link Namespace
+											action in the Dev Hub graphical interface to add a new
+											namespace.</div>
+									</div>
+								</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-size_2-of-12 slds-p-right_small" />
+					<apex:outputPanel styleClass=" slds-size_5-of-12">
+						<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular"
+							value="Edition:" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList value="{!template.edition}" multiselect="false"
+									size="1"
+									styleClass="slds-select slds-text-heading_regular disableitem"
+									id="selectedEdOption">
+									<apex:selectOptions value="{!editionsLi}" />
+									<apex:actionSupport event="onchange" action="{!updateFeatures}"
+										rerender="featureSettings1" />
+								</apex:selectList>
+							</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-form-element slds-size_5-of-12"
+						layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls"
+							value="Scratch org password:" />
+						<div class="slds-form-element__control slds-list_horizontal">
+							<apex:inputText styleClass="slds-input slds-text-heading_regular"
+								value="{!defaultPassword}" required="false"
+								style="border-left-color: red;" />&nbsp;&nbsp;
+							<div class="mouseOverInfoOuter" id="searchInvoiceHelper"
+								onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)"
+								tabindex="0">
+								<img src="/s.gif" alt="" class="infoIcon" title="" />
+								<div class="mouseOverInfo" id="searchInvoiceHelperText"
+									style="display: none; opacity: -0.19999999999999996; left: 16px;">
+									<div class="body">The password should be a combination of
+										letters and numbers (Salesforce's mandatory constraints on
+										passwords)</div>
+								</div>
+							</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-size_2-of-12 slds-p-right_small" />
+					<apex:outputPanel styleClass="slds-form-element slds-size_5-of-12"
+						layout="block">
+						<div class="slds-form-element__control">
+							<span class="slds-checkbox"> <apex:inputCheckBox styleclass="slds-input" value="{!template.hasSampleData}"
+									id="chkBox10" /> <apex:outputLabel for="chkBox10"
+									styleClass="slds-checkbox__label">
+									<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls"
+										value="Add sample data" />
+									<span class="slds-checkbox--faux"></span>
+									<span class="slds-form-element__label"></span>
+								</apex:outputLabel>
+							</span>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-form-element slds-size_8-of-12"
+						layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls"
+							value="Description:" />
+						<div class="slds-form-element__control">
+							<apex:inputTextarea cols="80" rows="4"
+								styleClass="slds-input slds-text-heading_regular"
+								value="{!template.description}" required="false" />
+						</div>
+					</apex:outputPanel>
+
+				</apex:outputPanel>
+			</apex:outputPanel>
+			</apex:outputPanel>
+
+			<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium topMargin">
+				<apex:outputPanel layout="block" styleClass="slds-page-header">
+					<div class="slds-media" id="pBlock">
+						<h1
+							class="slds-page-header__title slds-truncate slds-align-middle"
+							title="CreateScratchorg">Features</h1>
+					</div>
+				</apex:outputPanel>
+
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputpanel id="picklist2" layout="block">
+								<c:MultiSelectComponent leftLabel="Available features"
+									leftOption="{!leftOptionList}" rightLabel="Selected features"
+									rightOption="{!rightOptionList}" size="12" width="200px" />
+							</apex:outputpanel>
+						</apex:outputPanel>
+					</apex:outputPanel>
+				</div>
+			</apex:outputPanel>
+
+			<div class="slds-no-flex slds-align_absolute-center" id="pbb">
+				<apex:commandbutton styleClass="slds-button slds-button_neutral"
+					value="Cancel" immediate="true" action="{!cancel}" reRender="msg" />
+				<apex:commandbutton styleClass="slds-button slds-button_neutral"
+					value="Create org"
+					onclick="show();setText('Creating scratch org...');"
+					oncomplete="finalize('{!isErrors}');" action="{!auth}"
+					disabled="{!disableUI}" reRender="msg,pBlock,pbb" />
+			</div>
+
+			<apex:actionfunction action="{!authorize}" name="refresh" onComplete="overridePageMessages();hide();" reRender="msg,pBlock,pbb">
+			</apex:actionfunction>
+			<apex:actionfunction action="{!finalize}"  name="finalizeScratchOrgCreation" onComplete="checkResult('{!status}','{!JSENCODE(urlsJSON)}');"	reRender="msg,pbb">
+			</apex:actionfunction>
+			<apex:actionfunction action="{!reset}"     name="reset"	onComplete="overridePageMessages();hide();" reRender="msg,ns,pbb">
+			</apex:actionfunction>
+			<apex:actionfunction action="{!redirect}"  name="redirect"	reRender="msg,ns">
+			</apex:actionfunction>
+		</apex:form>
+	</apex:outputPanel>
+	<script>
+		//  uncomment this after adding remoteAction methods to controller	    
+		//	 Visualforce.remoting.timeout = 120000;   
+
+    	var sessionId = "{!$Api.Session_Id}";
+	
+   		if(typeof jQuery != 'undefined'){
+        	 $j = jQuery.noConflict();
+    	}
+	
+		jQuery(document).ready(function() {
+		});
+	
+	    if ('{!disableUI}' == false || '{!disableUI}' == 'false'){
+    			show();setText('Authorizing org...');
+    			refresh();
+    		}
+    		
+    	function finalize(isErrors){
+    		console.log(' call finalize');
+    		var scrOrgId = '{!scratchOrgInfoId}';
+    		console.log('scrOrgId='+scrOrgId);
+    		if (isErrors == true || isErrors == 'true' ){
+    			hide();// exit and show error message
+    		}else{// continue - registering this org in Flosum
+    			finalizeScratchOrgCreation();
+    		}
+    	}
+    	
+    	function checkResult(status,urlsJson,authJ,aStr){
+
+		console.log('checkResult: '+status);
+    		if (status != 'Active'){
+    			if (status == 'Error'){
+    				overridePageMessages();
+		    		hide();
+    				return;		
+    			}
+    			setTimeout(function(){
+    				finalizeScratchOrgCreation();
+    			},6000);
+    			return;
+    		}
+    		var scrOrgId = '{!scrOrgId}';
+
+
+    		if (urlsJson == undefined || urlsJson == '') return;
+    		var urls = JSON.parse(urlsJson);
+
+    		var selfConn = new jsforce.Connection({ accessToken: sessionId });
+    		var types = [{type: 'RemoteSiteSetting', folder: null}];
+			selfConn.metadata.list(types, '43.0', function(err, metadata) {
+//				console.log(JSON.stringify(metadata));
+				var newMetadata = [];
+				var existingRSSMap = {};
+				if (metadata != undefined && metadata.length > 0){
+					for (var x = 0; x < metadata.length; x++){
+						existingRSSMap[metadata[x].fullName] = true; 
+					}
+				}
+
+				var newUrl1 = getNormalName(urls.instanceUrl);
+				if (newUrl1 != null && newUrl1 != undefined && existingRSSMap[newUrl1] == undefined){
+					newMetadata.push(getRSS(newUrl1,urls.instanceUrl));
+				}
+				var newUrl2 = getNormalName(urls.pod);
+				if (newUrl2 != null && newUrl2 != undefined && existingRSSMap[newUrl2] == undefined){
+					newMetadata.push(getRSS(newUrl2, getUrl(newUrl2)));
+				}
+
+				if (newMetadata.length > 0){// update
+					selfConn.metadata.create('RemoteSiteSetting', newMetadata, function(err, results) {
+  						if (err) { console.err(err); }
+  						for (var i=0; i < results.length; i++) {
+    						var result = results[i];
+    						console.log('success ? : ' + result.success);
+    						console.log('fullName : ' + result.fullName);
+  						}
+  						console.log('results:'+JSON.stringify(results));
+  						// reset password
+  						console.log('all done..');
+  						reset();
+					});
+				}else{
+					reset();
+				}
+				
+			});
+
+    		
+    	}
+    	
+    	function getNormalName(url){
+    		if (url != null && url != undefined){
+	    		var result = url.toLowerCase().trim();
+	    		if (result.indexOf('https://') == 0){
+	    			var pos = url.indexOf('.');
+	    			if (pos > -1){
+	    				result = result.substr(8,pos);
+	    			}
+	    		}
+	    		result = result.replace(/-/g, '').replace(/\./g, '').replace(/_/g, '');
+    		}
+    		return result;
+    	}
+
+    	function getUrl(url){
+    		return 'https://'+ url + '.salesforce.com';
+		}
+		    	
+    	function getRSS(fullName,url){
+    		var rss = {};
+    		rss.fullName = fullName;
+    		rss.url = url;
+    		rss.isActive = true;
+    		return rss;
+    	}	
+    	
+        $(document).ready(function(){
+	       overridePageMessages();    
+	    });
+	    
+	    var textureEffect = '';
+	    //Uncomment below line for texture effect on page messages
+	    textureEffect = 'slds-theme--alert-texture';
+	    const styleMap = {
+	    	'warningM3':'slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect,
+	    	'confirmM3':'slds-notify slds-notify--alert slds-theme--success customMessage '+textureEffect,
+	    	'errorM3':'slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect,
+	    	'infoM3':'slds-notify slds-notify--toast customMessage '+textureEffect
+	    }
+		
+		function overridePageMessages(){    
+			var textureEffect = '';
+	        //Uncomment below line for texture effect on page messages
+	        textureEffect = 'slds-theme--alert-texture';
+			for (var styleClass in styleMap){
+				var elem =  $('.' + styleClass);
+				if (elem){
+					elem.addClass(styleMap[styleClass]);
+					elem.removeClass(styleClass);
+				}
+			}
+	    }
+    	
+	    
+	    </script>
+
+</apex:page>

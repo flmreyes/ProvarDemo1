@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sfObject creatable="true" deleteable="true" feedEnabled="true" keyPrefix="006" label="Opportunity" labelPlural="Opportunities" layoutable="true" listViewFilterType="o" n="Opportunity" queryable="true" retrieveable="true" s="" searchLayoutable="true" standardLabel="Opportunity" t="Opportunity (006)" updatable="true" urlDetail="https://ips-provar.my.salesforce.com/{ID}" urlEdit="https://ips-provar.my.salesforce.com/{ID}/e" urlNew="https://ips-provar.my.salesforce.com/006/e">
+  <fields>
+    <sfField createable="false" editPermission="false" length="18" n="Id" t="Opportunity ID" type="id" updateable="false"/>
+    <sfField createable="false" editPermission="false" n="IsDeleted" t="Deleted" type="_boolean" updateable="false"/>
+    <sfField length="18" n="AccountId" relationshipName="Account" t="Account Name" type="reference">
+      <referenceTos>
+        <string>Account</string>
+      </referenceTos>
+    </sfField>
+    <sfField length="120" n="Name" nameField="true" required="true" t="Opportunity Name"/>
+    <sfField extraTypeInfo="plaintextarea" filterable="false" length="32000" n="Description" type="textarea"/>
+    <sfField length="40" n="StageName" required="true" t="Stage" type="picklist">
+      <picklistEntryIds>1,2,3,4,5,6,7,8,9,10</picklistEntryIds>
+      <picklistEntries>
+        <sfPLE id="1" n="Prospecting" s=""/>
+        <sfPLE id="2" n="Qualification" s=""/>
+        <sfPLE id="3" n="Needs Analysis" s=""/>
+        <sfPLE id="4" n="Value Proposition" s=""/>
+        <sfPLE id="5" n="Id. Decision Makers" s=""/>
+        <sfPLE id="6" n="Perception Analysis" s=""/>
+        <sfPLE id="7" n="Proposal/Price Quote" s=""/>
+        <sfPLE id="8" n="Negotiation/Review" s=""/>
+        <sfPLE id="9" n="Closed Won" s=""/>
+        <sfPLE id="10" n="Closed Lost" s=""/>
+      </picklistEntries>
+    </sfField>
+    <sfField n="Amount" precision="18" scale="2" type="currency"/>
+    <sfField n="Probability" precision="3" t="Probability (%)" type="percent"/>
+    <sfField n="CloseDate" required="true" t="Close Date" type="date"/>
+    <sfField length="40" n="Type" type="picklist">
+      <picklistEntryIds>11,12</picklistEntryIds>
+      <picklistEntries>
+        <sfPLE id="11" n="Existing Business" s=""/>
+        <sfPLE id="12" n="New Business" s=""/>
+      </picklistEntries>
+    </sfField>
+    <sfField length="255" n="NextStep" t="Next Step"/>
+    <sfField length="40" n="LeadSource" t="Lead Source" type="picklist">
+      <picklistEntryIds>13,14,15,16,17,18,19,20,21,22,23</picklistEntryIds>
+      <picklistEntries>
+        <sfPLE id="13" n="Advertisement" s=""/>
+        <sfPLE id="14" n="Employee Referral" s=""/>
+        <sfPLE id="15" n="External Referral" s=""/>
+        <sfPLE id="16" n="Partner" s=""/>
+        <sfPLE id="17" n="Public Relations" s=""/>
+        <sfPLE id="18" n="Seminar - Internal" s=""/>
+        <sfPLE id="19" n="Seminar - Partner" s=""/>
+        <sfPLE id="20" n="Trade Show" s=""/>
+        <sfPLE id="21" n="Web" s=""/>
+        <sfPLE id="22" n="Word of mouth" s=""/>
+        <sfPLE id="23" n="Other" s=""/>
+      </picklistEntries>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="IsClosed" t="Closed" type="_boolean" updateable="false"/>
+    <sfField createable="false" editPermission="false" n="IsWon" t="Won" type="_boolean" updateable="false"/>
+    <sfField createable="false" length="40" n="ForecastCategory" required="true" restrictedPicklist="true" t="Forecast Category" type="picklist" updateable="false">
+      <picklistEntryIds>24,25,26,27,28</picklistEntryIds>
+      <picklistEntries>
+        <sfPLE id="24" n="Omitted" s=""/>
+        <sfPLE id="25" n="Pipeline" s=""/>
+        <sfPLE id="26" n="BestCase" s="" t="Best Case"/>
+        <sfPLE id="27" n="Forecast" s="" t="Commit"/>
+        <sfPLE id="28" n="Closed" s=""/>
+      </picklistEntries>
+    </sfField>
+    <sfField length="40" n="ForecastCategoryName" restrictedPicklist="true" t="Forecast Category" type="picklist">
+      <picklistEntryIds>24,25,29,30,28</picklistEntryIds>
+      <picklistEntries>
+        <sfPLE id="24" n="Omitted" s=""/>
+        <sfPLE id="25" n="Pipeline" s=""/>
+        <sfPLE id="29" n="Best Case" s=""/>
+        <sfPLE id="30" n="Commit" s=""/>
+        <sfPLE id="28" n="Closed" s=""/>
+      </picklistEntries>
+    </sfField>
+    <sfField length="18" n="CampaignId" relationshipName="Campaign" t="Primary Campaign Source" type="reference">
+      <referenceTos>
+        <string>Campaign</string>
+      </referenceTos>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="HasOpportunityLineItem" t="Has Line Item" type="_boolean" updateable="false"/>
+    <sfField length="18" n="Pricebook2Id" relationshipName="Pricebook2" t="Price Book" type="reference">
+      <referenceTos>
+        <string>Pricebook2</string>
+      </referenceTos>
+    </sfField>
+    <sfField length="18" n="OwnerId" relationshipName="Owner" t="Opportunity Owner" type="reference">
+      <referenceTos>
+        <string>User</string>
+      </referenceTos>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="CreatedDate" t="Created Date" type="datetime" updateable="false"/>
+    <sfField createable="false" editPermission="false" length="18" n="CreatedById" relationshipName="CreatedBy" t="Created By" type="reference" updateable="false">
+      <referenceTos>
+        <string>User</string>
+      </referenceTos>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="LastModifiedDate" t="Last Modified Date" type="datetime" updateable="false"/>
+    <sfField createable="false" editPermission="false" length="18" n="LastModifiedById" relationshipName="LastModifiedBy" t="Last Modified By" type="reference" updateable="false">
+      <referenceTos>
+        <string>User</string>
+      </referenceTos>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="SystemModstamp" t="System Modstamp" type="datetime" updateable="false"/>
+    <sfField createable="false" editPermission="false" n="LastActivityDate" t="Last Activity" type="date" updateable="false"/>
+    <sfField createable="false" digits="8" n="FiscalQuarter" t="Fiscal Quarter" type="_int" updateable="false"/>
+    <sfField createable="false" digits="8" n="FiscalYear" t="Fiscal Year" type="_int" updateable="false"/>
+    <sfField createable="false" length="6" n="Fiscal" t="Fiscal Period" updateable="false"/>
+    <sfField editPermission="false" length="18" n="ContactId" readPermission="false" t="Contact" type="reference" updateable="false">
+      <referenceTos>
+        <string>Contact</string>
+      </referenceTos>
+    </sfField>
+    <sfField createable="false" editPermission="false" n="LastViewedDate" t="Last Viewed Date" type="datetime" updateable="false"/>
+    <sfField createable="false" editPermission="false" n="LastReferencedDate" t="Last Referenced Date" type="datetime" updateable="false"/>
+    <sfField createable="false" editPermission="false" filterable="false" n="HasOpenActivity" t="Has Open Activity" type="_boolean" updateable="false"/>
+    <sfField createable="false" editPermission="false" filterable="false" n="HasOverdueTask" t="Has Overdue Task" type="_boolean" updateable="false"/>
+    <sfField extraTypeInfo="plaintextarea" length="255" n="Additional_Description__c" t="Additional Description label" type="textarea"/>
+    <sfField length="100" n="Extra_Comments__c" t="Extra Comments"/>
+    <sfField editPermission="false" filterable="false" n="ContractId" notVisibleToMetadataUser="true" readPermission="false" t="Contract"/>
+    <sfField editPermission="false" filterable="false" n="ExpectedRevenue" notVisibleToMetadataUser="true" readPermission="false" t="Expected Revenue"/>
+    <sfField editPermission="false" filterable="false" n="IqScore" notVisibleToMetadataUser="true" readPermission="false" t="Score"/>
+    <sfField editPermission="false" filterable="false" n="IsPrivate" notVisibleToMetadataUser="true" readPermission="false" t="Private"/>
+    <sfField editPermission="false" filterable="false" n="TotalOpportunityQuantity" notVisibleToMetadataUser="true" readPermission="false" t="Quantity"/>
+  </fields>
+  <childRelationships>
+    <sfObjectRelationship childName="AccountPartner" field="OpportunityId" n="AccountPartners" relationshipName="AccountPartners" s="2-" t="AccountPartner"/>
+    <sfObjectRelationship alias="RelatedHistoryList" childName="ActivityHistory" field="WhatId" n="ActivityHistories" relationshipName="ActivityHistories" s="2-" t="ActivityHistory"/>
+    <sfObjectRelationship alias="RelatedFileList" childName="AttachedContentDocument" field="LinkedEntityId" n="AttachedContentDocuments" relationshipName="AttachedContentDocuments" s="2-" t="AttachedContentDocument"/>
+    <sfObjectRelationship alias="RelatedContentNoteList" childName="AttachedContentNote" field="LinkedEntityId" n="AttachedContentNotes" relationshipName="AttachedContentNotes" s="2-" t="AttachedContentNote"/>
+    <sfObjectRelationship alias="RelatedActivityAttachmentList" childName="Attachment" field="ParentId" n="Attachments" relationshipName="Attachments" s="2-" t="Attachment"/>
+    <sfObjectRelationship alias="RelatedGroupsListOnRecord" childName="CollaborationGroupRecord" field="RecordId" n="RecordAssociatedGroups" relationshipName="RecordAssociatedGroups" s="2-" t="CollaborationGroupRecord"/>
+    <sfObjectRelationship alias="RelatedNoteList" childName="CombinedAttachment" field="ParentId" n="CombinedAttachments" relationshipName="CombinedAttachments" s="2-" t="CombinedAttachment"/>
+    <sfObjectRelationship childName="ContentDocumentLink" field="LinkedEntityId" n="ContentDocumentLinks" relationshipName="ContentDocumentLinks" s="2-" t="ContentDocumentLink"/>
+    <sfObjectRelationship childName="EntitySubscription" field="ParentId" n="FeedSubscriptionsForEntity" relationshipName="FeedSubscriptionsForEntity" s="2-" t="EntitySubscription"/>
+    <sfObjectRelationship childName="Event" field="WhatId" n="Events" relationshipName="Events" s="2-" t="Event"/>
+    <sfObjectRelationship childName="Note" field="ParentId" n="Notes" relationshipName="Notes" s="2-" t="Note"/>
+    <sfObjectRelationship childName="NoteAndAttachment" field="ParentId" n="NotesAndAttachments" relationshipName="NotesAndAttachments" s="2-" t="NoteAndAttachment"/>
+    <sfObjectRelationship alias="RelatedActivityList" childName="OpenActivity" field="WhatId" n="OpenActivities" relationshipName="OpenActivities" s="2-" t="OpenActivity"/>
+    <sfObjectRelationship alias="RelatedCompetitorList" childName="OpportunityCompetitor" field="OpportunityId" n="OpportunityCompetitors" relationshipName="OpportunityCompetitors" s="2-" t="OpportunityCompetitor"/>
+    <sfObjectRelationship alias="RelatedContactRoleList" childName="OpportunityContactRole" field="OpportunityId" n="OpportunityContactRoles" relationshipName="OpportunityContactRoles" s="2-" t="OpportunityContactRole"/>
+    <sfObjectRelationship childName="OpportunityFeed" field="ParentId" n="Feeds" relationshipName="Feeds" s="2-" t="OpportunityFeed"/>
+    <sfObjectRelationship alias="RelatedEntityHistoryList" childName="OpportunityFieldHistory" field="OpportunityId" n="Histories" relationshipName="Histories" s="2-" t="OpportunityFieldHistory"/>
+    <sfObjectRelationship alias="RelatedOpportunityHistoryList" childName="OpportunityHistory" field="OpportunityId" n="OpportunityHistories" relationshipName="OpportunityHistories" s="2-" t="OpportunityHistory"/>
+    <sfObjectRelationship alias="RelatedLineItemList" childName="OpportunityLineItem" field="OpportunityId" n="OpportunityLineItems" relationshipName="OpportunityLineItems" s="2-" t="OpportunityLineItem"/>
+    <sfObjectRelationship alias="RelatedPartnerList" childName="OpportunityPartner" field="OpportunityId" n="OpportunityPartnersFrom" relationshipName="OpportunityPartnersFrom" s="2-" t="OpportunityPartner"/>
+    <sfObjectRelationship childName="OpportunityShare" field="OpportunityId" n="Shares" relationshipName="Shares" s="2-" t="OpportunityShare"/>
+    <sfObjectRelationship childName="Partner" field="OpportunityId" n="Partners" relationshipName="Partners" s="2-" t="Partner"/>
+    <sfObjectRelationship alias="RelatedProcessInstanceHistory" childName="ProcessInstance" field="TargetObjectId" n="ProcessInstances" relationshipName="ProcessInstances" s="2-" t="ProcessInstance"/>
+    <sfObjectRelationship alias="RelatedProcessHistoryList" childName="ProcessInstanceHistory" field="TargetObjectId" n="ProcessSteps" relationshipName="ProcessSteps" s="2-" t="ProcessInstanceHistory"/>
+    <sfObjectRelationship childName="RecordAction" field="RecordId" n="RecordActions" relationshipName="RecordActions" s="2-" t="RecordAction"/>
+    <sfObjectRelationship childName="RecordActionHistory" field="ParentRecordId" n="RecordActionHistories" relationshipName="RecordActionHistories" s="2-" t="RecordActionHistory"/>
+    <sfObjectRelationship childName="Task" field="WhatId" n="Tasks" relationshipName="Tasks" s="2-" t="Task"/>
+    <sfObjectRelationship childName="TopicAssignment" field="EntityId" n="TopicAssignments" relationshipName="TopicAssignments" s="2-" t="TopicAssignment"/>
+    <sfObjectRelationship alias="RelatedContentDistributionList" childName="ContentDistribution" field="RelatedRecordId" n="RelatedContentDistributionList" relationshipName="RelatedContentDistributionList" s="2-" t="Content Deliveries"/>
+    <sfObjectRelationship alias="RelatedCaseList" childName="Case" field="OpportunityId" n="Cases" relationshipName="Cases" s="2-"/>
+    <sfObjectRelationship alias="RelatedOrderList" childName="Order" field="OpportunityId" n="Orders" relationshipName="Orders" s="2-"/>
+    <sfObjectRelationship alias="RelatedCampaignInfluenceList" childName="Campaign" field="CampaignId" n="Campaigns" relationshipName="Campaigns" s="2-" t="Campaign Influence"/>
+  </childRelationships>
+  <recordTypes>
+    <sfRecordType layoutsLoaded="false" n="&lt;default&gt;" t="Web Record Type Mapping"/>
+  </recordTypes>
+  <standardActions>
+    <sfActionLink modes="ObjectHome Opportunities List" n="New"/>
+    <sfActionLink alias="edit" modes="View Opportunities detail" n="Edit" requiresRow="true"/>
+    <sfActionLink alias="delete" modes="View Opportunities detail" n="Delete" requiresRow="true"/>
+    <sfActionLink lightningActionName="MassChangeOwner" massAction="true" modes="View List all_related_lists" n="ChangeOwnerOne" t="Change Owner"/>
+    <sfActionLink modes="View Opportunities" n="ShowMore" t="Show More"/>
+    <sfActionLink modes="View Opportunities" n="GoToList" t="Go To List"/>
+    <sfActionLink modes="RelatedList" n="PrevPage" t="Previous Page"/>
+    <sfActionLink modes="RelatedList" n="NextPage" t="Next Page"/>
+    <sfActionLink n="AddInfluence" s=""/>
+    <sfActionLink modes="View" n="CancelEdit"/>
+    <sfActionLink alias="clone" modes="View detail" n="Clone" requiresRow="true"/>
+    <sfActionLink modes="ObjectHome" n="List" requiresRow="true"/>
+    <sfActionLink afterWaitUrl="ui:wait:timed?seconds=10" modes="View" n="SaveEdit"/>
+    <sfActionLink n="Tab" s=""/>
+    <sfActionLink modes="ObjectHome" n="View" requiresRow="true"/>
+    <sfActionLink alias="submit" modes="View Submit detail" n="Submit" requiresRow="true" t="Submit for Approval"/>
+    <sfActionLink modes="View Remove" n="Remove"/>
+    <sfActionLink modes="View Unlock" n="Unlock" t="Unlock Record"/>
+    <sfActionLink modes="Edit New Clone new edit clone" n="save" requiresRow="true" t="Save"/>
+    <sfActionLink modes="Edit New Clone new edit clone" n="save_new" requiresRow="true" t="Save &amp; New"/>
+    <sfActionLink modes="Edit New Clone new edit clone" n="cancel" requiresRow="true" t="Cancel"/>
+    <sfActionLink massAction="true" modes="View List" n="ChangeRecordType" t="Change Record Type"/>
+    <sfActionLink modes="View" n="email" t="Send an Email"/>
+    <sfActionLink alias="share" modes="View detail" n="Share" t="Sharing"/>
+    <sfActionLink modes="QuickAction" n="publishersharebutton" t="Create"/>
+    <sfActionLink modes="ObjectHome List" n="Sort"/>
+    <sfActionLink modes="ObjectHome List" n="Filter"/>
+    <sfActionLink modes="ObjectHome View" n="Search"/>
+    <sfActionLink modes="ObjectHome List" n="Import"/>
+    <sfActionLink modes="View" n="PrintableView" t="Printable View"/>
+    <sfActionLink n="ObjectHome" requiresRow="true" t="Home"/>
+    <sfActionLink n="editShare" t="Edit Sharing"/>
+    <sfActionLink modes="Opportunities List" n="newOpp" newAction="true" t="New Opportunity"/>
+    <sfActionLink modes="detail" n="cloneWithProducts" parentMenuAction="Clone" t="Clone with Products"/>
+    <sfActionLink modes="detail" n="cloneWithoutProducts" parentMenuAction="Clone" t="Clone without Products"/>
+    <sfActionLink alias="changeStatus" modes="detail Opportunities" n="ChangeStatus" t="Change Status"/>
+  </standardActions>
+  <homeListColumns>
+    <string>OPPORTUNITY.NAME</string>
+    <string>ACCOUNT.NAME</string>
+    <string>OPPORTUNITY.CLOSE_DATE</string>
+  </homeListColumns>
+  <lookupColumns>
+    <string>OPPORTUNITY.NAME</string>
+    <string>ACCOUNT.NAME</string>
+    <string>ACCOUNT.SITE</string>
+  </lookupColumns>
+  <weblinks/>
+  <searchResultColumns>
+    <string>OPPORTUNITY.NAME</string>
+    <string>ACCOUNT.NAME</string>
+    <string>ACCOUNT.SITE</string>
+    <string>OPPORTUNITY.STAGE_NAME</string>
+    <string>OPPORTUNITY.CLOSE_DATE</string>
+    <string>CORE.USERS.ALIAS</string>
+  </searchResultColumns>
+  <listViewActions/>
+</sfObject>

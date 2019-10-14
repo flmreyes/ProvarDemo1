@@ -1,0 +1,157 @@
+<apex:page standardController="Flosum__Snapshot__c" extensions="Flosum.SnapshotDeleteExtension" action="{!redirectToParent}" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+	
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message table ul li{
+		    color: white !important;
+		}
+		.infoMessage {
+			margin: 4px 20px !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+	</style>
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:pagemessages id="msg"/>
+		<apex:outputPanel layout="block" styleClass="slds-page-header">
+			<div class="slds-media">
+				<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Settings">Delete Snapshot</h1>
+			</div>
+		</apex:outputPanel>
+		<fieldset class="slds-box slds-theme--default">
+			<apex:outputPanel layout="block">
+				<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+					<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Snapshot Name" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Name}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organization" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__Organisation__c}"/>
+						</div>
+           			</apex:outputPanel>
+        		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Metadata Items" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Metadata_Items__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Apex Classes" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Apex_Classes__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Apex Pages" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Apex_Pages__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Apex Triggers" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Apex_Triggers__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Custom Labels" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Custom_Labels__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Custom Objects" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Custom_Objects__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Groups" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Groups__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Record Types" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Record_Types__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Reports" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Reports__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-left_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Workflow Rules" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__No_of_Workflow_Rules__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+          		<apex:outputPanel layout="block" styleClass="slds-grid slds-m-top--medium">
+           			<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12 slds-m-right_x-large" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Other Metadata Items" />
+						<div class="slds-form-element__control">
+							<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Snapshot__c.Flosum__Other_Metadata_Items__c}"/>
+						</div>
+           			</apex:outputPanel>
+          		</apex:outputPanel>
+			</apex:outputPanel>
+		</fieldset>
+	</apex:outputPanel>
+	
+	<script>
+		$(document).ready(function(){
+			overridePageMessages();    
+	    });
+		
+		function overridePageMessages(){    
+			var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage infoMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>	
+</apex:page>

@@ -1,0 +1,1160 @@
+<apex:page standardController="Flosum__Pull_Request__c" extensions="Flosum.PullRequestController" sidebar="false">
+    <c:Wait ></c:Wait>
+    <apex:form >
+         <head>
+             <meta charset = "utf-8"/>
+            <meta name = "viewport" content = "width = device-width, initial-scale=1"/>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+        </head>
+        <style>
+            #exampleModal{
+            height: 100%!important;
+            width: 100%!important;
+            }
+            .hideDiv {
+            display: none;
+            }
+            .diff tbody th {
+            padding-left: 0!important;
+            }
+            
+            .red {
+            background-color:rgba(255, 158, 158, 0.65) !important;
+            }
+            .yellow {
+            background-color:rgba(252, 252, 164, 1) !important;
+            }
+            .message .messageText {
+            color: white !important;
+            }
+            .message .messageText h4 {
+            color: white !important;
+            }
+            .errorMessageLi span {
+            color: white !important;
+            }
+            .lbcls {
+            font-weight: 700 !important;
+            }
+            .customMessage * {
+            color: #fff!important;
+            }
+            .customMessage {
+            margin: 0px !important;
+            opacity: 1!important;
+            width: 100%;
+            font-size: 13px;
+            border: 0px;
+            padding-left: 10px;
+            }
+            .legendulclass {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            margin-top: 10px!important;    
+            }
+            .input-color {
+            position: relative;
+            }
+            .input-color input {
+            padding-left: 20px;
+            margin-bottom: 10px;
+            }
+            .color-box {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            border: 1px solid #000;
+            }
+        </style>
+        <apex:slds />
+            <apex:pageMessages />
+        <div class="slds-page-header">
+            <div class="slds-media__body">
+                <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Transfer To Deployment">Review pull request</h1>
+            </div>
+            
+        </div>
+        <apex:outputPanel styleClass="slds-box slds-theme--default" layout="block" id="toPatch" >
+            <div class="slds-float--right" role="group">
+                <apex:commandButton styleClass="slds-button slds-button_neutral" value="Approve" action="{!approvedRequest}" rendered="{!curruntUserId == requestReviewUser}" />
+                <apex:commandButton styleClass="slds-button slds-button_neutral" value="Reject" action="{!reject}" rendered="{!curruntUserId == requestReviewUser}"/>
+                <apex:commandButton styleClass="slds-button slds-button_neutral" value="Back" action="{!back}"/>
+            </div>
+             <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Pull Request Name:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Pull_Request__c.Name}"/>
+                </div>
+            </apex:outputPanel>
+             <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Pull Request Comment:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6" styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Pull_Request__c.Flosum__Comment__c}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Branch Number:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6" styleClass="slds-input slds-text-heading_regular" value="{!pullRequest.Branch__r.Name}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Branch Name:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6"  styleClass="slds-input slds-text-heading_regular" value="{!pullRequest.Branch__r.Flosum__Branch_Name__c}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Branch Description:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6"  styleClass="slds-input slds-text-heading_regular" value="{!pullRequest.Branch__r.Flosum__Branch_Description__c}"/>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-top_xx-small" layout="block">
+                <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Repository:" />
+                <div class="slds-form-element__control">
+                    <apex:outputText style="background-color: #eef1f6"  styleClass="slds-input slds-text-heading_regular" value="{!pullRequest.Branch__r.Repository__r.Name}"/>
+                </div>
+            </apex:outputPanel>
+            
+           <div class="demo-only hideDiv" id="exampleModal"> 
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container" style="    max-width: 90%;max-height: 90%;min-width: 90%;min-height: 90%;">
+                        <header class="slds-modal__header">
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Detail</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <fieldset class="slds-box slds-theme--default slds-container">
+                                <apex:outputPanel layout="block" id="pbSectionBlock">
+                                    <apex:outputPanel styleClass="slds-form-element slds-size--12-of-12" layout="block">
+                                        <textarea  id="baseText" style="display:none" cols="50" />
+                                        <input type="text" id="contextSize" value="10000" style="display:none"/>
+                                        <div id="baseDivToStoreContent"></div>
+                                        <div id="targetDivToShowComparison"></div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </fieldset>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onClick="hideModal(); return false;">Close</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div> 
+                
+                 <!--Angular-->
+            <div ng-app="ImpactAnalysisPagination">
+                <div ng-controller ="ImpactAnalysisPaginationController" id="ImpactAnalysysControllerId">
+                    <div class="ng-cloak">
+            <apex:outputPanel layout="block" id="tb" styleClass="slds-m-top_small">
+                <div class="slds-border_left slds-border_right slds-border_top slds-border_bottom ">
+                    <span class="slds-form-element__label slds-form-element">Branch Components ({{paginationList.length}})</span>
+                    <table class="slds-table  slds-table_bordered " >
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" ng-repeat = "(key, value) in fieldSet">
+                                    <div class="slds-truncate">{{value}}</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr class="slds-hint-parent"  ng-repeat = "meta in paginationList | orderBy: orderByColumn :isReverse | limitTo: viewLimit" ng-if="$index >= metaOffSet">
+                                    <td scope="row" ng-repeat = "(key, value) in fieldSet">
+                                           <div ng-if="key == 'repositoryVersion' ">
+                                               <a ng-click="viewMetaData(meta.repoCompHistId)">
+                                                    <div class="slds-truncate">{{meta[key]}}</div> 
+                                               </a>
+                                           </div>
+                                           <div ng-if="key == 'pullBranchVersion' ">
+                                               <a  ng-click="viewMetaData(meta.branchCompHistId)">
+                                                    <div class="slds-truncate">{{meta[key]}}</div>
+                                               </a>
+                                           </div>
+                                           <div ng-if="key != 'repositoryVersion' && key != 'pullBranchVersion' ">
+                                               <div class="slds-truncate">{{meta[key]}}</div>
+                                           </div>
+                                    </td>
+                                    <td >
+                                        <div class="slds-truncate">
+                                            <button class="slds-button slds-button_neutral" type="button"  ng-click = "componentComparision('{!branchId}','{!repoId}',meta.compId);" >View Detail</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </apex:outputPanel>
+                        <apex:outputPanel styleClass=" slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded">
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right" html-ng-click="listPrevious();" onClick="return false;" value="Previous" reRender="none" html-ng-disabled="isPrevious();"/>
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_right pageBtnMargin" html-ng-click="showFirst();" onClick="return false;" value="First" reRender="none" html-ng-disabled="isPrevious();"/>
+                            </div>
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                               
+                            </div>
+                            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="listNext((paginationList).length);" onClick="return false;" value="Next" reRender="none" html-ng-disabled="isNext((paginationList).length);"/>
+                                <apex:commandbutton styleClass="btn slds-button slds-button_neutral slds-float_left" html-ng-click="showLast((paginationList).length);" onClick="return false;" value="Last" reRender="none" html-ng-disabled="isNext((paginationList).length);"/>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </apex:outputPanel>
+    </apex:form>
+    <script >
+            var myApp = angular.module("ImpactAnalysisPagination", []);
+            myApp.controller("ImpactAnalysisPaginationController", ['$scope', function($scope) {
+                 //Pagination variables.
+                 $scope.paginationList = [];
+                 $scope.metaOffSet = 0;
+                 $scope.staticLimit = 10;
+                 $scope.orderByColumn = 'componentName';
+                 $scope.isReverse = false;
+                 $scope.viewLimit = $scope.staticLimit;
+                 var fields = {};
+                 
+                 $scope.componentComparision = function(BranchId,RepositioryId,compId){
+                    var editorPageUrl = '{!compComparisonPageURL}';
+                    editorPageUrl +='?source='+BranchId+
+                                    '&target='+ RepositioryId+
+                                    '&compid=' + compId +
+                                    '&pullreqid='+'{!Pull_Request__c.Id}'+
+                                    '&viewcomparison=true'+
+                                    '&redirectTo=Branch';
+                                    console.log(editorPageUrl);
+                     var windowWidth = $(window).width();
+                     var windowHeight = $(window).height();
+                     var objwidth = (windowWidth < 600) ? 600 : windowWidth - 150;
+                     var objheight = (windowHeight < 500) ? 500 : windowHeight - 270;
+                     var popupParams = 'width=' + (objwidth + 50) + ',height=' + (objheight + 250) + ',resizable=1,scrollbars=1';
+
+                     var win = window.open(editorPageUrl, 'MsgWindow', popupParams);
+                     /*var jqwin = $(win);
+                     $(jqwin).blur(function() {
+                        this.close();
+                     });*/
+                 };
+                 
+                  $scope.viewMetaData = function(compId){
+                     var editorPageUrlview = '{!viewMetaDataPageUrl}';
+                     editorPageUrlview +='?Id='+compId;
+                     var win = window.open(editorPageUrlview, 'MsgWindow', 'width=1000,height=800,resizable=1,scrollbars=1');
+                     /*var jqwin = $(win);
+                      $(jqwin).blur(function() {
+                        this.close();
+                     });*/
+                 };
+                 
+                 $scope.showPagination = function(tempLi) {
+                     $scope.$apply(function() {
+                         $scope.sourceName = 'sourceName';
+                         $scope.targetName = 'targetName';
+                         $scope.metaOffSet = 0;
+                         $scope.viewLimit = $scope.staticLimit;
+                         $scope.orderByColumn = 'componentName';
+                         $scope.isReverse = false;
+                         fields['componentName'] = 'Component Name';
+                         fields['componentType'] = 'Component Type';
+                         fields['repositoryVersion'] = 'Repository Version';
+                         fields['pullBranchVersion'] = 'Branch Version';
+                         fields['status'] = 'Status';
+                         $scope.fieldSet = fields;
+                         $scope.paginationList = tempLi;
+                     });
+                 };
+                 
+                 $scope.showFirst = function() {
+                     $scope.metaOffSet = 0;
+                     $scope.viewLimit = $scope.staticLimit;
+                     
+                 };
+                 
+                 $scope.listPrevious = function() {
+                     $scope.metaOffSet = $scope.metaOffSet - $scope.staticLimit;
+                     if($scope.metaOffSet < 0)
+                         $scope.metaOffSet = 0;
+                     $scope.viewLimit = $scope.metaOffSet + $scope.staticLimit;
+                 };
+                 
+                 $scope.listNext = function(tempTotal) {
+                     if(($scope.metaOffSet + $scope.staticLimit) < tempTotal)
+                     {
+                         $scope.metaOffSet = $scope.metaOffSet + $scope.staticLimit;
+                         $scope.viewLimit = $scope.metaOffSet + $scope.staticLimit;
+                     }
+                 };
+                 
+                 $scope.showLast = function(tempTotal) {
+                     $scope.metaOffSet = tempTotal - (tempTotal % $scope.staticLimit);
+                     if($scope.metaOffSet == tempTotal && $scope.metaOffSet != 0)
+                         $scope.metaOffSet = tempTotal - $scope.staticLimit;
+                     $scope.viewLimit = $scope.metaOffSet + $scope.staticLimit;
+                     $scope.defaultNextPrevious();
+                 };
+                 
+                 $scope.isPrevious = function() {
+                     if($scope.metaOffSet < 1) 
+                         return true;
+                     else
+                         return false;
+                 };
+                 
+                 $scope.isNext = function(tempTotal){
+                     if(tempTotal > $scope.metaOffSet+$scope.staticLimit)
+                         return false;
+                     else 
+                         return true;
+                 };
+                 
+                 $scope.totalPageCount = function(tempTotal){
+                     var totalPage = parseInt(tempTotal % $scope.staticLimit > 0 ? (tempTotal / $scope.staticLimit)+1 : (tempTotal / $scope.staticLimit));
+                     return totalPage;
+                 };
+                 
+                 $scope.currentPageNo = function(tempTotal){
+                     var currentPage = 1;
+                     if($scope.metaOffSet <  $scope.staticLimit)
+                         currentPage =  1;
+                     else
+                         currentPage = Math.ceil($scope.metaOffSet / $scope.staticLimit)+1;
+                     return currentPage;
+                 };
+                 
+                 $scope.fetchComponents = function(tempTotal){
+                     Visualforce.remoting.Manager.invokeAction(
+                         '{!$RemoteAction.PullRequestController.getComponentWrapper}',
+                         '{!branchId}',
+                         '{!repoId}', 
+                         function(r,e){
+                             if(e.status && r) {
+                                 if(r.length > 0)
+                                 {
+                                     $scope.showPagination(r);
+                                 }
+                             }
+                             else{
+                                 showMessage(e.message,'ERROR');
+                             }
+                         });
+                 };
+                 $scope.fetchComponents();
+             }]);
+             
+             
+             /*  var sourceComponentFileMap = {};
+             var targetComponentFileMap = {};
+             function viewDetail(fileName,componentType){
+                 console.log(fileName+'    '+componentType);
+                 showModal();
+                 showCompareScreen(fileName,componentType);
+             }
+             function showModal(){
+                 var modal = document.getElementById('exampleModal'); 
+                 modal.style.display = "block";
+             }
+             function hideModal(){
+                 var modal = document.getElementById('exampleModal'); 
+                 modal.style.display = "none";
+             }
+             
+             function showCompareScreen(fileName,componentType){
+                 //console.log('after target');
+                 var index = 1;
+                 var contentBase = document.getElementById('baseDivToStoreContent');
+                 var viewBase = document.getElementById('targetDivToShowComparison');
+                 contentBase.innerHTML = '';
+                 targetComponentFileMap = {};
+                 sourceComponentFileMap = {};
+                 console.log(componentType +'== CustomField');
+                 if(componentType == 'ApexClass'){
+                     if(fileName == 'ProfileTabUserController.cls'){
+                         sourceComponentFileMap['classes/ProfileTabUserController.cls'] = 'public with sharing class ProfileTabUserController{\n\tpublic ProfileTabUserController(){\n\t\t}\n}';
+                         sourceComponentFileMap['classes/ProfileTabUserController.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                         
+                         targetComponentFileMap ['classes/ProfileTabUserController.cls'] = 'public with sharing class ProfileTabUserController{\n\tpublic ProfileTabUserController(){\n\t\tSystem.debug("Hello")\n\t\t}\n}';
+                         targetComponentFileMap ['classes/ProfileTabUserController.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                     }
+                     else if(fileName == 'FlosumController.cls'){
+                         sourceComponentFileMap['classes/FlosumController.cls'] = 'public with sharing class FlosumController.{\n\tpublic FlosumController(){\n\t\t}\n}';
+                         sourceComponentFileMap['classes/FlosumController.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                         
+                         targetComponentFileMap ['classes/FlosumController.cls'] = 'public with sharing class FlosumController{\n\tpublic FlosumController(){\n\t\tSystem.debug("Hello")\n\t\t}\n}';
+                         targetComponentFileMap ['classes/FlosumController.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                     }
+                         else if(fileName == 'LogicCode.cls'){
+                             sourceComponentFileMap['classes/LogicCode.cls'] = 'public with sharing class LogicCode{\n\tpublic LogicCode(){\n\t\t}\n}';
+                             sourceComponentFileMap['classes/LogicCode.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                             
+                             targetComponentFileMap ['classes/LogicCode.cls'] = 'public with sharing class LogicCode{\n\tpublic LogicCode(){\n\t\tSystem.debug("Hello")\n\t\t}\n}';
+                             targetComponentFileMap ['classes/LogicCode.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                         }
+                             else if(fileName == 'Flosum.cls'){
+                                 sourceComponentFileMap['classes/Flosum.cls'] = 'public with sharing class Flosum{\n\tpublic Flosum(){\n\t\t}\n}';
+                                 sourceComponentFileMap['classes/Flosum.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                                 
+                                 targetComponentFileMap ['classes/Flosum.cls'] = 'public with sharing class Flosum{\n\tpublic Flosum(){\n\t\tSystem.debug("Hello")\n\t\t}\n}';
+                                 targetComponentFileMap ['classes/Flosum.cls-meta.xml'] = '<?xml version="1.0" encoding="UTF-8"?>\n<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">\n\t\t<apiVersion>31.0</apiVersion>\n\t\t<status>Active</status>\n</ApexClass>';
+                             }
+                 }
+                 
+                 else if(componentType == 'CustomLabel'){
+                     sourceComponentFileMap['Labels/'+fileName] = '<?xml version="1.0" encoding="UTF-8"?>\n<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">\n\t<labels>\n\t\t<fullName>CreateMetaData</fullName>\n\t\t<language>en_US</language>\n\t\t<protected>false</protected>\n\t\t<shortDescription>Special Character</shortDescription>'+
+                         '\n\t\t<value>Thehse component is changes by ...</value>\n\t</labels>\n</CustomLabels>';
+                     
+                     targetComponentFileMap ['Labels/'+fileName] = '<?xml version="1.0" encoding="UTF-8"?>\n<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">\n\t<labels>\n\t\t<fullName>CreateMetaData</fullName>\n\t\t<language>en_US</language>\n\t\t<protected>true</protected>\n\t\t<shortDescription>Special Character</shortDescription>'+
+                         '\n\t\t<value>Thehse component is changes by ...</value>\n\t</labels>\n</CustomLabels>';
+                 }
+                 
+                     else if(componentType == 'CustomField'){
+                         sourceComponentFileMap[fileName] = '<?xml version="1.0" encoding="UTF-8"?>\n<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">\n\t<labels>\n\t\t<fullName>Special_Character</fullName>\n<fullName>Special_Character</fullName>\n<language>en_US</language>\n<protected>false</protected>\n<shortDescription>Special Character</shortDescription>'+
+                             '\n<value>Thehse component is changes by ...</value>\n</labels>\n</CustomLabels>';
+                         
+                         targetComponentFileMap[fileName] = '<?xml version="1.0" encoding="UTF-8"?>\n<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">\n\t<labels>\n\t\t<fullName>Special_Character</fullName>\n<fullName>Special_Character</fullName>\n<language>en_US</language>\n<protected>false</protected>\n<shortDescription>Special Character</shortDescription>'+
+                             '\n<value>Thehse component is changes by ...</value>\n</labels>\n</CustomLabels>';
+                     }
+                         else if(componentType == 'AuraDefinitionBundle'){
+                             sourceComponentFileMap['aura/'+fileName+'/'+fileName+'controller.js'] = '({handleForgotPassword: function (component, event, helpler) {\n\thelpler.handleForgotPassword(component, event, helpler);\n},\nonKeyUp: function(component, event, helpler){\n\t\tif (event.getParam("keyCode")===13) {\n\t\thelpler.handleForgotPassword(component, event, helpler);\n\t}\n})';
+                             sourceComponentFileMap['aura/'+fileName+'/'+fileName+'helper.js'] = '({handleForgotPassword: function (component, event, helpler) {\n\tvar username = component.find("username").get("v.value");\n\tvar checkEmailUrl = component.get("v.checkEmailUrl");\n\tvar action = component.get("c.forgotPassowrd");\n\t action.setParams({username:username, checkEmailUrl:checkEmailUrl});\n'+
+                                 '\taction.setCallback(this, function(a) {\n\tvar rtnValue = a.getReturnValue();\n\tif (rtnValue != null) {\n\t\tcomponent.set("v.errorMessage",rtnValue);\n\t\tcomponent.set("v.showError",true);\n\t\t\t}\n\t\t});\n\t$A.enqueueAction(action);\n\t}\n)}';                             
+                             targetComponentFileMap['aura/'+fileName+'/'+fileName+'controller.js'] = '({handleForgotPassword: function (component, event, helpler) {\n\thelpler.handleForgotPassword(component, event, helpler);\n},\nonKeyUp: function(component, event, helpler){\n\t\tif (event.getParam("keyCode")===13) {\n\t\thelpler.handleForgotPassword(component, event, helpler);\n\t}\n})';
+                             
+                             targetComponentFileMap['aura/'+fileName+'/'+fileName+'helper.js'] = '({handleForgotPassword: function (component, event, helpler) {\n\tvar username = component.find("username").get("v.value");\n\tvar checkEmailUrl = component.get("v.checkEmailUrl");\n\tvar action = component.get("c.forgotPassowrd");\n\taction.setParams({username:username, checkEmailUrl:checkEmailUrl});\n'+
+                                 '\taction.setCallback(this, function(a) {\n\tvar rtnValue = a.getReturnValue();\n\tif (rtnValue != null) {\n\t\tcomponent.set("v.errorMessage",rtnValue);\n\t\tcomponent.set("v.showError",true);\n\t\t\t}\n\t\t});\n\t$A.enqueueAction(action);\n\t}\n)}';
+                         }
+                 
+                 //var itemName = $('#itemName').html();
+                 var s1 = '';
+                 var s2 = '';
+                 //if newtxt or baseText is empty then add 'Not Exist'
+                 if(isEmpty(sourceComponentFileMap))
+                    s1 += ' : Not Exist';
+                 else
+                 {
+                     s1 += ' : ';// + fullName;
+                 }
+                 if(isEmpty(targetComponentFileMap))
+                     s2 += ' : Not Exist';
+                 else
+                 {
+                     s2 += ' : ';// + fullName;
+                 }
+                 console.log('s1 ####  ' + s1);
+                 console.log('s2 ####  ' + s2);
+                 viewBase.innerHTML = '<div style="display: flex;"><div style="width: 50%;"><h4>'+s1+'</h4></div><div style="width: 50%;"><h4>'+s2+'</h4></div></div>';
+                 
+                 for(var fileName in sourceComponentFileMap)
+                 {
+                     var baseTextId = 'baseText'+index;
+                     var newTextId = 'newText'+index;
+                     var viewDivId = 'diffoutput'+index;
+                     
+                     
+                     var x = document.createElement("TEXTAREA");
+                     x.setAttribute('id',baseTextId);
+                     x.value = sourceComponentFileMap[fileName];
+                     x.setAttribute("style","display:none;");
+                     //contentBase.appendChild(sourcePara);
+                     contentBase.appendChild(x);
+                     
+                     if(targetComponentFileMap[fileName] != undefined)
+                     {
+                         var y = document.createElement("TEXTAREA");
+                         y.setAttribute('id',newTextId);
+                         y.value = targetComponentFileMap[fileName];
+                         y.setAttribute("style","display:none;");
+                         contentBase.appendChild(y);
+                     }
+                     else
+                     {
+                         var y = document.createElement("TEXTAREA");
+                         y.setAttribute('id',newTextId);
+                         y.value = '';
+                         y.setAttribute("style","display:none;");
+                         contentBase.appendChild(y);
+                     }
+                     
+                     var z = document.createElement("DIV");
+                     z.setAttribute('id',viewDivId);
+                     //viewBase.appendChild(targetPara);
+                     viewBase.appendChild(z);
+                     diffUsingJS(0,fileName,fileName,baseTextId,newTextId, viewDivId);
+                     index++;
+                 }
+                 
+                 for(var fileName in targetComponentFileMap)
+                 {
+                     if(sourceComponentFileMap[fileName] == undefined)
+                     {
+                         var baseTextId = 'baseText'+index;
+                         var newTextId = 'newText'+index;
+                         var viewDivId = 'diffoutput'+index;
+                         
+                         var x = document.createElement("TEXTAREA");
+                         x.setAttribute('id',baseTextId);
+                         x.value = '';
+                         x.setAttribute("style","display:none;");
+                         contentBase.appendChild(x);
+                         
+                         var y = document.createElement("TEXTAREA");
+                         y.setAttribute('id',newTextId);
+                         y.value = targetComponentFileMap[fileName];
+                         y.setAttribute("style","display:none;");
+                         contentBase.appendChild(y);
+                         
+                         var z = document.createElement("DIV");
+                         z.setAttribute('id',viewDivId);
+                         
+                         viewBase.appendChild(z);
+                         diffUsingJS(0,fileName,fileName,baseTextId,newTextId, viewDivId);
+                         index++;
+                     }
+                 }
+             }
+             
+             function isEmpty(obj) {
+                 for(var key in obj) {
+                     if(obj.hasOwnProperty(key))
+                         return false;
+                 }
+                 return true;
+             }
+             
+             function openMergeEditor(o){
+                 var windowWidth = $(window).width();
+                 var windowHeight = $(window).height();                  
+                 var editorPageUrl = '{!editMetaDataPageName}';
+                 var link = editorPageUrl;
+                 var obj = {};
+                 obj.type = 'ApexClass';
+                 obj.name = 'BoxController';
+                 obj.mode = 'TXT';
+                 obj.tgt = 'sgefsef';
+                 obj.src = 'asgsggseg';
+                 obj.rightTitle  = '';
+                 obj.leftTitle   = '';
+                 // set dimensions for popup, both inner and outer
+                 obj.width = (windowWidth < 600) ? 600 : windowWidth - 150; 
+                 obj.height = (windowHeight < 500) ? 500 : windowHeight - 270; 
+                 var popupParams = 'width=' + (obj.width + 50) + ',height=' + (obj.height + 250) + ',resizable=1,scrollbars=1'
+                 
+                 $j("body").data( "userData", obj);
+                 
+                 var windowTitle = obj.type + ' ' + obj.name;
+                 console.log('link='+link);
+                 console.log('popupParams='+popupParams);
+                 var w = window.open(link, 'RW', popupParams);
+    }*/
+             </script>
+             <script>
+             /* function reload(){
+                 window.opener.top.location.reload();
+                 window.close();
+             }
+             function diffUsingJS(viewType,source,target,baseTextId,newTextId,viewDivId,ignoreWS) {
+                 "use strict";
+                 var byId = function (id) { return document.getElementById(id); };
+                 var    base = difflib.stringAsLines(byId(baseTextId).value);
+                 var    newtxt = difflib.stringAsLines(byId(newTextId).value);
+                 var    compareBase,  compareNewtxt;
+                 if (ignoreWS != undefined && ignoreWS){
+                     if (base != undefined && base.length > 0 ){
+                         compareBase = [];
+                         for (var x = 0; x <  base.length; x++){
+                             compareBase.push(base[x].trim());
+                         }
+                     }else{
+                         compareBase = base; 
+                     }   
+                     if (newtxt != undefined && newtxt.length > 0 ){
+                         compareNewtxt = [];
+                         for (var x = 0; x <  newtxt.length; x++){
+                             compareNewtxt.push(newtxt[x].trim());
+                         }
+                     }else{
+                         compareNewtxt = base;   
+                     }   
+                 }else{
+                     compareBase = base;
+                     compareNewtxt = newtxt;
+                 }
+                 
+                 var    sm = new difflib.SequenceMatcher(compareBase, compareNewtxt);
+                 var    opcodes = sm.get_opcodes();
+                 var    diffoutputdiv = byId(viewDivId);
+                 var    contextSize = byId("contextSize").value;
+                 
+                 diffoutputdiv.innerHTML = "";
+                 contextSize = contextSize || null;
+                 
+                 diffoutputdiv.appendChild(diffview.buildView({
+                     baseTextLines: base,
+                     newTextLines: newtxt,
+                     opcodes: opcodes,
+                     baseTextName: source,
+                     newTextName: target,
+                     contextSize: contextSize,
+                     viewType: viewType
+                 }));
+             }
+             // Main course
+             
+             diffview = {
+                 /**
+             * Builds and returns a visual diff view.  The single parameter, `params', should contain
+             * the following values:
+             *
+             * - baseTextLines: the array of strings that was used as the base text input to SequenceMatcher
+             * - newTextLines: the array of strings that was used as the new text input to SequenceMatcher
+             * - opcodes: the array of arrays returned by SequenceMatcher.get_opcodes()
+             * - baseTextName: the title to be displayed above the base text listing in the diff view; defaults
+             *     to "Base Text"
+             * - newTextName: the title to be displayed above the new text listing in the diff view; defaults
+             *     to "New Text"
+             * - contextSize: the number of lines of context to show around differences; by default, all lines
+             *     are shown
+             * - viewType: if 0, a side-by-side diff view is generated (default); if 1, an inline diff view is
+             *     generated
+             */
+             /* buildView: function (params) {
+            var baseTextLines = params.baseTextLines;
+            var newTextLines = params.newTextLines;
+            var opcodes = params.opcodes;
+            var baseTextName = params.baseTextName ? params.baseTextName : "Base Text";
+            var newTextName = params.newTextName ? params.newTextName : "New Text";
+            var contextSize = params.contextSize;
+            var inline = (params.viewType == 0 || params.viewType == 1) ? params.viewType : 0;
+            
+            if (baseTextLines == null)
+                throw "Cannot build diff view; baseTextLines is not defined.";
+            if (newTextLines == null)
+                throw "Cannot build diff view; newTextLines is not defined.";
+            if (!opcodes)
+                throw "Cannot build diff view; opcodes is not defined.";
+            
+            function celt (name, clazz) {
+                var e = document.createElement(name);
+                e.className = clazz;
+                return e;
+            }
+            
+            function telt (name, text) {
+                var e = document.createElement(name);
+                e.appendChild(document.createTextNode(text));
+                return e;
+            }
+            
+            function ctelt (name, clazz, text) {
+                var e = document.createElement(name);
+                e.className = clazz;
+                e.appendChild(document.createTextNode(text));
+                return e;
+            }
+            
+            var tdata = document.createElement("thead");
+            var node = document.createElement("tr");
+            tdata.appendChild(node);
+            if (inline) {
+                node.appendChild(document.createElement("th"));
+                node.appendChild(document.createElement("th"));
+                node.appendChild(ctelt("th", "texttitle", baseTextName + " vs. " + newTextName));
+            } else {
+                node.appendChild(ctelt("th", "emptytitle",''));
+                node.appendChild(ctelt("th", "texttitle", baseTextName));
+                node.appendChild(ctelt("th", "emptytitle",''));
+                node.appendChild(ctelt("th", "texttitle", newTextName));
+            }
+            tdata = [tdata];
+            
+            var rows = [];
+            var node2;
+            
+            /**
+                 * Adds two cells to the given row; if the given row corresponds to a real
+                 * line number (based on the line index tidx and the endpoint of the 
+                 * range in question tend), then the cells will contain the line number
+                 * and the line of text from textLines at position tidx (with the class of
+                 * the second cell set to the name of the change represented), and tidx + 1 will
+                 * be returned.  Otherwise, tidx is returned, and two empty cells are added
+                 * to the given row.
+                 */
+             /* function addCells (row, tidx, tend, textLines, change) {
+                if (tidx < tend) {
+                    row.appendChild(telt("th", (tidx + 1).toString()));
+                    row.appendChild(ctelt("td", change, textLines[tidx].replace(/\t/g, "\u00a0\u00a0\u00a0\u00a0")));
+                    return tidx + 1;
+                } else {
+                    row.appendChild(document.createElement("th"));
+                    row.appendChild(celt("td", "empty"));
+                    return tidx;
+                }
+            }
+            
+            function addCellsInline (row, tidx, tidx2, textLines, change) {
+                row.appendChild(telt("th", tidx == null ? "" : (tidx + 1).toString()));
+                row.appendChild(telt("th", tidx2 == null ? "" : (tidx2 + 1).toString()));
+                row.appendChild(ctelt("td", change, textLines[tidx != null ? tidx : tidx2].replace(/\t/g, "\u00a0\u00a0\u00a0\u00a0")));
+            }
+            
+            for (var idx = 0; idx < opcodes.length; idx++) {
+                console.log(opcodes[idx]);
+                code = opcodes[idx];
+                change = code[0];
+                var b = code[1];
+                var be = code[2];
+                var n = code[3];
+                var ne = code[4];
+                var rowcnt = Math.max(be - b, ne - n);
+                var toprows = [];
+                var botrows = [];
+                for (var i = 0; i < rowcnt; i++) {
+                    // jump ahead if we've alredy provided leading context or if this is the first range
+                    if (contextSize && opcodes.length > 1 && ((idx > 0 && i == contextSize) || (idx == 0 && i == 0)) && change=="equal") {
+                        var jump = rowcnt - ((idx == 0 ? 1 : 2) * contextSize);
+                        if (jump > 1) {
+                            toprows.push(node = document.createElement("tr"));
+                            
+                            b += jump;
+                            n += jump;
+                            i += jump - 1;
+                            node.appendChild(telt("th", "..."));
+                            if (!inline) node.appendChild(ctelt("td", "skip", ""));
+                            node.appendChild(telt("th", "..."));
+                            node.appendChild(ctelt("td", "skip", ""));
+                            
+                            // skip last lines if they're all equal
+                            if (idx + 1 == opcodes.length) {
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+                    
+                    toprows.push(node = document.createElement("tr"));
+                    if (inline) {
+                        if (change == "insert") {
+                            addCellsInline(node, null, n++, newTextLines, change);
+                        } else if (change == "replace") {
+                            botrows.push(node2 = document.createElement("tr"));
+                            if (b < be) addCellsInline(node, b++, null, baseTextLines, "delete");
+                            if (n < ne) addCellsInline(node2, null, n++, newTextLines, "insert");
+                        } else if (change == "delete") {
+                            addCellsInline(node, b++, null, baseTextLines, change);
+                        } else {
+                            // equal
+                            addCellsInline(node, b++, n++, baseTextLines, change);
+                        }
+                    } else {
+                        b = addCells(node, b, be, baseTextLines, change);
+                        n = addCells(node, n, ne, newTextLines, change);
+                    }
+                }
+                
+                for (var i = 0; i < toprows.length; i++) rows.push(toprows[i]);
+                for (var i = 0; i < botrows.length; i++) rows.push(botrows[i]);
+            }
+            
+            //rows.push(node = ctelt("th", "author", "diff view generated by "));
+            //node.setAttribute("colspan", inline ? 3 : 4);
+            //node.appendChild(node2 = telt("a", "jsdifflib"));
+            //node2.setAttribute("href", "http://github.com/cemerick/jsdifflib");
+            
+            tdata.push(node = document.createElement("tbody"));
+            for (var idx in rows) rows.hasOwnProperty(idx) && node.appendChild(rows[idx]);
+            
+            node = celt("table", "diff" + (inline ? " inlinediff" : ""));
+            for (var idx in tdata) tdata.hasOwnProperty(idx) && node.appendChild(tdata[idx]);
+            return node;
+        }
+    };
+             
+             
+             __whitespace = {" ":true, "\t":true, "\n":true, "\f":true, "\r":true};
+             
+             difflib = {
+                 defaultJunkFunction: function (c) {
+                     return __whitespace.hasOwnProperty(c);
+                 },
+                 
+                 stripLinebreaks: function (str) { return str.replace(/^[\n\r]*|[\n\r]*$/g, ""); },
+                 
+                 stringAsLines: function (str) {
+                     var lfpos = str.indexOf("\n");
+                     var crpos = str.indexOf("\r");
+                     var linebreak = ((lfpos > -1 && crpos > -1) || crpos < 0) ? "\n" : "\r";
+                     
+                     var lines = str.split(linebreak);
+                     for (var i = 0; i < lines.length; i++) {
+                         lines[i] = difflib.stripLinebreaks(lines[i]);
+                     }
+                     
+                     return lines;
+                 },
+                 
+                 // iteration-based reduce implementation
+                 __reduce: function (func, list, initial) {
+                     if (initial != null) {
+                         var value = initial;
+                         var idx = 0;
+                     } else if (list) {
+                         var value = list[0];
+                         var idx = 1;
+                     } else {
+                         return null;
+                     }
+                     
+                     for (; idx < list.length; idx++) {
+                         value = func(value, list[idx]);
+                     }
+                     
+                     return value;
+                 },
+                 
+                 // comparison function for sorting lists of numeric tuples
+                 __ntuplecomp: function (a, b) {
+                     var mlen = Math.max(a.length, b.length);
+                     for (var i = 0; i < mlen; i++) {
+                         if (a[i] < b[i]) return -1;
+                         if (a[i] > b[i]) return 1;
+                     }
+                     
+                     return a.length == b.length ? 0 : (a.length < b.length ? -1 : 1);
+                 },
+                 
+                 __calculate_ratio: function (matches, length) {
+                     return length ? 2.0 * matches / length : 1.0;
+                 },
+                 
+                 // returns a function that returns true if a key passed to the returned function
+                 // is in the dict (js object) provided to this function; replaces being able to
+                 // carry around dict.has_key in python...
+                 __isindict: function (dict) {
+                     return function (key) { return dict.hasOwnProperty(key); };
+                 },
+                 
+                 // replacement for python's dict.get function -- need easy default values
+                 __dictget: function (dict, key, defaultValue) {
+                     return dict.hasOwnProperty(key) ? dict[key] : defaultValue;
+                 },  
+                 
+                 SequenceMatcher: function (a, b, isjunk) {
+                     this.set_seqs = function (a, b) {
+                         this.set_seq1(a);
+                         this.set_seq2(b);
+                     }
+                     
+                     this.set_seq1 = function (a) {
+                         if (a == this.a) return;
+                         this.a = a;
+                         this.matching_blocks = this.opcodes = null;
+                     }
+                     
+                     this.set_seq2 = function (b) {
+                         if (b == this.b) return;
+                         this.b = b;
+                         this.matching_blocks = this.opcodes = this.fullbcount = null;
+                         this.__chain_b();
+                     }
+                     
+                     this.__chain_b = function () {
+                         var b = this.b;
+                         var n = b.length;
+                         var b2j = this.b2j = {};
+                         var populardict = {};
+                         for (var i = 0; i < b.length; i++) {
+                             var elt = b[i];
+                             if (b2j.hasOwnProperty(elt)) {
+                                 var indices = b2j[elt];
+                                 if (n >= 200 && indices.length * 100 > n) {
+                                     populardict[elt] = 1;
+                                     delete b2j[elt];
+                                 } else {
+                                     indices.push(i);
+                                 }
+                             } else {
+                                 b2j[elt] = [i];
+                             }
+                         }
+                         
+                         for (var elt in populardict) {
+                             if (populardict.hasOwnProperty(elt)) {
+                                 delete b2j[elt];
+                             }
+                         }
+                         
+                         var isjunk = this.isjunk;
+                         var junkdict = {};
+                         if (isjunk) {
+                             for (var elt in populardict) {
+                                 if (populardict.hasOwnProperty(elt) && isjunk(elt)) {
+                                     junkdict[elt] = 1;
+                                     delete populardict[elt];
+                                 }
+                             }
+                             for (var elt in b2j) {
+                                 if (b2j.hasOwnProperty(elt) && isjunk(elt)) {
+                                     junkdict[elt] = 1;
+                                     delete b2j[elt];
+                                 }
+                             }
+                         }
+                         
+                         this.isbjunk = difflib.__isindict(junkdict);
+                         this.isbpopular = difflib.__isindict(populardict);
+                     }
+                     
+                     this.find_longest_match = function (alo, ahi, blo, bhi) {
+                         var a = this.a;
+                         var b = this.b;
+                         var b2j = this.b2j;
+                         var isbjunk = this.isbjunk;
+                         var besti = alo;
+                         var bestj = blo;
+                         var bestsize = 0;
+                         var j = null;
+                         
+                         var j2len = {};
+                         var nothing = [];
+                         for (var i = alo; i < ahi; i++) {
+                             var newj2len = {};
+                             var jdict = difflib.__dictget(b2j, a[i], nothing);
+                             for (var jkey in jdict) {
+                                 if (jdict.hasOwnProperty(jkey)) {
+                                     j = jdict[jkey];
+                                     if (j < blo) continue;
+                                     if (j >= bhi) break;
+                                     newj2len[j] = k = difflib.__dictget(j2len, j - 1, 0) + 1;
+                                     if (k > bestsize) {
+                                         besti = i - k + 1;
+                                         bestj = j - k + 1;
+                                         bestsize = k;
+                                     }
+                                 }
+                             }
+                             j2len = newj2len;
+                         }
+                         
+                         while (besti > alo && bestj > blo && !isbjunk(b[bestj - 1]) && a[besti - 1] == b[bestj - 1]) {
+                             besti--;
+                             bestj--;
+                             bestsize++;
+                         }
+                         
+                         while (besti + bestsize < ahi && bestj + bestsize < bhi &&
+                                !isbjunk(b[bestj + bestsize]) &&
+                                a[besti + bestsize] == b[bestj + bestsize]) {
+                             bestsize++;
+                         }
+                         
+                         while (besti > alo && bestj > blo && isbjunk(b[bestj - 1]) && a[besti - 1] == b[bestj - 1]) {
+                             besti--;
+                             bestj--;
+                             bestsize++;
+                         }
+                         
+                         while (besti + bestsize < ahi && bestj + bestsize < bhi && isbjunk(b[bestj + bestsize]) &&
+                                a[besti + bestsize] == b[bestj + bestsize]) {
+                             bestsize++;
+                         }
+                         
+                         return [besti, bestj, bestsize];
+                     }
+                     
+                     this.get_matching_blocks = function () {
+                         if (this.matching_blocks != null) return this.matching_blocks;
+                         var la = this.a.length;
+                         var lb = this.b.length;
+                         
+                         var queue = [[0, la, 0, lb]];
+                         var matching_blocks = [];
+                         var alo, ahi, blo, bhi, qi, i, j, k, x;
+                         while (queue.length) {
+                             qi = queue.pop();
+                             alo = qi[0];
+                             ahi = qi[1];
+                             blo = qi[2];
+                             bhi = qi[3];
+                             x = this.find_longest_match(alo, ahi, blo, bhi);
+                             i = x[0];
+                             j = x[1];
+                             k = x[2];
+                             
+                             if (k) {
+                                 matching_blocks.push(x);
+                                 if (alo < i && blo < j)
+                                     queue.push([alo, i, blo, j]);
+                                 if (i+k < ahi && j+k < bhi)
+                                     queue.push([i + k, ahi, j + k, bhi]);
+                             }
+                         }
+                         
+                         matching_blocks.sort(difflib.__ntuplecomp);
+                         
+                         var i1 = j1 = k1 = block = 0;
+                         var non_adjacent = [];
+                         for (var idx in matching_blocks) {
+                             if (matching_blocks.hasOwnProperty(idx)) {
+                                 block = matching_blocks[idx];
+                                 i2 = block[0];
+                                 j2 = block[1];
+                                 k2 = block[2];
+                                 if (i1 + k1 == i2 && j1 + k1 == j2) {
+                                     k1 += k2;
+                                 } else {
+                                     if (k1) non_adjacent.push([i1, j1, k1]);
+                                     i1 = i2;
+                                     j1 = j2;
+                                     k1 = k2;
+                                 }
+                             }
+                         }
+                         
+                         if (k1) non_adjacent.push([i1, j1, k1]);
+                         
+                         non_adjacent.push([la, lb, 0]);
+                         this.matching_blocks = non_adjacent;
+                         return this.matching_blocks;
+                     }
+                     
+                     this.get_opcodes = function () {
+                         if (this.opcodes != null) return this.opcodes;
+                         var i = 0;
+                         var j = 0;
+                         var answer = [];
+                         this.opcodes = answer;
+                         var block, ai, bj, size, tag;
+                         var blocks = this.get_matching_blocks();
+                         for (var idx in blocks) {
+                             if (blocks.hasOwnProperty(idx)) {
+                                 block = blocks[idx];
+                                 ai = block[0];
+                                 bj = block[1];
+                                 size = block[2];
+                                 tag = '';
+                                 if (i < ai && j < bj) {
+                                     tag = 'replace';
+                                 } else if (i < ai) {
+                                     tag = 'delete';
+                                 } else if (j < bj) {
+                                     tag = 'insert';
+                                 }
+                                 if (tag) answer.push([tag, i, ai, j, bj]);
+                                 i = ai + size;
+                                 j = bj + size;
+                                 
+                                 if (size) answer.push(['equal', ai, i, bj, j]);
+                             }
+                         }
+                         
+                         return answer;
+                     }
+                     
+                     // this is a generator function in the python lib, which of course is not supported in javascript
+                     // the reimplementation builds up the grouped opcodes into a list in their entirety and returns that.
+                     this.get_grouped_opcodes = function (n) {
+                         if (!n) n = 3;
+                         var codes = this.get_opcodes();
+                         if (!codes) codes = [["equal", 0, 1, 0, 1]];
+                         var code, tag, i1, i2, j1, j2;
+                         if (codes[0][0] == 'equal') {
+                             code = codes[0];
+                             tag = code[0];
+                             i1 = code[1];
+                             i2 = code[2];
+                             j1 = code[3];
+                             j2 = code[4];
+                             codes[0] = [tag, Math.max(i1, i2 - n), i2, Math.max(j1, j2 - n), j2];
+                         }
+                         if (codes[codes.length - 1][0] == 'equal') {
+                             code = codes[codes.length - 1];
+                             tag = code[0];
+                             i1 = code[1];
+                             i2 = code[2];
+                             j1 = code[3];
+                             j2 = code[4];
+                             codes[codes.length - 1] = [tag, i1, Math.min(i2, i1 + n), j1, Math.min(j2, j1 + n)];
+                         }
+                         
+                         var nn = n + n;
+                         var group = [];
+                         var groups = [];
+                         for (var idx in codes) {
+                             if (codes.hasOwnProperty(idx)) {
+                                 code = codes[idx];
+                                 tag = code[0];
+                                 i1 = code[1];
+                                 i2 = code[2];
+                                 j1 = code[3];
+                                 j2 = code[4];
+                                 if (tag == 'equal' && i2 - i1 > nn) {
+                                     group.push([tag, i1, Math.min(i2, i1 + n), j1, Math.min(j2, j1 + n)]);
+                                     groups.push(group);
+                                     group = [];
+                                     i1 = Math.max(i1, i2-n);
+                                     j1 = Math.max(j1, j2-n);
+                                 }
+                                 
+                                 group.push([tag, i1, i2, j1, j2]);
+                             }
+                         }
+                         
+                         if (group && !(group.length == 1 && group[0][0] == 'equal')) groups.push(group)
+                         
+                         return groups;
+                     }
+                     
+                     this.ratio = function () {
+                         matches = difflib.__reduce(
+                             function (sum, triple) { return sum + triple[triple.length - 1]; },
+                             this.get_matching_blocks(), 0);
+                         return difflib.__calculate_ratio(matches, this.a.length + this.b.length);
+                     }
+                     
+                     this.quick_ratio = function () {
+                         var fullbcount, elt;
+                         if (this.fullbcount == null) {
+                             this.fullbcount = fullbcount = {};
+                             for (var i = 0; i < this.b.length; i++) {
+                                 elt = this.b[i];
+                                 fullbcount[elt] = difflib.__dictget(fullbcount, elt, 0) + 1;
+                             }
+                         }
+                         fullbcount = this.fullbcount;
+                         
+                         var avail = {};
+                         var availhas = difflib.__isindict(avail);
+                         var matches = numb = 0;
+                         for (var i = 0; i < this.a.length; i++) {
+                             elt = this.a[i];
+                             if (availhas(elt)) {
+                                 numb = avail[elt];
+                             } else {
+                                 numb = difflib.__dictget(fullbcount, elt, 0);
+                             }
+                             avail[elt] = numb - 1;
+                             if (numb > 0) matches++;
+                         }
+                         
+                         return difflib.__calculate_ratio(matches, this.a.length + this.b.length);
+                     }
+                     
+                     this.real_quick_ratio = function () {
+                         var la = this.a.length;
+                         var lb = this.b.length;
+                         return _calculate_ratio(Math.min(la, lb), la + lb);
+                     }
+                     
+                     this.isjunk = isjunk ? isjunk : difflib.defaultJunkFunction;
+                     this.a = this.b = null;
+                     this.set_seqs(a, b);
+                 }
+                 
+             };*/
+    </script>
+</apex:page>

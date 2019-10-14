@@ -1,0 +1,933 @@
+<apex:page controller="Flosum.AppSettingController" action="{!settingAction}" tabStyle="Settings__tab" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jsforce)}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.js')}"/>
+	<apex:includeScript value="{!$Resource.Flosum__X2JS}"/>
+	
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message table ul li{
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.headingColor{
+			color : #3a90dc !important;
+		}.headingColor{
+			color : #3a90dc !important;
+		}
+		.requiredInput .requiredBlock {
+	        background-color: #c00;
+		    position: absolute;
+		    left: -4px;
+		    width: 3px;
+		    top: 23px;
+		    height: 30px;
+		    bottom: 1px;
+		 }
+		.labestyle{
+			font-size: 91%;
+			font-weight: bold;
+			color: #333;
+			float: left;
+			margin-left: -2%;
+			padding-left:1%;
+			margin-left: -22px;
+		}
+	 	.secret {
+			width: 82%;
+			float: right;
+	 	}
+	 	.repositoryBlockTitle {
+	 		font-size: 14px;
+	 	}
+	 	.frmMargin {
+	 		margin-top: 15px !important;
+	 	}
+	 	.fontClass {
+			font-size: 18px !important;
+		}
+		.dscMargin {
+			margin-top: 10px !important;
+		}
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.topMargin {
+			margin-top: 5px !important;
+		}
+	</style>  
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form styleClass="slds-form--stacked">
+			<apex:pagemessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Settings">Settings</h1>
+				</div>
+			</apex:outputPanel>
+			<apex:actionfunction action="{!showMessage}" reRender="msg" name="showMessage" onComplete="overridePageMessages(); hide();" immediate="true">
+	            <apex:param assignTo="{!message}" value="" name="newstr"/>
+	        </apex:actionfunction>
+	        <fieldset class="slds-box slds-theme--default">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">OAuth Settings</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Create" onClick="listConnectedAppDetails();return false;" reRender="none"/>
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Update Callback URL" action="{!updateCallbackURL}" onClick="show();" onComplete="startUpdate();overridePageMessages(); hide();" reRender="none"/>
+             			<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block">
+		            	<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+		            		<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Connected App Name" />
+							<apex:outputPanel layout="block" styleClass="requiredInput slds-form-element__control" >
+								<apex:outputPanel layout="block" styleClass="requiredBlock"/>
+								<apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!appName}" required="true" id="appName"/>
+							</apex:outputPanel>
+            			</apex:outputPanel>
+		            </apex:outputPanel>
+				</div>
+	        </fieldset>
+		</apex:form>
+		<apex:form styleClass="slds-form--stacked frmMargin">
+			<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" rendered="{!leftOptionList.size != 0 || rightOptionList.size != 0}">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">{!$Label.flosum__metadata_types_setting_title}</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" action="{!saveCustomSetting}" rerender="picklist,picklistOne,msg" onClick="show();" onComplete="overridePageMessages(); hide();"/>
+            			<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block">
+		           	    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+		           	    	<apex:outputpanel id="picklist" layout="block">
+				            	<c:MultiSelectComponent leftLabel="Available Metadata"
+					                leftOption="{!leftOptionList}"
+					                rightLabel="Selected Metadata"
+					                rightOption="{!rightOptionList}"
+					                size="10"
+					                width="150px"/>
+			            	</apex:Outputpanel>
+            			</apex:outputPanel>
+		           	</apex:outputPanel>
+		        </div>
+			</apex:outputPanel>	
+	        <apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" rendered="{!trailLeftOptionList.size != 0 || trailRightOptionList.size != 0}">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Component Types for Audits</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" action="{!saveAuditCustomSetting}" rerender="picklist,picklistOne,msg" onClick="show();" onComplete="overridePageMessages(); hide();"/>
+            			<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block">
+		           	    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputpanel id="picklistOne" layout="block">
+				            	<c:MultiSelectComponent leftLabel="Ignore These Component Types"
+					                leftOption="{!trailLeftOptionList}"
+					                rightLabel="Audit These Component Types"
+					                rightOption="{!trailRightOptionList}"
+					                size="10"
+					                width="150px"/>
+			            	</apex:Outputpanel>
+            			</apex:outputPanel>
+		           	</apex:outputPanel>
+		        </div>
+			</apex:outputPanel>
+			<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">{!$Label.flosum__reset_settings_section_title}</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="{!$Label.flosum__reset_settings_button_label}" action="{!redirectToPostInstallScript}" rerender="msg"/>
+            		</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner"/>
+			</apex:outputPanel>
+			<!--Search metadata section-->
+			<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Metadata Search</span>
+								<p class="slds-text-body_small slds-line-height_reset dscMargin">Using this page, you can search for any occurrence for any component in your code. For example, you can search for all the reports that reference a custom field.</p>
+							</h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Metadata Search" action="{!redirectToMetadataSearch}" rerender="msg"/>
+            		</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner"/>
+			</apex:outputPanel>
+			<!---->
+			<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2>
+								<span class="slds-text-heading_small fontClass">{!$Label.flosum__purge_title}</span>
+								<p class="slds-text-body_small slds-line-height_reset dscMargin">{!$Label.flosum__purge_description}</p>
+							</h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral slds-m-right--small" value="{!$Label.flosum__purge_button_label}" action="{!launchPatchCountBatch}" rerender="msg" oncomplete="overridePageMessages();"/>
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Deep Analyze Snapshots" action="{!redirectToMassDeleteSnapshot}" style="margin-left: inherit" oncomplete="overridePageMessages();"/>
+            		</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner"/>
+			</apex:outputPanel>	
+		</apex:form>
+		<apex:form styleClass="slds-form--stacked frmMargin">
+			<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" id="repBlock" layout="block">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Repository</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" onclick="show();" oncomplete="overridePageMessages(); hide();" action="{!saveRepositoryDetail}" reRender="msg,repBlock"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block" styleClass="slds-m-bottom--small">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Repository" />
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" value="{!selectedRepository}" size="1">
+						                <apex:selectOptions value="{!repositoryOptions}" />
+						                <apex:actionSupport event="onchange" action="{!listRepositorySettings}" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="repBlock,msg"/>
+						            </apex:selectList>
+								</div>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!selectedRepository == null && selectedRepository == ''}">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Repository Name"/>
+							<apex:outputPanel layout="block" styleClass="requiredInput slds-form-element__control" >
+								<apex:outputPanel layout="block" styleClass="requiredBlock"/>
+								<apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!repDetail.Name}"/>
+							</apex:outputPanel>
+            			</apex:outputPanel>
+					</apex:outputPanel>
+					<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+						<div class="slds-m-bottom--medium">
+							<div class="slds-card__header slds-grid">
+								<header class="slds-media slds-media_center slds-has-flexi-truncate">
+									<div class="slds-media__body">
+										<h2><span class="slds-text-heading_small fontClass">Select the users who can commit to this Repository</span></h2>
+									</div>
+								</header>
+							</div>
+							<div class="slds-card__body slds-card__body_inner">
+								<apex:outputpanel styleClass="slds-form-element slds-size--4-of-12" id="picklist" layout="block">
+					            	<c:MultiSelectComponent leftLabel="Available Users"
+						                leftOption="{!leftUserList}"
+						                rightLabel="Selected Users"
+						                rightOption="{!rightUserList}"
+						                size="10"
+						                width="150px"/>
+				            	</apex:Outputpanel>
+							</div>
+						</div>
+					</apex:outputPanel>
+		        </div>
+				<div class="slds-card__body slds-card__body_inner">
+				
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+<!-- 
+						<div class="slds-m-bottom--medium">
+							<div class="slds-card__header slds-grid">
+								<header class="slds-media slds-media_center slds-has-flexi-truncate">
+									<div class="slds-media__body">
+										<h2>
+											<span class="slds-text-heading_small fontClass">Automated Builds for this Repository</span>
+										</h2>
+									</div>
+								</header>
+							</div>
+						</div>
+-->						
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Pipeline" />
+							<div class="mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+	   				 			<img src="/s.gif" alt="" class="infoIcon" title="" />
+	   							<div class="mouseOverInfo" id="searchInvoiceHelperText" style="display: none; opacity: -0.19999999999999996; left: 16px;">
+											<div class="slds-media__body">This is an optional step and it is not mandatory to specify a CI pipeline for every repository.<br/> 
+		        							After commit to the repository/branches, the components are automatically deployed to the build organization(s) mentioned in pipeline, in the same order as they listed.<br/>
+		        							After the deployment is complete, the tests are run depending on the "Run Tests" option.
+		        							</div>
+							    </div>
+							</div>
+						
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" value="{!repDetail.Flosum__Pipeline__c}" size="1">
+						                <apex:selectOptions value="{!repoPipeOptions}" />
+							                <apex:actionSupport event="onchange" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="repBlock,msg"/>
+						            </apex:selectList>
+								</div>
+							</div>
+					</apex:outputPanel>
+
+		        </div>
+			</apex:outputPanel>
+		</apex:form>
+		<apex:form styleClass="slds-form--stacked frmMargin">
+			<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" id="pipelines">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Pipelines</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" action="{!savePipelineDetail}" rerender="pipelines,repBlock,msg" onClick="show();" onComplete="overridePageMessages(); hide();"/>
+            			<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block" styleClass="slds-m-bottom--small">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Pipeline" />
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" value="{!selectedPipeline}" size="1">
+						                <apex:selectOptions value="{!pipeOptions}" />
+						                <apex:actionSupport event="onchange" action="{!listPipelineSettings}" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="pipelines,msg"/>
+						            </apex:selectList>
+								</div>
+							</div>
+       						</apex:outputPanel>
+           						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!selectedPipeline == null && selectedPipeline == ''}">
+									<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="New pipeline's Name"/>
+									<apex:outputPanel layout="block" styleClass="requiredInput slds-form-element__control" >
+										<apex:outputPanel layout="block" styleClass="requiredBlock"/>
+										<apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!pipeDetail.Name}"/>
+									</apex:outputPanel>
+           						</apex:outputPanel>
+						</apex:outputPanel>
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Pipeline Deployment mode" />
+							<div class="mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+	   				 			<img src="/s.gif" alt="" class="infoIcon" title="" />
+	    							<div class="mouseOverInfo" id="searchInvoiceHelperText" style="display: none; opacity: -0.19999999999999996; left: 16px;">
+	        							<div class="body">STAND BY - Pipeline Deployment is turned off;<br/> 
+	        							DEPLOY - Deploy changes to build organization(s);<br/>
+	        							VALIDATE - Validate changes on build organization(s);
+		       							</div>
+	   							    </div>
+							</div>
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!pipeDetail.Flosum__Deployment_Mode__c}" id="selList4">
+						                <apex:selectOptions value="{!modeOption}"/>
+						                <apex:actionSupport event="onchange" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="pipelines"/>
+						            </apex:selectList>
+								</div>
+							</div>
+            			</apex:outputPanel>
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Pipeline Deployment style" />
+							<div class="slds-form-element__control">
+								<div class="slds-select_container">
+									<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!pipeDetail.Flosum__Deployment_Style__c}" id="selList3">
+						                <apex:selectOptions value="{!deploymentOption}"/>
+						                <apex:actionSupport event="onchange" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="pipelines"/>
+						            </apex:selectList>
+								</div>
+							</div>
+            			</apex:outputPanel>
+<!-- Reserved for future implementation            			
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Pipeline Filter" />
+								<div class="slds-form-element__control">
+									<div class="slds-select_container">
+										<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!pipeDetail.Filter__c}" id="selList5">
+							                <apex:selectOptions value="{!filterOption}"/>
+							                <apex:actionSupport event="onchange" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="pipelines"/>
+							            </apex:selectList>
+									</div>
+								</div>
+            			</apex:outputPanel>
+-->            			
+						<apex:outputpanel styleClass="slds-form-element slds-size--4-of-12" id="picklist1" layout="block">
+			            	<c:MultiSelectComponent leftLabel="Available Organizations"
+				                leftOption="{!leftOrgsList}"
+				                rightLabel="Selected Organizations"
+				                rightOption="{!RightOrgsList}"
+				                size="10"
+				                width="150px"
+				                showUpDownButtons="true"/>
+		            	</apex:Outputpanel>
+				        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="{!$Label.flosum__run_test_label}" />
+								<div class="slds-form-element__control">
+									<div class="slds-select_container">
+										<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!selectedRunTest}">
+							                <apex:selectOptions value="{!runTestOption}"/>
+							                <apex:actionSupport event="onchange" onsubmit="show();" oncomplete="overridePageMessages(); hide();" reRender="pipelines"/>
+							            </apex:selectList>
+									</div>
+								</div>
+            			</apex:outputPanel>
+				        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!selectedRunTest == 'RunSpecifiedTests'}">
+				        	<apex:outputPanel ></apex:outputPanel>
+					        	<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls headingColor" value="Please specify one test class on each line. Please do not use commas to separate the test class names." />
+					        	<apex:inputTextarea styleClass="slds-textarea disableitem" value="{!specifiedTests}" id="specifiedTests" rows="5" cols="47"/>	
+				        </apex:outputPanel>
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						    <div class="slds-form-element__control">
+						        <span class="slds-checkbox">
+						            <apex:inputCheckBox styleclass="slds-input" value="{!isExtDeployment}" id="chkBox0"/>
+						            <apex:outputLabel for="chkBox0" styleClass="slds-checkbox__label">
+						            	<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Use external service for deployment" />
+						                <span class="slds-checkbox--faux"></span>
+						                <span class="slds-form-element__label"></span>
+						            </apex:outputLabel>
+						        </span>
+						    </div>
+						</apex:outputPanel>
+			    </div>
+			</apex:outputPanel>
+		</apex:form>
+
+		<apex:form styleClass="slds-form--stacked frmMargin">
+		
+			<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" id="namespacePanel">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Namespace</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" action="{!saveNameSpaceSettings}" rerender="namespacePanel,msg" onClick="show();" onComplete="overridePageMessages(); hide();"/>
+            			<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel layout="block">
+		           	    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputpanel id="picklistOne" layout="block">
+				            	<c:MultiSelectComponent leftLabel="Available"
+					                leftOption="{!nameSpaceLeftOptionList}"
+					                rightLabel="Selected"
+					                rightOption="{!nameSpaceRightOptionList}"
+					                size="10"
+					                width="150px"/>
+			            	</apex:Outputpanel>
+            			</apex:outputPanel>
+		           	</apex:outputPanel>
+		           	<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Namespace"/>
+					<apex:outputPanel layout="block" styleClass="requiredInput slds-form-element__control" >
+						<apex:outputPanel layout="block" styleClass="requiredBlock"/>
+						<apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!enteredNameSpace}" style="width: 200px;"/>
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Add" action="{!addNameSpaceToSetting}" rerender="namespacePanel,msg" onClick="show();" onComplete="overridePageMessages(); hide();"/>
+					</apex:outputPanel>
+		        </div>
+			</apex:outputPanel>
+		
+			<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" id="PMDServiceSection">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Source Code Analyzer</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" onclick="show();" oncomplete="overridePageMessages(); hide();" action="{!saveAnalyzerDetail}" reRender="msg,PMDServiceSection"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+					    <div class="slds-form-element__control">
+					        <span class="slds-checkbox">
+					            <apex:inputCheckBox styleclass="slds-input" value="{!isCodeAnalysis}" id="chkBox10"/>
+					            <apex:outputLabel for="chkBox10" styleClass="slds-checkbox__label">
+					            	<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Make code review on each commit to branch" />
+					                <span class="slds-checkbox--faux"></span>
+					                <span class="slds-form-element__label"></span>
+					            </apex:outputLabel>
+					        </span>
+					    </div>
+					</apex:outputPanel>
+					<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium topMargin">
+			  		  	<div class="slds-card__body slds-card__body_inner">
+			  		  		<h2><span class="slds-text-heading_small repositoryBlockTitle">Component types to review</span></h2>
+							<apex:outputPanel layout="block">
+				           	    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+									<apex:outputpanel id="picklist2" layout="block">
+						            	<c:MultiSelectComponent leftLabel="Available Types"
+							                leftOption="{!leftCompList}"
+							                rightLabel="Selected Types"
+							                rightOption="{!RightCompList}"
+							                size="10"
+							                width="150px"/>
+					            	</apex:Outputpanel>
+		            			</apex:outputPanel>
+				           	</apex:outputPanel>
+				        </div>
+			        </apex:outputPanel>
+		        </div>
+	        </apex:outputPanel>
+        </apex:form>
+        <apex:form id="retrievalForm">
+        	<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" id="retrievaloptionPanel">
+        		<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">Deployment Type</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" onclick="show();" oncomplete="overridePageMessages(); hide();" action="{!saveRetrievalOption}" reRender="msg,retrievaloptionPanel"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner slds-form-element slds-size--2-of-12">
+                	
+               		<div class="slds-form-element__control">
+                   		<div class="slds-select_container">
+                   			<apex:selectList value="{!selectedDeploymentOption}" multiselect="false" size="1" id="selectedDeploymentOption" styleClass="slds-select slds-text-heading_regular">
+                       			<apex:selectOptions value="{!deploymentOptionList}"/>
+                       		</apex:selectList>
+               			</div>
+               		</div>
+                </div>
+			</apex:outputPanel>
+		</apex:form>
+        <apex:form id="form5">
+        	<apex:outputPanel styleClass="slds-box slds-m-bottom--medium" layout="block" id="HerokuServiceSection">
+        		<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__body">
+							<h2><span class="slds-text-heading_small fontClass">External service settings</span></h2>
+						</div>
+					</header>
+					<div class="slds-no-flex">
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Save" onclick="show();" oncomplete="overridePageMessages(); hide();" action="{!saveHerokuDetails}" reRender="msg,HerokuServiceSection"/>
+					</div>
+				</div>
+				<div class="slds-card__body slds-card__body_inner">
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Username :" />
+						<div class="slds-form-element__control">
+							<apex:inputField styleClass="slds-input slds-text-heading_regular" value="{!hCred.Flosum__Username_Resource__c}" required="false" id="UsernameResource"/>
+						</div>
+           			</apex:outputPanel>
+			        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="	Password :" />
+						<div class="slds-form-element__control">
+							<apex:inputField styleClass="slds-input slds-text-heading_regular" value="{!hCred.Flosum__Password_Resource__c}" required="false" id="PasswordResource"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="AccessPoint :" />
+						<div class="slds-form-element__control">
+							<apex:inputField styleClass="slds-input slds-text-heading_regular" value="{!hCred.Flosum__AccessPoint__c}" required="false" html-placeholder="https://your-app-name.herokuapp.com" id="AccessPoint2"/>
+						</div>
+           			</apex:outputPanel>
+			    </div>
+			</apex:outputPanel>
+		</apex:form>
+	</apex:outputPanel>
+	
+    <script>
+    	Visualforce.remoting.timeout = 120000;
+    	var flosumsf = jsforce;
+    	var apiVersion = 38;
+    	
+    	$( document ).ready(function() {
+    		overridePageMessages();
+			if('{!PlaceOfException}' == 'ERROR')
+			    listRemoteSiteSetting('{!baseUrl}','{!PlaceOfException}');
+			else
+				hide();
+		});
+		
+        function startUpdate()
+        {
+            var connectedAppName = '{!appName}';
+            
+            if(connectedAppName != null && connectedAppName != '' && connectedAppName != undefined)
+            {
+                console.log(connectedAppName );
+                var selfConn = new flosumsf.Connection({ accessToken: '{!$Api.Session_Id}' });
+                selfConn.metadata.pollTimeout = 300000;
+                selfConn.metadata.pollInterval = 30000;
+                selfConn.metadata.read('ConnectedApp', connectedAppName , function(err, metadata) {
+                  if (err) { 
+                      console.error(err); 
+                  }
+                  else {
+                     console.log(metadata);
+                      if(metadata != undefined && metadata.oauthConfig != undefined) {
+                          
+                          Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.AppSettingController.getCallBackURLAndUpdateCustomSetting}',
+                            function(r,e){
+                            console.log('r-----');
+                                console.log(r);
+                                if(e.status) 
+                                {
+                                    metadata.oauthConfig.callbackUrl = r;
+                                    console.log(metadata);
+                                    selfConn.metadata.update('ConnectedApp', metadata, function(err2, results) {
+                                      if (err2) { 
+                                          console.log(err2);
+                                          showMessage(err2); 
+                                      }
+                                      else {
+                                      		console.log('results---');
+                                          	console.log(results);
+                                          	showMessageJS('Callback URL Updated successfully.','INFO');
+                                      }
+                                    });
+                                }
+                                else
+                                {
+                                    console.log(e.message);
+                                }
+                            }   
+                        );
+                      }
+                  }
+                });
+            }
+            else{
+            	showMessage('Please fill connected app name.');
+            }
+        }
+		
+		// updates visibility of page's sections
+		function updateSectionUI(isVisible){
+			console.log('isVisible='+isVisible);
+			var selected = document.getElementById("page:form3:serviceSection");
+			if (selected != undefined){
+				if (isVisible === 'false'){
+					selected.style.display = 'none';
+				}else{
+					selected.style.display = 'block';
+				}
+			}
+		}
+				
+		function listConnectedAppDetails()
+		{
+			show();
+			var appName = $("[id$='appName']").val();
+			console.log('appName:-'+appName);
+			if(appName != undefined && appName.trim() != '')
+    		{
+				Visualforce.remoting.Manager.invokeAction(
+	                '{!$RemoteAction.AppSettingController.getAppDetails}',
+	                appName,
+	                function(r,e){
+	                	if(e.status && r) 
+            			{
+            				console.log(r);
+            				createNewApp(r);
+            			}
+            			else
+            			{
+            				console.log(e.message);
+            				showMessage(e.message);
+            			}
+	                }   
+	            );
+	    	}
+	    	else
+	    		showMessage('Please fill connected app name.');
+		}
+		
+		function createNewApp(app)
+    	{
+    		console.log(app);
+    		var selfConn = new flosumsf.Connection({ accessToken: '{!$API.Session_Id}' });
+    		selfConn.metadata.pollTimeout = 300000;
+        	selfConn.metadata.pollInterval = 30000;
+        	if(app != undefined)
+    		{
+    			selfConn.metadata.create('ConnectedApp',app,function(err2,result2){
+           				if(err2) 
+		            	{
+		            		console.log(err2);
+		            		if(err2.message != undefined)
+		            		{
+		            			console.log(err2.message);
+		            			showMessage(err2.message);
+		            		}
+		            	}
+		            	else
+		            	{
+		            		console.log(result2);
+		            		if(result2 != undefined && result2.success)
+		            		{
+		            			console.log('Created Successfully.');
+		            			Visualforce.remoting.Manager.invokeAction(
+					                '{!$RemoteAction.AppSettingController.updateAuthDetails}',
+					                app.fullName,
+					                app.oauthConfig.consumerKey,
+					                app.oauthConfig.consumerSecret,
+					                function(r,e){
+					                	console.log(r);
+					                	if(e.status) 
+				            			{
+				            				if(r != undefined && r.length > 1)
+				            				{
+					            				console.log('Updated Successfully.');
+					            				//Allow from 2-10 minutes for your changes to take effect on the server before using the connected app.
+					            				//showMessage('Connected app created successfully on '+r+'. It will take 2-10 minutes for your changes to take effect on the server before using the connected app.#confirm');
+					            				var messageSTR1 = 'Connected App '+app.fullName+' was created at ' + r[0] + '. Please wait for 10 mins (till ' + r[1] + ') to connect your orgs to Flosum.';
+					            				var messageSTR2 = 'Connected App '+app.fullName+' was created at ' + r[0] + '.';
+				            					showMessageJS(messageSTR1,'INFO');
+				            					setTimeout(function(){showMessageJS(messageSTR2,'CONFIRM');},600000);
+				            				}
+				            			}
+				            			else
+				            			{
+				            				console.log(e.message);
+				            				showMessage(e.message);
+				            			}
+					                }   
+					            );
+		            		}
+		            		else
+		            		{
+		            			if(result2 != undefined && result2.errors != undefined)
+		            			{
+									if(result2.errors.message != undefined)
+									{
+										console.log(result2.errors.message);
+										var errorMsg = result2.errors.message;
+										var msg = 'duplicate value found: <unknown> duplicates value on record with id: <unknown>';
+										if(errorMsg.indexOf(msg) > -1)
+											showMessage('A connected app with the same name already exists. Please create a connected app with the new name.');
+										else
+											showMessage(errorMsg);
+									}
+									else
+									{
+										console.log(JSON.stringify(result2.errors));
+										showMessage(JSON.stringify(result2.errors));
+									}
+		            			}
+		            		}
+		            	}
+           		});
+    		}
+    	}
+		
+		function listRemoteSiteSetting(RSURL,placeOfEX)
+		{
+			var reg = /[^a-zA-Z0-9]+/g
+		    var host = RSURL;
+		    var fullName = RSURL.slice(8,RSURL.indexOf('.visual.force.com'));
+		    fullName = fullName.replace(reg,'');
+			var ExistingNames = {};
+			var selfConn = new flosumsf.Connection({ accessToken: '{!$API.Session_Id}' });
+			var queryLi = [];
+        	var query = new Object();
+        	query.folder = '';
+        	query.type = 'RemoteSiteSetting';
+        	queryLi.push(query);
+        	selfConn.metadata.list(queryLi, '34.0', function(err,result){
+        		if(err) 
+            	{
+            		console.log(err);
+            	}
+            	else
+            	{
+            		if(result != undefined)
+            		{
+	            		if(Array.isArray(result))
+	           			{
+	           				for(var index in result)
+	           				{
+	           					if(index < result.length)
+	           					{
+	           						var mi = result[index];
+	           						ExistingNames[mi.fullName]= mi.fullName;
+	           					}
+	           				}
+	           			}
+	           			else
+	           			{
+	           				ExistingNames[result.fullName]= result.fullName;
+           				}
+           			}
+           			var remoteSite = new Object();
+           			remoteSite.fullName = ExistingNames[fullName] != undefined ?  getRemoteSiteName(fullName+'1',ExistingNames) : fullName;
+           			remoteSite.description = 'Metadata API Remote Site Setting for Flosum Application';
+           			remoteSite.isActive = true;
+           			remoteSite.url = host;
+           			selfConn.metadata.create('RemoteSiteSetting',remoteSite,function(err2,result2){
+           				if(err2) 
+		            	{
+		            		console.log(err2);
+		            		hide();
+		            	}
+		            	else
+		            	{
+		            		if(result2 != undefined && result2.success)
+		            		{
+		            			console.log('Created Successfully.');
+		            			location.reload();
+		            		}
+		            		else
+		            		{
+		            			console.log(JSON.stringify(result2.errors));
+		            			hide();
+		            		}
+		            	}
+           			});
+            	}
+        	});
+		}
+    	
+    	function showMessageJS(Message_Str,Message_Type)
+		{
+        	var parentVal = $("[id$='msg']");
+			if(parentVal != undefined)
+			{
+			    parentVal.html('');
+			    if(Message_Str != '')
+			    {
+				    if(Message_Type == 'ERROR')
+				    {
+				    	var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+										'<div class="message errorM3 slds-notify slds-notify--alert slds-theme--error customMessage " role="alert">'+
+											'<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+												'<tbody>'+
+													'<tr valign="top">'+
+														/*'<td><img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"></td>'+*/
+														'<td class="messageCell">'+
+															'<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+																'<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25" style="color:#cc0000">'+
+																	'<h4>Error:</h4>'+
+																'</span>'+Message_Str+'<br>'+
+															'</div>'+
+														'</td>'+
+													'</tr>'+
+													'<tr>'+
+														'<td></td>'+
+														'<td></td>'+
+													'</tr>'+
+												'</tbody>'+
+											'</table>'+
+										'</div>'+
+									'</span>';
+						parentVal.append(childVal);
+				    }
+				    else if(Message_Type == 'INFO')
+				    {
+						var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+											'<div class="message infoM3 slds-notify slds-notify--toast customMessage " role="alert">'+
+												'<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+													'<tbody>'+
+														'<tr valign="top">'+
+															/*'<td><img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"></td>'+*/
+															'<td class="messageCell">'+
+																'<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+																	'<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25">'+
+																		'<h4></h4>'+
+																	'</span>'+Message_Str+'<br>'+
+																'</div>'+
+															'</td>'+
+														'</tr>'+
+														'<tr>'+
+															'<td></td>'+
+															'<td></td>'+
+														'</tr>'+
+													'</tbody>'+
+												'</table>'+
+											'</div>'+
+										'</span>';
+						parentVal.append(childVal);
+					}
+					else if(Message_Type == 'CONFIRM')
+				    {
+						var childVal = 	'<span id="j_id0:msg:j_id15:j_id16:0:j_id17">'+
+											'<div class="message confirmM3 slds-notify slds-notify--alert slds-theme--success  customMessage " role="alert">'+
+												'<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+													'<tbody>'+
+														'<tr valign="top">'+
+															/*'<td><img alt="CONFIRM" class="msgIcon" src="/s.gif" title="CONFIRM"></td>'+*/
+															'<td class="messageCell">'+
+																'<div id="j_id0:msg:j_id15:j_id16:0:j_id17:j_id18:j_id20" class="messageText">'+
+																	'<span id="j_id0:msg:j_id15:j_id16:0:j_id17:j_id18:j_id21">'+
+																		'<h4>Success:</h4>'+
+																	'</span>'+
+																	'<font>'+Message_Str+'</font>'+
+																	'<br>'+
+																'</div>'+
+															'</td>'+
+														'</tr>'+
+														'<tr>'+
+															'<td></td>'+
+															'<td></td>'+
+														'</tr>'+
+													'</tbody>'+
+												'</table>'+
+											'</div>'+
+										'</span>';
+						parentVal.append(childVal);
+					}
+				}
+			}
+			hide();
+		}
+				
+		function overridePageMessages()
+		{    
+			var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	        console.log('overridePageMessages');
+	    }
+	</script>
+</apex:page>

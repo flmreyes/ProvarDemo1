@@ -1,0 +1,1796 @@
+<apex:page controller="Flosum.ComponentComparisonDetailController" sidebar="false"  doctype="html-5.0" standardStylesheets="false" lightningStyleSheets="true">
+    <c:TrackPanel />
+    <c:Wait />
+    <apex:slds />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.js')}"/>
+    <apex:includeScript value="{!$Resource.Flosum__X2JS}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jquery)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__AuraDiff)}" />
+    <apex:stylesheet value="{!$Resource.Flosum__DiffCSS}"/>
+
+
+    <!--<apex:includeScript value="{!URLFOR($Resource.uisetup, '/js/bootstrap.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.uisetup, '/css/bootstrap-theme.min.css')}"/> 
+    <apex:stylesheet value="{!URLFOR($Resource.uisetup, '/css/bootstrap.min.css')}"/>-->
+
+
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/bootstrapSF.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery-ui.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery.ui-contextmenu.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/diffxmllib.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/codemirror.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/xml.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/searchcursor.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/mergely.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/parser.js')}"/>
+
+
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/jquery-ui.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/mergely.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/codemirror.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__Merge, 'Merge/css/dialog.css')}"/>
+
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'beauty/forMatXML.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/pako.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/diffutils.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/dialog.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/search.js')}"/>
+
+    <style type="text/css" media="screen">
+        .grid {
+            display: flex;
+        }
+        .title {
+            flex: 1;
+            height: 20px;
+            text-align:center;
+        }
+        /************* ReWrite MODAL STYLES  *************/
+        .bootstrap-iso .modal-backdrop.in {
+            opacity: 0;
+        }
+        .bootstrap-iso .modal.fade .modal-dialog, .modal.in .modal-dialog {
+            position: fixed;
+            top: 30%;
+            left: 30%;
+            transition: 0.1s;
+        }
+        .bootstrap-iso .modal-open, .modal-open .navbar-fixed-top {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+        /* Center the loader */
+        .spinner {
+            position: absolute;
+            display: block;
+            left: 54%;
+            top: 55%;
+            z-index: 1000;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #646464;
+            border-right: 4px solid #e6e6e6;
+            border-left: 4px solid #e6e6e6;
+            border-bottom: 4px solid #646464;
+            width: 60px;
+            height: 60px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 }
+            to { bottom:0px; opacity:1 }
+        }
+
+        @keyframes animatebottom {
+            from{ bottom:-100px; opacity:0 }
+            to{ bottom:0; opacity:1 }
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1 !important;
+        }
+        .tab button {
+            background-color:inherit !important;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            padding: 5px 8px;
+            background:none !important;
+        }
+        .tab button:hover {
+            background-color: #ddd !important;
+        }
+        .tab button.active {
+            background-color:  #b3b3b3 !important;
+        }
+
+        .diff tbody th {
+            padding-left: 0!important;
+        }
+        .message {
+            list-style-type: none;
+        }
+        .message .messageText {
+            color: white !important;
+        }
+        .message .messageText h4{
+            color: white !important;
+        }
+        .message span {
+            color: white !important;
+        }
+        .customMessage {
+            margin-left: 0px !important;
+            margin-top: 0px !important;
+            opacity: 1!important;
+            width: 100%;
+            font-size: 13px;
+            border: 0px;
+            padding-left: 10px;
+        }
+        html.gr__c_cs23_visual_force_com.ext-strict {
+            font-size: 16px;
+        }
+        /*chatter CSS*/
+        input#publishersharebutton {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            color: white;
+        }
+        div#feedwrapper {
+            margin-bottom: 15px;
+        }
+        div.chatterBlockboundaryT {
+            margin-top: 5px;
+        }
+        .comboMenu.zen-line.feedsupermenu{
+            display: -webkit-inline-box;
+        }
+        .zen-searchBox.comboSearchMax.feedSearch {
+            margin-left: 2%;
+        }
+        .publishercontainer .bottomBar {
+            height: 46px;
+        }
+        span.name {
+            color: black!important;
+        }
+
+        .comment-container
+        {
+            padding: 10px;
+            background-color: #F4F5F7;
+            border-top: 1px solid #DFE1E6;
+            border-bottom: 1px solid #DFE1E6;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+            font-size: 14px;
+        }
+        .child-comment-container
+        {
+            clear: both;
+            margin: 0 0 0 42px;
+            padding: 0;
+            list-style: none;
+        }
+        .comment, .new_comment
+        {
+            box-sizing: border-box;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #DFE1E6;
+            border-radius: 4px;
+            padding-left: 10px;
+            overflow: hidden;
+        }
+        header
+        {
+            color: #42526E;
+            font-weight: 500;
+            line-height: 1;
+        }
+        .comment-contant {
+            padding: 5px 0 5px 42px;
+            overflow: hidden;
+            word-wrap: break-word;
+            color: #172B4D;
+        }
+        .comment-actions{
+            font-size: 12px;
+            list-style: none;
+            margin: 0 0 0 42px;
+            padding: 0 0 25px;
+        }
+        .comment-actions>li{
+            float: left;
+        }
+        .comment-actions>li a{
+            color: #505F79;
+        }
+        .comment-actions>li::before{
+            padding: 0 3px 0 6px;
+            content: "\2022";
+            color: #505F79;
+        }
+
+
+
+    </style>
+    
+    <div class="slds-scope">
+        <div class="slds-text-body_regular">
+            <apex:form id="form" styleClass="slds-form">
+                <apex:pagemessages id="msg"/>
+                <div class="slds-page-header">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-has-flexi-truncate">
+                            <div class="slds-media slds-no-space slds-grow">
+                                <div class="slds-media__body">
+                                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!JSENCODE(componentType)} Comparison">{!JSENCODE(componentType)} Comparison</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <apex:outputPanel >
+                            <div class="slds-col slds-no-flex slds-grid slds-align-top">
+                                <div class="slds-button-group" role="group">
+                                    <apex:commandbutton styleClass="slds-button slds-button_neutral" value="Back" onClick="show();" rendered="{!redirectTo == 'Branch'}" action="{!backToCompare}" onComplete="hide();"/>
+                                    <apex:commandbutton styleClass="slds-button slds-button_neutral" value="Previous" disabled="{!if(compareIndex < 1,true,false)}" action="{!previous}" onComplete="open();" rerender="form" rendered="{!redirectTo != 'Branch'}"/>
+                                    <apex:commandbutton styleClass="slds-button slds-button_neutral" value="Next" disabled="{!if(compareIndex+1 < sourceDetailLi.size,false,true)}" action="{!next}" onComplete="open();" rerender="form" rendered="{!redirectTo != 'Branch'}"/>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                <div id="myapp">
+                    <apex:inputHidden id="source_fileName" value="{!source.fileName}" />
+                    <apex:inputHidden id="target_fileName" value="{!target.fileName}" />
+
+                    <apex:inputHidden id="source_fullname" value="{!source.fullName}" />
+                    <apex:inputHidden id="target_fullname" value="{!target.fullName}" />
+
+                    <apex:inputHidden id="source_version" value="{!source.version}" />
+                    <apex:inputHidden id="target_version" value="{!target.version}" />
+
+                    <apex:inputHidden id="componentType" value="{!componentType}" />
+
+                    <apex:inputHidden id="source_contentId" value="{!source.contentId}" />
+                    <apex:inputHidden id="target_contentId" value="{!target.contentId}" />
+
+                    <apex:inputHidden id="source_parentName" value="{!source.parentName}" />
+                    <apex:inputHidden id="target_parentName" value="{!target.parentName}" />
+
+                    <apex:inputHidden id="source_parentId" value="{!source.parentId}" />
+                    <apex:inputHidden id="target_parentId" value="{!target.parentId}" />
+                    <apex:actionfunction action="{!showMessage}" reRender="msg" name="showMessage" onComplete="hide();">
+                        <apex:param assignTo="{!message}" value="" name="newstr"/>
+                    </apex:actionfunction>
+
+                </div>
+
+
+                <!--            Mergely editor panel markup                          -->
+
+
+                <apex:outputPanel layout="block" id="editorSectionId">
+                    <apex:pageBlock id="block1">
+                        <apex:pageBlockSection columns="1">
+
+
+                            <div class="bPageTitle" style="padding: 0px 0 0;">
+                                <div class="ptBody">
+                                    <div class="content">
+                                        <h1 class="pageType slds-m-left_large" style="margin-top:0px;" id="compType">Type name</h1>
+                                        <h2 class="pageDescription slds-text-heading_large slds-border_bottom  slds-m-left_xx-large" style="margin-top:0px;" id="compName">Class name</h2>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div class="Legend">
+                                <div class="Created">&nbsp;</div> Created block
+                                <div class="Deleted">&nbsp;</div> Deleted block
+
+                            </div>
+
+                            <div id="nav">
+                                <ul>
+                                    <li class="item"><a id="prev" title="Previous diff"><span class="icon icon-arrow-up"></span></a></li>
+                                    <li class="item"><a id="next" title="Next diff"><span class="icon icon-arrow-down"></span></a></li>
+                                    <li class="separator"></li>
+                                    <li><a id="changes" style="padding-top: 4px;padding-left: 10px;padding-right: 10px;"><span class="icon"></span>&nbsp;&nbsp;</a></li>
+
+                                </ul>
+                            </div>-->
+
+                            <div class="compare-wrapper" >
+                                <div id="compare-headers1" style="padding:5px">
+                                    <div style="position:relative;height:15px;width: 50%; float: left;" id="infoLineLeft1">
+                                    </div>
+                                    <!--<a style="float: left;width: 10px;height: 15px;cursor: pointer;text-align: center;color: #170c0c;border: 1px solid #222;margin-right: 5px;margin-top: -2px;" class="ui-button ui-corner-all ui-widget ui-button-icon-only merge-button" id="merge-all" title="Merge all"><span class="ui-button-icon ui-icon ui-icon-triangle-1-w"></span></a>
+                                    &nbsp;&nbsp;-->
+                                    <div style="position:relative;height:15px;  float: left;     padding-left: 20px;"  id="infoLineRight1">
+                                    </div>
+                                </div>
+                                <div id="compare-headers2" style="padding:5px">
+                                    <div style="position:relative;height:15px;width: 50%; float: left;" id="infoLineLeft2">
+                                    </div>
+
+                                    <div style="position:relative;height:15px;  float: left;     padding-left: 20px;"  id="infoLineRight2">
+                                    </div>
+                                </div>
+                                <div class="find">
+                                    <input type="text" />
+                                    <button class="find-close"><span class="icon icon-x-mark"></span></button>
+                                </div>
+
+                            </div>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+
+                </apex:outputPanel>
+                <!--            end of block for Mergely editor -->
+
+                <ul class='custom-menu'>
+                    <li data-action="edit">
+                        <div>
+                            Tag: &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="tag" disabled="disabled"/>&nbsp;&nbsp; Value: &nbsp;<input type="text" id="tagValue"/>
+                        </div>
+                    </li>
+                    <!--  <li data-action="clone">Clone tag (with child nodes)</li> -->
+                    <!--  <li data-action="create">Create tag</li> -->
+                    <li data-action="update">Update tag</li>
+                    <!--  <li data-action="delete">Delete tag</li> -->
+                </ul>
+
+
+            </apex:form>
+            <!-- chatter -->
+            <div class="chatterBlockboundaryT">
+                <apex:pageBlock >
+                    <chatter:feed entityId="{!compId}" />
+                </apex:pageBlock>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-close"  style="opacity:0.9; visibility: visible; display: none;" id="myModal">
+        <div class="slds-modal__container" style="width:55%">
+            <div class="slds-modal__content">
+                <div class="slds-modal__header" style="background-color: #d8dde6;">
+                    <button class="slds-button slds-button--icon-inverse slds-modal__close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h2 class="slds-text-heading--medium" style="color: red;">Error</h2>
+                </div>
+                <div class="slds-modal__body" style="padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;font-size: 15px;">
+                    <p> </p>
+                </div>
+                <div class="modal-footer" style="text-align:center;padding-bottom: 20px;">
+                    <button type="button"  data-dismiss="modal" class="btn slds-button slds-button_neutral">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- spinner -->
+    <div id="loader" class="spinner"></div>
+
+
+    <script>
+
+
+        var editMode='TXTXML';
+        var user = '{!$User.FirstName}' + ' ' +'{!$User.LastName}';
+        var comp;
+        var userData;
+
+        var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+
+        function handleFocus(n){
+            $('#text-area_'+n).focus();
+            //console.log('focused');
+        }
+
+         function isXml(str) {
+            return str.substr(0, 10).indexOf('<?xml') > -1 ? true : false;
+        }
+
+
+
+        function makeMarker() {
+
+            var marker = document.createElement("div");
+            //marker.append(ttt);
+            marker.style.color = "#822";
+            marker.innerHTML = "●";
+            return marker;
+        }
+
+
+        /* returns map of params */
+        function parseParams(parameters){
+            var hash       = {};
+            if (!parameters) return hash;
+            for(var i=0; i < parameters.length; i++) {
+                if(!parameters[i])
+                    continue;
+                var ary      = parameters[i].split('=');
+                hash[ary[0]] = ary[1];
+            }
+
+            return hash;
+        }
+
+
+        var sourceComponentFileMap = {};
+        var targetComponentFileMap = {};
+        var s1;
+        var s2;
+        var nameFile = [];
+        var activeFileName = '';
+        var activeTabNumber;
+
+        function open(){
+
+            var source_fileName = $("[id$='source_fileName']").val();
+            var target_fileName = $("[id$='target_fileName']").val();
+
+            var source_fullname = $("[id$='source_fullname']").val();
+            var target_fullname = $("[id$='target_fullname']").val();
+
+            //console.log('source_fullname--'+source_fullname);
+            //console.log('target_fullname--'+target_fullname);
+
+            var source_parentName = $("[id$='source_parentName']").val();
+            var target_parentName = $("[id$='target_parentName']").val();
+
+            //console.log('source_parentName--'+source_parentName);
+            //console.log('target_parentName--'+target_parentName);
+
+            var source_version = $("[id$='source_version']").val();
+            var target_version = $("[id$='target_version']").val();
+
+            var source_contentId = $("[id$='source_contentId']").val();
+            var target_contentId = $("[id$='target_contentId']").val();
+
+            var source_parentId = $("[id$='source_parentId']").val();
+            var target_parentId = $("[id$='target_parentId']").val();
+
+            var componentType = $("[id$='componentType']").val();
+            //console.log(componentType);
+
+
+
+            if(componentType != undefined && componentType != '') {
+                var tempType = folderMap[componentType] != undefined ? folderMap[componentType] : componentType;
+                //console.log('source_parentId+#+componentType+#+source_fileName--' + source_parentId + '#' + componentType + '#' + source_fileName);
+
+                sourceComponentFileMap = {};
+                targetComponentFileMap = {};
+                if (detailDataMap[source_parentId + '#' + componentType + '#' + source_fileName] != undefined) {
+                    var fullXml = detailDataMap[source_parentId + '#' + componentType + '#' + source_fileName];
+                    if (childMap[componentType] != undefined) {
+                        var childDataMap = childSplitter(fullXml, componentType, source_fileName);
+                        if (childDataMap[componentType + '#' + source_fullname] != undefined) {
+                            sourceComponentFileMap[source_fullname] = childDataMap[componentType + '#' + source_fullname];
+                            //document.getElementById('baseText').value = childDataMap[componentType+'#'+source_fullname];
+                        }
+                    } else {
+                        sourceComponentFileMap[source_fileName] = fullXml;
+                        if (detailDataMap[source_parentId + '#' + componentType + '#' + source_fileName + '-meta.xml'] != undefined) {
+                            sourceComponentFileMap[source_fileName + '-meta.xml'] = detailDataMap[source_parentId + '#' + componentType + '#' + source_fileName + '-meta.xml'];
+                        }
+                        //document.getElementById('baseText').value = fullXml;
+
+                    }
+                } else if (detailDataMap[source_parentId + '#' + tempType + '#' + source_fileName] != undefined) {
+                    var fullXml = detailDataMap[source_parentId + '#' + tempType + '#' + source_fileName];
+                    sourceComponentFileMap[source_fileName] = fullXml;
+                    //document.getElementById('baseText').value = fullXml;
+                } else if (tempType == 'AuraDefinitionBundle' || tempType == 'LightningComponentBundle') {
+                    for (var fileName in detailDataMap) {
+                        if (fileName != undefined && fileName.indexOf(source_parentId + '#' + componentType + '#' + source_fileName + '/') == 0) {
+                            var tempFileName = fileName.split(source_parentId + '#' + tempType + '#')[1];
+                            sourceComponentFileMap[tempFileName] = detailDataMap[fileName];
+                        }
+                    }
+                }
+                if (detailDataMap[target_parentId + '#' + componentType + '#' + target_fileName] != undefined) {
+                    var fullXml = detailDataMap[target_parentId + '#' + componentType + '#' + target_fileName];
+                    if (childMap[componentType] != undefined) {
+                        var childDataMap = childSplitter(fullXml, componentType, target_fileName);
+                        if (childDataMap[componentType + '#' + target_fullname] != undefined) {
+                            targetComponentFileMap[target_fullname] = childDataMap[componentType + '#' + target_fullname];
+                            //document.getElementById('newText').value = childDataMap[componentType+'#'+target_fullname];
+                        }
+
+                    } else {
+                        targetComponentFileMap[target_fileName] = fullXml;
+                        if (detailDataMap[target_parentId + '#' + componentType + '#' + target_fileName + '-meta.xml'] != undefined) {
+                            targetComponentFileMap[target_fileName + '-meta.xml'] = detailDataMap[target_parentId + '#' + componentType + '#' + target_fileName + '-meta.xml'];
+                        }
+                        //document.getElementById('newText').value = fullXml;
+                    }
+
+                } else if (detailDataMap[target_parentId + '#' + tempType + '#' + target_fileName] != undefined) {
+                    var fullXml = detailDataMap[target_parentId + '#' + tempType + '#' + target_fileName];
+                    sourceComponentFileMap[target_fileName] = fullXml;
+                    //document.getElementById('newText').value = fullXml;
+                } else if (tempType == 'AuraDefinitionBundle' || tempType == 'LightningComponentBundle') {
+                    for (var targetfileName in detailDataMap) {
+                        if (targetfileName != undefined && targetfileName.indexOf(target_parentId + '#' + componentType + '#' + target_fileName + '/') == 0) {
+                            var tempFileName = targetfileName.split(target_parentId + '#' + tempType + '#')[1];
+                            targetComponentFileMap[tempFileName] = detailDataMap[targetfileName];
+                        }
+                    }
+                }
+
+                //var index = 1;
+
+                s1 = '' + source_parentName;
+                s2 = '' + target_parentName;
+                //if newtxt or baseText is empty then add 'Not Exist'
+                if (isEmpty(sourceComponentFileMap)/*document.getElementById('baseText').value.trim() == ''*/)
+                    s1 += ' : Not Exist';
+                else {
+                    if (source_version != undefined && source_version != '' && source_version != null)
+                        s1 += ' : ' + source_fullname + ' (Version: ' + source_version + ')';
+                    else
+                        s1 += ' : ' + source_fullname;
+                }
+                if (isEmpty(targetComponentFileMap)/*document.getElementById('newText').value.trim() == ''*/)
+                    s2 += ' : Not Exist';
+                else {
+                    if (target_version != undefined && target_version != '' && target_version != null)
+                        s2 += ' : ' + target_fullname + ' (Version: ' + target_version + ')';
+                    else
+                        s2 += ' : ' + target_fullname;
+                }
+
+
+            }
+
+            var mainDiv =$("[id$='editorSectionId']");
+            var containerDiv = document.createElement("div");
+
+            var editorCount = 1;
+            //tab div
+            var tabDiv = document.createElement("div");
+            tabDiv.setAttribute('class',"tab");
+            containerDiv.append(tabDiv);
+
+            //console.log(Object.keys(sourceComponentFileMap).length);
+            //console.log(Object.keys(targetComponentFileMap).length);
+            //var biggerSource=Object.keys(sourceComponentFileMap).length>=Object.keys(targetComponentFileMap).length?sourceComponentFileMap:targetComponentFileMap;
+            for (var fileName in sourceComponentFileMap) {
+
+                if (fileName != undefined) {
+                    //tab button
+                    var button = document.createElement("Button");
+                    button.innerHTML = fileName;
+                    button.setAttribute('class', "tablinks " + "editDetailTabButton" + editorCount);
+                    button.setAttribute('type', "button");
+                    button.setAttribute('onclick', "viewDetail('editDetailTabButton" + editorCount + "'); return false;");
+                    if (sourceComponentFileMap[fileName]!=targetComponentFileMap[fileName])
+                    {
+                        button.setAttribute("style", "color: red;");
+                    }
+                    tabDiv.append(button);
+
+                    //tab content
+                    var tabContent = document.createElement("div");
+                    tabContent.setAttribute('class', "tabcontent editDetailTabContent" + editorCount);
+                    tabContent.setAttribute("style", "display: none;");
+
+                    //edit detail section
+                    var childDiv = document.createElement("div");
+                    childDiv.setAttribute('class', 'codeEditorBlock' + editorCount);
+                    childDiv.setAttribute('id', 'codeEditorBlock' + editorCount);
+                    childDiv.setAttribute('fileName', fileName);
+                    childDiv.style.cssText = 'min-height: 100px;height: 600px;margin-top:2px';
+                    tabContent.append(childDiv);
+                    containerDiv.append(tabContent);
+                    nameFile[editorCount] = fileName;
+                    editorCount++;
+                }
+            }
+
+            mainDiv.append(containerDiv);
+
+
+            var firstTabButon = document.getElementsByClassName("editDetailTabButton1");
+            firstTabButon[0].className += " active";
+            var firstTabContent = document.getElementsByClassName("editDetailTabContent1");
+            firstTabContent[0].setAttribute("style", "display:block;");
+
+            viewData(nameFile[1],1);
+
+            hide();
+
+        }
+
+
+
+
+        function viewDetail(idOfDiv){
+            console.log('idOfDiv--'+idOfDiv);
+
+
+            $(".tabcontent").css("display", "none");
+            $(".tablinks").removeClass("active");
+
+            var editorCount = idOfDiv.split('editDetailTabButton')[1];
+            $(".editDetailTabButton"+editorCount).addClass("active");
+            $(".editDetailTabContent"+editorCount).css("display", "block");
+
+
+            viewData(nameFile[editorCount],editorCount);
+
+        }
+
+        function getWidth() {
+            var width = $(window).innerWidth() - 100;
+            //console.log(width);
+            //debug('w='+width);
+            return width;
+        }
+
+        var windowSize = getWidth();
+        var maxWidth =  getWidth();
+
+        $(window).on("resize",function() {
+            maxWidth =  getWidth();
+        });
+
+
+        function viewData(fileName,editorNum)
+        {
+            show();
+            activeFileName = fileName;
+            activeTabNumber = editorNum;
+            //console.log(fileName);
+            var componentType = $("[id$='componentType']").val();
+            var source_fullname = $("[id$='source_fullname']").val();
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();          
+            if (fileName != undefined) {
+                var editorCount = editorNum;
+                //var con = sourceComponentFileMap[fileName];
+                var tempId = 'codeEditorBlock' + editorCount;
+                //console.log('tempId--' + tempId);
+
+
+                var obj = {};
+                obj.type = componentType;//o.compType;
+                obj.name = source_fullname;//o.compName;
+                if (targetComponentFileMap[fileName] == undefined)
+                    obj.tgt = '';
+                else obj.tgt = targetComponentFileMap[fileName];
+
+                if (sourceComponentFileMap[fileName] == undefined)
+                    obj.src = '';
+                else obj.src = sourceComponentFileMap[fileName];
+
+                editMode = isXml(obj.tgt) == true ? 'XMLTXT' : 'TXTXML';
+                obj.mode = editMode;
+                obj.rightTitle = s2;
+                obj.leftTitle = s1;
+                // set dimensions for popup, both inner and outer
+                obj.width = (windowWidth < 600) ? 600 : windowWidth - 150;
+                obj.height = (windowHeight < 500) ? 500 : windowHeight - 370;
+
+
+
+                var uData = obj;
+
+                if (uData != undefined && uData != null) {
+                    opt = uData.height;
+                    if (editMode == undefined) {
+                        editMode = uData.mode;
+                    }
+
+                } else {
+                    console.log('data not found!');
+                    return;
+                }
+
+                //console.log('editMode=' + editMode);
+                getComments(opt, editMode, uData, tempId);
+                //init(opt, editMode, uData.mode, tempId);
+                //setDefinitions(uData);
+
+            }
+
+            hide();
+        }
+
+
+        function init(opt,mode,fileType,divName) {
+
+            comp = $('#'+divName);
+            var highLight = 'text/plain';
+            const options = {
+                cmsettings: {
+                    mode: mode,
+                    readOnly: 'nocursor',//true,//(mode == 'XML' || mode == 'TXT'),
+                    lineWrapping: true,
+                    gutters: ["CodeMirror-linenumbers", "breakpoints"]
+                },
+                ignorews: false,
+                wrap_lines:true,
+                //autoupdate:true,
+                //viewport:true,
+               // line_numbers:true,
+                editor_width: 'calc(50% - 25px)',
+                editor_height: opt,
+                editor_max_height: opt,
+
+
+            };
+            comp.mergely(options);
+
+            var pullRequestId = '{!pullRequest}';
+            if (pullRequestId != '') {
+                //$("[id*=-editor-lhs]").scroll( function() {
+                comp.mergely('cm', 'lhs').on("update", function () {
+                    //console.log('renderLine')
+                    if (comments != undefined) {
+                        var notChildList = [];
+                        for (var j = 0; j < comments.length; j++) {
+                            if (comments[j].replyCommentId == 'none') {
+                                notChildList.push(comments[j]);
+                            }
+                        }
+                        drawComment(notChildList);
+                    }
+                });
+
+                comp.mergely('cm', 'lhs').on("update", function () {
+                    //console.log('update')
+                    if (newCommLine != undefined && newCommParrent != undefined) {
+                        if ($('[id="comment_line_' + newCommLine + '"]').length == 0) {
+                            drawNewComment(newCommLine, newCommParrent);
+                        }
+                    }
+                    if (replyId != undefined && replyLine != undefined) {
+                        if ($('[id="comment_line_' + replyLine + '"]').length == 0) {
+                            replyComment(replyId, replyLine);
+                        }
+                    }
+                });
+
+
+                $(document).on("click", "[id*=-editor-lhs] .CodeMirror-linenumber", function (evt) {
+
+                    $('[id^="comment_line_"]').remove();
+                    var n = evt.target.innerText;
+                    var parentNode = evt.target.parentElement.parentElement;
+                    newCommLine = n;
+                    newCommParrent = parentNode;
+                    replyId = undefined;
+                    replyLine = undefined;
+                    drawNewComment(n, parentNode);
+                    $('#text-area_' + n).focus();
+                });
+
+                $(document).on("mouseenter", "[id*=-editor-lhs] .CodeMirror-linenumber", function (evt) {
+                    $(this).css('cursor', 'cell');
+                    evt.target.title = "Add a comment to this line";
+                });
+            }
+
+        }
+        var newCommLine;
+        var newCommParrent;
+
+        function drawNewComment(n, parentNode) {
+            var childD = document.createElement("div");
+            childD.setAttribute('id','comment_line_'+n);
+            childD.setAttribute('style','z-index:5');
+            childD.setAttribute('class', 'comment-container');
+
+            var comment =
+                '<div class="new_comment" cm-ignore-events="true" id="new_comment">'+
+                '<div class="field" id="textarea-wrapper">'+
+                '<textarea  style="width: 80%; height: 80px;" id="text-area_'+n+'"  name="comment[body_markdown]" class=""></textarea>'+
+                '<div class="actions" id="submit-wrapper">'+
+                '<button id="save-button" class="" onclick="saveComment('+n+'); return false;">SAVE</button>'+
+                '<button id="cancel-button" class="" onclick="closeComment('+n+')">CANCEL</button>'+
+                '</div>'+
+                '</div>'
+
+            ;
+
+
+            childD.innerHTML = comment;
+            parentNode.after(childD);
+           // $('#text-area_'+n).focus();
+        }
+
+
+        function setDefinitions(uData){
+            if (uData != undefined && uData != null){
+                try{
+
+                    var leftView, rightView;
+                    userData = uData;
+
+                    if (editMode == 'XML'){
+                        leftView = userData.src;//unpack(userData.tgt);
+                        rightView = userData.tgt;//unpack(userData.src);
+                    }else{// RAWXML, RAWTXT, TXT
+                        leftView = userData.src;
+                        rightView = userData.tgt;
+                        if (userData.mode == 'XMLTXT'){
+                            leftView = normalizeXml(leftView);
+                            rightView = normalizeXml(rightView);
+                        }
+                    }
+
+                    setLabel('compName',userData.name);
+                    setLabel('compType',userData.type);
+                    var right = getLines(userData.rightTitle,'')
+                    var left = getLines(userData.leftTitle,'')
+                    console.log('left: '+left+' right: '+right);
+                    setLabel('infoLineRight2',right[1]);
+                    setLabel('infoLineLeft2',left[1]);
+                    setLabel('infoLineRight1',right[0]);
+                    setLabel('infoLineLeft1',left[0]);
+                    updateView(leftView,rightView,userData.mode);
+                }catch(e){
+                    showError('Error when rendering components view: '+e);
+                }
+            }else{
+                showError('Empty component: unable to load data. Try to reload page.');
+            }
+
+        }
+
+
+        function updateView(left, right, mode){
+
+            try{
+                //console.log('updateView');
+                if (editMode == 'XMLTXT'){
+                    var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false, escapeMode: true});
+                    var jleft = x2js.xml_str2json(left);
+                    var jright = x2js.xml_str2json(right);
+                    comp.mergely('ljson', jleft);
+                    comp.mergely('rjson', jright);
+                }else{
+                    // async get lhs editor, then set lhs content
+                    comp.mergely('lorig', left);
+                    // async get rhs editor, then set rhs content
+                    comp.mergely('rorig', right);
+
+                }
+
+                comp.mergely('setMode',editMode);
+
+                if (editMode == 'XMLTXT'){
+                    comp.mergely('updateXml');
+                }else{
+                    comp.mergely('update');
+                }
+
+                //getComments();
+
+                if (comments!=undefined){
+                    var notChildList = [];
+                    for  (var j = 0; j < comments.length; j++) {
+                        if (comments[j].replyCommentId=='none')
+                        {
+                            notChildList.push(comments[j]);
+                        }
+                    }
+                    drawComment(notChildList);
+                }
+
+
+
+            }catch(e){
+                showError('Problems during processing comparing components: ' + e);
+            }
+
+        }
+
+
+
+        var comments;
+        function getComments(opt, editMode, uData, tempId) {
+
+            var compHistoryId = '{!compHistId}';
+            var pullRequestId = '{!pullRequest}';
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ComponentComparisonDetailController.getComments}',compHistoryId,pullRequestId,
+                function(r, e)
+                {
+                    if(e.status)
+                    {
+                        comments = r;
+                        init(opt, editMode, uData.mode, tempId);
+                        setDefinitions(uData);
+                    }
+                    else
+                    {
+                        console.log(e.status);
+                        console.log(r);
+
+                    }
+
+                }
+            );
+        }
+
+        function betweenDates(date) {
+            var beetwStr;
+            var diff = (Date.now()-date)/60000;
+            if (diff<1)
+                beetwStr = 'just now';
+            else if (diff<60)
+                beetwStr = Math.floor(diff) + ' minutes ago';
+            else if (diff/60<24)
+                beetwStr = Math.floor(diff/60) + ' hours ago';
+            else if (diff/1440<365)
+                beetwStr = Math.floor(diff/1440) + ' days ago';
+            else
+                beetwStr = Math.floor(diff/525960) + ' years ago';
+            return beetwStr;
+        }
+
+        function drawChildComment(child){
+            var line_n = child.lineNumber;
+            var autor = child.userName;
+
+            var text = child.text;
+            var id = child.id;
+            var date = child.commentDate;
+            var dateFull = new Date(date);
+            var betwStr = betweenDates(date);
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric' };
+
+            var replyId = child.replyCommentId;
+                var nn = $('#comments_li_'+replyId);
+
+            if ($('[id="comment_id_' + id + '"]').length == 0) {
+                var childD = document.createElement("div");
+                childD.setAttribute('id', 'draw_comment_line_' + line_n);
+                childD.setAttribute('style', 'z-index:5');
+                childD.setAttribute('class', 'child-comment-container');
+                var childL = document.createElement("li");
+                childL.setAttribute('class', 'comments');
+                childD.setAttribute('id', 'comments_li_' + id);
+                childD.setAttribute('style', 'list-style: none;');
+                var editDeleteButt = '';
+                if (autor==user)
+                {
+                    editDeleteButt = '<li><a href="#edit" class="edit-link" onclick="editComment(\'' + id + '\');return false;">Edit</a></li>' +
+                        '<li><a href="#delete" class="delete-link" onclick="deleteComment(\'' + id + '\');return false;" >Delete</a></li>';
+                }
+
+                var comment =
+                    '<div class="comment" cm-ignore-events="true" id="comment_' + line_n + '">' +
+                    '<input type="hidden" name="comment_id" value="' + id + '" id="comment_id_' + id + '"/>' +
+                    '<header>' + autor + '</header> ' +
+                    '<div class="comment-contant" id="textarea-wrapper">' +
+                    '<p id="comment_text_' + id + '"> ' + text + '</p>' +
+                    // '<textarea  style="width: 100%; position: relative; z-index: 9999; height: auto;" id="text-area_'+line_n+'"  autofocus  name="comment[body_markdown]" class="">' + r[j].text + '</textarea>' +
+                    '</div>' +
+                    '<ul class="comment-actions">' +
+                    '<li><a href="#reply" class="reply-link execute click" onclick="replyComment(\'' + id + '\',\'' + line_n + '\');return false;">Reply</a></li>' +
+                    editDeleteButt+
+                    '<li><a class="permalink" href="#comment-7452143" title="Link directly to this comment"><time datetime="'+date+'" data-title="true" title="'+dateFull.toLocaleString("en-US", options)+'">'+betwStr+'</time></a></li>' +
+                    '</ul>' +
+                    '</div>';
+                childL.innerHTML = comment;
+                childD.appendChild(childL);
+                //childD.innerHTML = comment;
+                nn.append(childD);
+                var childs = getChild(id);
+                if (childs!=null)
+                {
+                    for (var i = 0; i < childs.length; i++) {
+                        drawChildComment(childs[i]);
+                    }
+                }
+
+            }
+        }
+
+        function getChild(id) {
+            var childs = [];
+            for  (var j = 0; j < comments.length; j++) {
+                if (comments[j].replyCommentId==id)
+                {
+                    childs.push(comments[j]);
+                }
+            }
+            if (childs.length!=0)
+            {
+                return childs;
+            }
+            else return null;
+        }
+
+        function getAllChild(ids) {
+            var childs = [];
+            var allchilds = [];
+            for  (var j = 0; j < ids.length; j++) {
+                childs = getChild(ids[j].id);
+                var childChilds = [];
+                if (childs!=null) {
+                    childChilds = childs.concat(getAllChild(childs));
+                }
+                allchilds = allchilds.concat(childChilds);
+            }
+            return allchilds;
+        }
+
+
+
+
+        function drawComment(r){
+
+            for (var j = 0; j < r.length; j++) {
+                var rrt = document.getElementById('codeEditorBlock'+activeTabNumber+'-editor-lhs').getElementsByClassName('CodeMirror-gutter-wrapper');
+                var line_n = r[j].lineNumber;
+                var autor = r[j].userName;
+                var text = r[j].text;
+                var id = r[j].id;
+                var fileName = r[j].fileName;
+                var date = r[j].commentDate;
+                var dateFull = new Date(date);
+
+                var betwStr = betweenDates(date);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric' };
+
+                var replyId = r[j].replyCommentId;
+                var ttr = undefined;
+                for (var i = 0; i < rrt.length; i++) {
+                    if (rrt[i].textContent == line_n) {
+                        ttr = rrt[i];
+                    }
+                }
+                if (ttr != undefined) {
+
+                    var nn = ttr.parentNode;
+                    if ($('[id="comment_id_' + id + '"]').length == 0) {
+                        if (activeFileName == fileName) {
+                            var childD = document.createElement("div");
+                            childD.setAttribute('id', 'draw_comment_line_' + line_n);
+                            childD.setAttribute('style', 'z-index:5');
+                            childD.setAttribute('cm-ignore-events', 'true');
+                            childD.setAttribute('class', 'comment-container');
+                            var childL = document.createElement("li");
+                            childL.setAttribute('class', 'comments');
+                            childD.setAttribute('id', 'comments_li_' + id);
+                            childD.setAttribute('style', 'list-style: none;');
+                            var editDeleteButt = '';
+                            if (autor==user)
+                            {
+                                editDeleteButt = '<li><a href="#edit" class="edit-link" onclick="editComment(\'' + id + '\');return false;">Edit</a></li>' +
+                                    '<li><a href="#delete" class="delete-link" onclick="deleteComment(\'' + id + '\');return false;" >Delete</a></li>';
+                            }
+
+                            var comment =
+                                '<div class="comment" id="comment_' + line_n + '">' +
+                                '<input type="hidden" name="comment_id" value="' + id + '" id="comment_id_' + id + '"/>' +
+                                '<header>' + autor + '</header> ' +
+                                '<div class="comment-contant" id="textarea-wrapper">' +
+                                '<p id="comment_text_' + id + '"> ' + text + '</p>' +
+                                // '<textarea  style="width: 100%; position: relative; z-index: 9999; height: auto;" id="text-area_'+line_n+'"  autofocus  name="comment[body_markdown]" class="">' + r[j].text + '</textarea>' +
+                                '</div>' +
+                                '<ul class="comment-actions">' +
+                                '<li><a href="#reply" class="reply-link execute click" onclick="replyComment(\'' + id + '\',\'' + line_n + '\');return false;">Reply</a></li>' +
+                                editDeleteButt+
+                                '<li><a class="permalink" href="#comment" ><time datetime="' + date + '" data-title="true" title="' + dateFull.toLocaleString("en-US", options) + '">' + betwStr + '</time></a></li>' +
+                                '</ul>' +
+                                '</div>';
+                            childL.innerHTML = comment;
+                            childD.appendChild(childL);
+                            nn.after(childD);
+                            var childs = getChild(id);
+                            if (childs != null) {
+                                for (var i = 0; i < childs.length; i++) {
+                                    drawChildComment(childs[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                }
+        }
+
+        function editComment(id){
+            var edit = $('#comment_text_'+id);
+            var text = edit[0].innerText;
+            var parent = edit[0].parentNode;
+            parent.removeChild(edit[0]);
+            parent.innerHTML = '<textarea  style="width: 350px; position: relative; z-index: 9999; height: auto;" id="text-area_'+id+'"  autofocus >' + text + '</textarea>'+
+                '<div class="actions" id="submit-wrapper">'+
+                '<button id="save-button" class="" onclick="saveEditComment(\''+id+'\'); return false;">SAVE</button>'+
+                '<button id="cancel-button" class="" onclick="closeEditComment(\''+id+'\',\''+text+'\')">CANCEL</button>'+
+                '</div>';
+
+        }
+
+        function saveEditComment(id){
+
+            var textComment = $('#text-area_'+id)[0].value;
+            if (textComment=='')
+            {
+                window.alert('Please, fill out comment field');
+                return;
+            }
+            var commentId = id;
+
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ComponentComparisonDetailController.saveEditComments}',commentId,
+                    textComment,
+                    function(r, e)
+                    {
+                        if(e.status)
+                        {
+                            viewDetail('editDetailTabButton' + activeTabNumber);
+
+                        }
+                        else
+                        {
+                            console.log(e.status);
+                            console.log(r);
+
+                        }
+
+                    }
+                );
+        }
+
+        function closeEditComment(id,text){
+            var edit = $('#text-area_'+id);
+            var parent = edit[0].parentNode;
+            parent.removeChild(edit[0]);
+            parent.innerHTML = '<p id="comment_text_' + id + '"> ' + text + '</p>';
+        }
+
+        var replyId;
+        var replyLine;
+
+        function replyComment(id,n){
+            $('[id^="comment_line_"]').remove();
+            newCommLine = undefined;
+            newCommParrent = undefined;
+            replyId = id;
+            replyLine = n;
+            var nn = $('#comments_li_'+id);
+            var childD = document.createElement("div");
+            childD.setAttribute('id','comment_line_'+n);
+            childD.setAttribute('style','z-index:5');
+            childD.setAttribute('class', 'comment-container');
+
+            var comment =
+                '<div class="new_comment" cm-ignore-events="true" id="new_comment">'+
+                '<div class="field" id="textarea-wrapper">'+
+                '<textarea  style="width: 100%;  height: 80px;" id="text-area_'+n+'" onclick="handleFocus('+n+')"  required="required" name="comment[body_markdown]" class=""></textarea>'+
+                '<div class="preview-toggle comment-preview-div" id="preview-div"></div>'+
+                '</div>'+
+                '<div class="code-of-conduct" id="toggle-code-of-conduct-checkbox">'+
+                '</div>'+
+                '<div class="actions" id="submit-wrapper">'+
+                '<button id="save-button" class="" onclick="saveChildComment('+n+',\''+id+'\'); return false;">SAVE</button>'+
+                '<button id="cancel-button" class="" onclick="closeComment('+n+')">CANCEL</button>'+
+                '</div>'+
+                '</div>'
+
+            ;
+            childD.innerHTML = comment;
+            nn.after(childD);
+
+        }
+
+        function closeComment(n){
+            $('#comment_line_'+n).remove();
+            newCommLine = undefined;
+            newCommParrent = undefined;
+            replyId = undefined;
+            replyLine = undefined;
+        }
+
+        function deleteComment(id){
+
+            if(id!=undefined)
+            {
+                if (window.confirm('Are you sure you want to delete this comment and reply?')) {
+            var ids = [];
+            for  (var j = 0; j < comments.length; j++) {
+                if (comments[j].id==id)
+                {
+                    ids.push(comments[j]);
+                }
+            }
+            var allComments =ids.concat(getAllChild(ids));
+            var allIds = [];
+            for  (var j = 0; j < allComments.length; j++) {
+                allIds.push(allComments[j].id);
+            }
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ComponentComparisonDetailController.deleteComments}',allIds,
+                    function(r, e)
+                    {
+                        if(e.status)
+                        {
+                            location.reload();
+                            //viewDetail('editDetailTabButton' + activeTabNumber);
+
+                        }
+                        else
+                        {
+                            console.log(e.status);
+                            console.log(r);
+
+                        }
+                    }
+                );}
+            }
+
+        }
+
+
+        function saveComment(n){
+
+            var lineNumber = n;
+            var textComment = $('#text-area_'+n)[0].value;
+            if (textComment=='')
+            {
+                window.alert('Please, fill out comment field');
+                return;
+            }
+            var compHistoryId = '{!compHistId}';
+            var fileName =activeFileName;
+            var pullRequestId = '{!pullRequest}';
+            var fullUrl = window.location.href;
+            if(compHistoryId!=undefined){
+
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ComponentComparisonDetailController.saveComments}',compHistoryId,
+                    lineNumber,textComment,fileName,pullRequestId,fullUrl,
+                    function(r, e)
+                    {
+                        if(e.status)
+                        {
+                            newCommLine = undefined;
+                            newCommParrent = undefined;
+                            viewDetail('editDetailTabButton' + activeTabNumber);
+
+                        }
+                        else
+                        {
+                            console.log(e.status);
+                            console.log(r);
+                        }
+
+                    }
+                );}
+        }
+
+        function saveChildComment(n,id){
+
+            var lineNumber = n;
+            var textComment = $('#text-area_'+n)[0].value;
+            if (textComment=='')
+            {
+                window.alert('Please, fill out comment field');
+                return;
+            }
+            var compHistoryId = '{!compHistId}';
+            var pullRequestId = '{!pullRequest}';
+            var fileName =activeFileName;
+            var fullUrl = window.location.href;
+            if(compHistoryId!=undefined){
+
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ComponentComparisonDetailController.saveChildComments}',compHistoryId,
+                    lineNumber,textComment,id,fileName,pullRequestId,fullUrl,
+                    function(r, e)
+                    {
+                        if(e.status)
+                        {
+                            replyId = undefined;
+                            replyLine = undefined;
+                            viewDetail('editDetailTabButton' + activeTabNumber);
+
+                        }
+                        else
+                        {
+                            console.log(e.status);
+                            console.log(r);
+                        }
+                    }
+                );}
+        }
+
+
+
+        function childSplitter(fullXml,metaType,fileName)
+        {
+            var childDataMap = {};
+            if(fullXml != undefined)
+            {
+                var fullName = '';
+                if(metaType != 'CustomLabel')
+                {
+                    fullName = fileName.slice(fileName.indexOf("/")+1,fileName.lastIndexOf('.'))+".";
+                }
+                var x2js = new X2JS();
+                var tgtmap = {};
+                var srcjson = x2js.xml_str2json(fullXml);
+                if(srcjson != null)
+                {
+                    var srcitems;
+                    if(metaType == 'CustomLabel')
+                    {
+                        var srcMetaItem = srcjson.CustomLabels;
+                        srcitems = srcMetaItem.labels;
+                    }
+                    else if(metaType == 'CustomField')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.fields;
+                    }
+                    else if(metaType == 'ListView')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.listViews;
+                    }
+                    else if(metaType == 'CompactLayout')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.compactLayouts;
+                    }
+                    else if(metaType == 'WebLink')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.webLinks;
+                    }
+                    else if(metaType == 'RecordType')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.recordTypes;
+                    }
+                    else if(metaType == 'FieldSet')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.fieldSets;
+                    }
+                    else if(metaType == 'ValidationRule')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.validationRules;
+                    }
+                    else if(metaType == 'AssignmentRule')
+                    {
+                        var srcMetaItem = srcjson.AssignmentRules;
+                        srcitems = srcMetaItem.assignmentRule;
+                    }
+                    else if(metaType == 'AutoResponseRule')
+                    {
+                        var srcMetaItem = srcjson.AutoResponseRules;
+                        srcitems = srcMetaItem.autoResponseRule;
+                    }
+                    else if(metaType == 'WorkflowTask')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.tasks;
+                    }
+                    else if(metaType == 'WorkflowOutboundMessage')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.outboundMessages;
+                    }
+                    else if(metaType == 'WorkflowFieldUpdate')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.fieldUpdates;
+                    }
+                    else if(metaType == 'WorkflowKnowledgePublish')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.knowledgePublishes;
+                    }
+                    else if(metaType == 'WorkflowAlert')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.alerts;
+                    }
+                    else if( metaType == 'WorkflowRule')
+                    {
+                        var srcMetaItem = srcjson.Workflow;
+                        srcitems = srcMetaItem.rules;
+                    }
+                    else if(metaType == 'SharingCriteriaRule')
+                    {
+                        var srcMetaItem = srcjson.SharingRules;
+                        srcitems = srcMetaItem.sharingCriteriaRules;
+                    }
+                    else if(metaType == 'SharingOwnerRule')
+                    {
+                        var srcMetaItem = srcjson.SharingRules;
+                        srcitems = srcMetaItem.sharingOwnerRules;
+                    }
+                    else if(metaType == 'BusinessProcess')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.businessProcesses;
+                    }
+                    else if(metaType == 'SharingReason')
+                    {
+                        var srcMetaItem = srcjson.CustomObject;
+                        srcitems = srcMetaItem.sharingReasons;
+                    }
+                    else if(metaType == 'EscalationRule')
+                    {
+                        var srcMetaItem = srcjson.EscalationRules;
+                        srcitems = srcMetaItem.escalationRule;
+                    }
+                    else if(metaType == 'MatchingRule')
+                    {
+                        var srcMetaItem = srcjson.MatchingRules;
+                        srcitems = srcMetaItem.matchingRules;
+                    }
+                    else if(metaType == 'ManagedTopic')
+                    {
+                        var srcMetaItem = srcjson.ManagedTopics;
+                        srcitems = srcMetaItem.ManagedTopic;
+                    }
+                    if(srcitems != undefined)
+                    {
+                        if(srcitems.fullName == undefined)
+                        {
+                            $.each(srcitems, function( i, v )
+                            {
+                                tgtmap[fullName+''+v.fullName] = JSON.stringify(v);
+                            });
+                        }
+                        else
+                        {
+                            tgtmap[fullName+''+srcitems.fullName] = JSON.stringify(srcitems);
+                        }
+                    }
+                    if(metadataTypeHeaderMap[metaType] != undefined && metadataTypePreTagMap[metaType]  != undefined && metadataTypePostTagMap[metaType]  != undefined && metadataTypeFooterMap[metaType] != undefined)
+                    {
+                        for(var itemName in tgtmap)
+                        {
+                            tempXml = '';
+                            //header
+                            tempXml = metadataTypeHeaderMap[metaType];
+                            //body
+                            tempXml += metadataTypePreTagMap[metaType]+''+x2js.json2xml_str($.parseJSON(tgtmap[itemName]))+''+metadataTypePostTagMap[metaType];
+                            //footer
+                            tempXml += metadataTypeFooterMap[metaType];
+                            if(tempXml != '')
+                            {
+                                childDataMap[metaType+'#'+itemName] = formatXml(tempXml);
+                            }
+                        }
+                    }
+                }
+            }
+            return childDataMap;
+        }
+
+        var folderMap = {};
+        folderMap['DocumentFolder'] = 'Document';
+        folderMap['DashboardFolder'] = 'Dashboard';
+        folderMap['ReportFolder'] = 'Report';
+        folderMap['EmailFolder'] = 'EmailTemplate';
+
+        var childMap = {};
+        childMap['CustomField'] = true;
+        childMap['CustomLabel'] = true;
+        childMap['CompactLayout'] = true;
+        childMap['WebLink'] = true;
+        childMap['RecordType'] = true;
+        childMap['ListView'] = true;
+        childMap['FieldSet'] = true;
+        childMap['AssignmentRule'] = true;
+        childMap['AutoResponseRule'] = true;
+        childMap['ValidationRule'] = true;
+        childMap['WorkflowTask'] = true;
+        childMap['WorkflowOutboundMessage'] = true;
+        childMap['WorkflowFieldUpdate'] = true;
+        childMap['WorkflowKnowledgePublish'] = true;
+        childMap['WorkflowAlert'] = true;
+        childMap['WorkflowRule'] = true;
+        childMap['SharingOwnerRule'] = true;
+        childMap['SharingCriteriaRule'] = true;
+        childMap['BusinessProcess'] = true;
+        childMap['SharingReason'] = true;
+        childMap['EscalationRule'] = true;
+        childMap['MatchingRule'] = true;
+        childMap['ManagedTopic'] = true;
+
+
+        function setLabel(id,text){
+            if (id != undefined){
+                $('#'+id).html(text);
+            }
+        }
+
+        function getLines(s,prefix,postfix){
+            var lines = [];
+            if (s){
+                if (s.indexOf('###') > -1){
+                    lines = s.split('###');
+                }else{
+                    lines.push(s);
+                    lines.push(' ');
+                }
+            }else{
+                lines.push(' ');
+                lines.push(' ');
+            }
+            if (prefix && lines[0]){
+                lines[0] = prefix + ' ' + lines[0];
+            }
+            if (postfix && lines[0]){
+                lines[0] = lines[0] + ' ' + postfix;
+            }
+            return lines;
+        }
+
+        function normalizeXml(xmlTextLeft){
+            return xmlTextLeft;
+        }
+
+
+
+        function showError(text){
+            $(".slds-modal__body").text(text);
+            $('#myModal').modal('show');
+        }
+
+
+
+
+        function showErrorMessage(str)
+        {
+            if($('#msg') != undefined)
+            {
+                $('#msg').remove();
+            }
+            var parentVal = $("[id$='msg']");
+            if(parentVal != undefined)
+            {
+                var childVal = '<span id="msg">'+
+                        '<span>'+
+                        '<div class="message errorM3" role="alert">'+
+                        '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                        '<tbody>'+
+                        '<tr valign="top">'+
+                        '<td>'+
+                        '<img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR">'+
+                        '</td>'+
+                        '<td class="messageCell">'+
+                        '<div class="messageText">'+
+                        '<span style="color:#cc0000">'+
+                        '<h4>Error:</h4>'+
+                        '</span>'+
+                        str+'<br>'+
+                        '</div>'+
+                        '</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                        '<td></td>'+
+                        '<td></td>'+
+                        '</tr>'+
+                        '</tbody>'+
+                        '</table>'+
+                        '</div>'+
+                        '</span>'+
+                        '</span>';
+                parentVal.before(childVal);
+            }
+            unbindWindow();
+        }
+
+        function clearMessage(){
+            console.log('clearMessage');
+//          setMessageOnPage('');
+            if($('#msg') != undefined){
+                $('#msg').remove();
+            }
+        }
+
+
+        function unbindWindow()
+        {
+            $(window).unbind();
+        }
+
+        // If the document is clicked somewhere
+        $(document).bind("mousedown", function (e) {
+
+            // If the clicked element is not the menu
+            if (!$(e.target).parents(".custom-menu").length > 0) {
+                // Hide it
+                $(".custom-menu").hide(100);
+            }
+        });
+
+
+        // If the menu element is clicked
+        /*$(".custom-menu li").click(function(){
+            if (true) return;
+            // This is the triggered action name
+            switch($(this).attr("data-action")) {
+
+                    // A case for each action. Your actions here
+                case "update": console.log("update");comp.mergely('command', 'update');  break;
+                case "delete": console.log("delete");comp.mergely('command', 'delete'); break;
+                case "edit": console.log("edit"); return;
+            }
+
+            // Hide it AFTER the action was triggered
+            $(".custom-menu").hide(100);
+        });*/
+
+
+        //
+
+        var contentIds = '{!JSENCODE(contentIds)}';
+        Visualforce.remoting.timeout = 120000;
+        var currentAttIds = [];
+        var currentAttIndex = 0;
+        var detailDataMap = {};
+
+        $( document ).ready(function() {
+            overridePageMessages();
+            getDetailsOfAttachments();
+        });
+
+        function getDetailsOfAttachments()
+        {
+            currentAttIds = [];
+            currentAttIndex = 0;
+            detailDataMap = {};
+            if(contentIds != '')
+            {
+                show();
+                var tempIdLi = [];
+                tempIdLi = contentIds.split(',')
+                Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.ComponentComparisonDetailController.getAttachmentList}',
+                        JSON.stringify(tempIdLi),
+                        handleAttachmentLimit
+                );
+            }
+        }
+
+        //To handle zip files information.
+        function handleAttachmentLimit(r,e)
+        {
+            if(e.status && r)
+            {
+                currentAttIds = [];
+                currentAttIndex = 0;
+                if(r.length > 0)
+                {
+                    currentAttIds = r;
+                    getAttachment();
+                }
+                else
+                {
+                    hide();
+                }
+            }
+            else
+            {
+                console.log(e.message);
+                showMessage(e.message);
+            }
+        }
+
+        //To get zip file from snapshot and to read the crc codes of components from zip files.
+        function getAttachment()
+        {
+            if(currentAttIndex < currentAttIds.length)
+            {
+                var ctAttIds = currentAttIds[currentAttIndex];
+
+                Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.ComponentComparisonDetailController.getAttachments}',
+                        JSON.stringify(ctAttIds),
+                        function handlegetAttachments(r,e){
+                            if(e.status && r){
+                                if(r.length > 0)
+                                {
+                                    console.log('Getting content from '+r.length+' attachments.');
+                                    var attReadIndex = 0;
+                                    var readFullAtt = function(){
+                                        if(attReadIndex < r.length)
+                                        {
+                                            var att = r[attReadIndex];
+                                            var parentId = att.parentId;
+                                            var metaType = att.compType;
+                                            var base64str = att.base64;
+                                            var zip = new JSZip(base64str, {base64:true});
+                                            for(var fileName in zip.files)
+                                            {
+                                                if(fileName != undefined)
+                                                    detailDataMap[parentId+'#'+metaType+"#"+fileName] = zip.files[fileName].asText();
+                                            }
+                                            attReadIndex++;
+                                            setTimeout(readFullAtt, 0005);
+                                        }
+                                        else
+                                        {
+                                            currentAttIndex++;
+                                            getAttachment();
+                                        }
+                                    }
+                                    readFullAtt();
+                                }
+                                else
+                                    hide();
+                            }
+                            else
+                            {
+                                showMessage(e.message);
+                            }
+                        }
+                );
+            }
+            else
+            {
+                //console.log(detailDataMap);
+
+                //compare('baseDivToStoreContent','targetDivToShowComparison');
+                open();
+            }
+        }
+
+        function overridePageMessages(){
+            var textureEffect = '';
+            //Uncomment below line for texture effect on page messages
+            textureEffect = 'slds-theme--alert-texture';
+            console.log('here cals') ;
+            $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);
+            $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);
+            $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);
+            $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);
+
+            $('.errorM3').removeClass('errorM3');
+            $('.confirmM3').removeClass('confirmM3');
+            $('.infoM3').removeClass('infoM3');
+            $('.warningM3').removeClass('warningM3');
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,75 @@
+<apex:page standardController="Flosum__Component__c" sidebar="false" extensions="Flosum.EditComponentController" action="{!redirectToComponentHistoryEdit}">
+    <c:TrackPanel />
+    <apex:slds />
+    
+    <style>
+        .lbcls {
+            font-weight: 700 !important;
+        }
+    </style>
+        
+    <apex:outputPanel layout="block" styleClass="slds-scope">
+        <apex:outputPanel layout="block" styleClass="slds-page-header">
+            <div class="slds-media">
+                <div class="slds-media__body">
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Component Edit">Component Edit</h1>
+                    <p class="slds-text-body_small slds-line-height_reset">{!Flosum__Component__c.Name}</p>
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:form styleClass="slds-form--stacked">
+            <fieldset class="slds-box slds-theme--default">
+                <apex:outputPanel layout="block">
+                    <div class="slds-float--right" role="group">
+                        <apex:commandButton styleClass="slds-button slds-button_neutral" value="Save" action="{!save}"/>
+                        <apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" action="{!cancel}"/>
+                    </div>
+                    <apex:outputPanel layout="block">
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Component Number" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Name}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Component Name" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Flosum__Component_Name__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Component Type" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Flosum__Component_Type__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Version" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Flosum__Version__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Changed By" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Flosum__Last_Updated_By__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Changed On" />
+                            <div class="slds-form-element__control">
+                                <apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!Flosum__Component__c.Flosum__Last_Modified_Date__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+                            <apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Comments" />
+                            <div class="slds-form-element__control">
+                                <apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!Flosum__Component__c.Flosum__Comments__c}"/>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </fieldset>
+        </apex:form>
+    </apex:outputPanel>
+</apex:page>

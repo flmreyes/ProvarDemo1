@@ -1,0 +1,604 @@
+<apex:page controller="Flosum.PostInstallScriptController" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	
+	<apex:slds />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jsforce)}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__FlosumPostInstallScript)}"/> 
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.js')}"/>
+	
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message table ul li{
+		    color: white !important;
+		}
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.fontClass {
+			font-size: 18px !important;
+		}
+		.dscMargin {
+			margin-top: 10px !important;
+		}
+		.slds-scope .slds-checkbox .slds-checkbox--faux, .slds-scope .slds-checkbox .slds-checkbox_faux {
+    		width: 0.9rem;
+    		height: 0.9rem;
+		}
+	</style>
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form id="postinstallForm" styleClass="slds-form--stacked">
+			<apex:pagemessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media">
+					<div class="slds-media__body">
+						<h1 class="slds-page-header__title slds-truncate slds-align-middle fontClass" title="Settings">{!$Label.flosum__post_install_page_title}</h1>
+						<p class="slds-text-body_small slds-line-height_reset dscMargin">{!$Label.flosum__post_install_page_description}</p>
+					</div>
+				</div>
+			</apex:outputPanel>
+			<apex:actionFunction name="profileSecondStep" action="{!profileValidate}" reRender="msg" onComplete="overridePageMessages(); createProfilePermissionZip('{!profileNamesStr}','{!profileXml}');"/>
+			<apex:actionFunction name="deployLayout" action="{!deployPostScript}" reRender="msg" onComplete="overridePageMessages(); checkDeploymentStatus('{!AsyncResultId}',{!isProfileFirstStep});">
+				<apex:param assignTo="{!zipStr}" name="zipStr" value="" />
+				<apex:param assignTo="{!isPartOfPackage}" name="isPartOfPackage" value="" />
+			</apex:actionFunction>  
+			<apex:actionFunction name="checkStatus" action="{!checkAsyncRequest}" rerender="msg" onComplete="overridePageMessages(); checkDeploymentStatus('{!AsyncResultId}',{!isProfileFirstStep});"/>
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+							<div class="slds-media__body">
+								<h2>
+									<span class="slds-text-heading_small fontClass">{!$Label.flosum__post_install_profile_title}</span>
+									<p class="slds-text-body_small slds-line-height_reset dscMargin">{!$Label.flosum__post_install_profile_description}</p>
+								</h2>
+							</div>
+						</header>
+						<div class="slds-no-flex">
+							<apex:commandbutton styleClass="slds-button slds-button_neutral" action="{!profileApplicationValidate}" onClick="show();" value="Update" reRender="msg" onComplete="overridePageMessages(); createProfilePermissionZip('{!profileNamesStr}','{!profileXml}');"/>
+	            		</div>
+					</div>
+					<div class="slds-card__body slds-card__body_inner">
+						<apex:outputPanel styleClass="slds-form-element slds-size--5-of-12" layout="block">
+							<apex:outputpanel id="picklist" layout="block">
+				            	<c:MultiSelectComponent leftLabel="Available Profiles"
+					                leftOption="{!leftOptionList}"
+					                rightLabel="Selected Profiles"
+					                rightOption="{!rightOptionList}"
+					                size="10"
+					                width="300px"/>
+			            	</apex:Outputpanel>
+						</apex:outputPanel>
+			        </div>
+				</apex:outputPanel>
+				<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+							<div class="slds-media__body">
+								<h2>
+									<span class="slds-text-heading_small fontClass">{!$Label.flosum__post_install_applicatoin_title}</span>
+									<apex:outputPanel styleClass="slds-form-element slds-size--10-of-12 dscMargin" layout="block">
+										<p class="slds-text-body_small slds-line-height_reset">{!$Label.flosum__post_install_applicatoin_description}</p>
+										<p class="slds-text-body_small slds-line-height_reset">{!$Label.flosum__post_install_applicatoin_description_2}</p>
+									</apex:outputPanel>
+								</h2>
+							</div>
+						</header>
+						<div class="slds-no-flex">
+							<apex:commandbutton styleClass="slds-button slds-button_neutral" action="{!applicationUpdate}" value="Update" reRender="msg" onClick="show();" onComplete="overridePageMessages(); createApplicationZip();"/>
+	            		</div>
+					</div>
+				</apex:outputPanel>	
+				<apex:outputPanel layout="block" styleClass="slds-box slds-m-bottom--medium">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+							<div class="slds-media__body">
+								<h2>
+									<span class="slds-text-heading_small fontClass">{!$Label.flosum__post_install_layout_title}</span>
+									<apex:outputPanel styleClass="slds-form-element slds-size--10-of-12 dscMargin" layout="block">
+										<p class="slds-text-body_small slds-line-height_reset">{!$Label.flosum__post_install_layout_description}</p>
+									</apex:outputPanel>
+									<div class="slds-form-element__control slds-p-bottom_x-large">
+				                        <span class="slds-checkbox slds-float--left">
+				                            <apex:inputCheckbox styleclass="slds-input" id="updateSearchLayoutsAndListView" selected="true"/>
+				                            <apex:outputLabel for="updateSearchLayoutsAndListView" styleClass="slds-checkbox__label">
+				                                <span class="slds-checkbox--faux"></span>
+				                                <span class="slds-form-element__label"> : Update list view and search layouts</span>
+				                            </apex:outputLabel>
+				                        </span>
+				                    </div>	
+								</h2>
+							</div>
+						</header>
+						<div class="slds-no-flex">
+							<apex:commandbutton styleClass="slds-button slds-button_neutral" action="{!layoutUpdate}" value="Update" reRender="msg" onClick="show();" onComplete="overridePageMessages(); createLayoutsZip();"/>
+	            		</div>
+					</div>
+				</apex:outputPanel>	
+			</fieldset>
+		</apex:form>
+	</apex:outputPanel>
+	
+	<script>
+		var url = '{!baseUrl}';
+		var packageXmlName = 'package.xml';
+		var NameSpacePrefix = '{!NameSpacePrefix}';
+		var flosumsf = jsforce;
+		var flosumTabandListViewMap = {};
+		
+		//enable block UI
+		show();
+		
+		$(document).ready(function() {
+			overridePageMessages();
+			if('{!PlaceOfException}' == 'ERROR')
+			    listRemoteSiteSetting('{!baseUrl}','{!PlaceOfException}');
+			else
+				hide();
+		});
+				
+		function createLayoutsZip()
+		{
+			var flosumPackageXmlName= NameSpacePrefix != '' ? NameSpacePrefix+'/package.xml' : 'package.xml';
+			var flosumPackageXml = '';
+			flosumPackageXml+='<?xml version="1.0" encoding="UTF-8"?>';
+			flosumPackageXml+='<Package xmlns="http://soap.sforce.com/2006/04/metadata">';
+			
+			
+			var myZip = new JSZip();
+			if(NameSpacePrefix != '')
+			{
+				flosumPackageXml+='<fullName>'+NameSpacePrefix+'</fullName>';
+				flosumPackageXml+='<apiAccessLevel>Unrestricted</apiAccessLevel>';
+				flosumPackageXml+='<namespacePrefix>'+NameSpacePrefix+'</namespacePrefix>';
+			}
+			flosumPackageXml+='<types>';
+			for(var key in layoutFileMap)
+			{
+				if(flosumLayoutMap[key] != undefined)
+				{
+					flosumPackageXml+='<members>'+layoutFileMap[key]+'</members>';
+					var fileName = NameSpacePrefix != '' ? NameSpacePrefix+'/'+key : key;
+					myZip.file(fileName,flosumLayoutMap[key]);
+				}
+			}
+			flosumPackageXml+='<name>Layout</name>';
+			flosumPackageXml+='</types>';
+			
+			var temp = NameSpacePrefix != '' ? NameSpacePrefix+'__' : NameSpacePrefix;
+			//Patch object xml
+			var patchXml = '<?xml version="1.0" encoding="UTF-8"?>'+
+						'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+							'<deploymentStatus>Deployed</deploymentStatus>'+
+							'<label>Deployment</label>'+
+							'<listViews>'+
+						        '<fullName>All</fullName>'+
+						        '<columns>NAME</columns>'+
+						        '<columns>Total_Items__c</columns>'+
+						        '<columns>UPDATEDBY_USER</columns>'+
+						        '<columns>LAST_UPDATE</columns>'+
+						        '<filterScope>Everything</filterScope>'+
+						        '<label>All</label>'+
+						    '</listViews>'+
+							'<nameField>'+
+					        	'<label>Deployment Name</label>'+
+					        	'<type>Text</type>'+
+					    	'</nameField>'+
+					    	'<pluralLabel>Deployments</pluralLabel>'+
+					    	'<searchLayouts>'+
+						        '<customTabListAdditionalFields>Total_Items__c</customTabListAdditionalFields>'+
+						        '<customTabListAdditionalFields>UPDATEDBY_USER</customTabListAdditionalFields>'+
+						        '<customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>'+
+						        '<listViewButtons>Merge_Patches</listViewButtons>'+
+						        '<searchResultsAdditionalFields>Total_Items__c</searchResultsAdditionalFields>'+
+						        '<searchResultsAdditionalFields>UPDATEDBY_USER</searchResultsAdditionalFields>'+
+						        '<searchResultsAdditionalFields>LAST_UPDATE</searchResultsAdditionalFields>'+
+							'</searchLayouts>'+
+						    '<sharingModel>ReadWrite</sharingModel>'+
+				    	'</CustomObject>';
+			//commit object xml	    	
+			var commitXml = '<?xml version="1.0" encoding="UTF-8"?>'+
+							'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+								'<deploymentStatus>Deployed</deploymentStatus>'+
+								'<label>Commit</label>'+
+							    '<listViews>'+
+							        '<fullName>All'+'</fullName>'+
+							        '<columns>NAME</columns>'+
+							        '<columns>Commit_Name__c</columns>'+
+							        '<columns>Description__c</columns>'+
+							        '<columns>Branch__c</columns>'+
+							        '<columns>CREATED_DATE</columns>'+
+							        '<filterScope>Everything</filterScope>'+
+							        '<label>All</label>'+
+							    '</listViews>'+
+							    '<nameField>'+
+							        '<displayFormat>Commit-{YY}-{MM}-{DD}-{00000}</displayFormat>'+
+							        '<label>Commit Number</label>'+
+							        '<type>AutoNumber</type>'+
+							    '</nameField>'+
+							    '<pluralLabel>Commits</pluralLabel>'+
+							    '<searchLayouts>'+
+							        '<customTabListAdditionalFields>Commit_Name__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Description__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Branch__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>CREATED_DATE</customTabListAdditionalFields>'+
+							        '<excludedStandardButtons>New</excludedStandardButtons>'+
+							        '<searchResultsAdditionalFields>Commit_Name__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Branch__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>'+
+							    '</searchLayouts>'+
+							    '<sharingModel>ReadWrite</sharingModel>'+
+							 '</CustomObject>';
+			var buildXml = '<?xml version="1.0" encoding="UTF-8"?>'+
+							'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+								'<deploymentStatus>Deployed</deploymentStatus>'+
+								'<label>Build</label>'+
+							    '<listViews>'+
+							        '<fullName>All</fullName>'+
+							        '<columns>NAME</columns>'+
+							        '<columns>Number_of_Components__c'+'</columns>'+
+							        '<columns>Start_Time__c</columns>'+
+							        '<columns>UPDATEDBY_USER</columns>'+
+							        '<filterScope>Everything</filterScope>'+
+							        '<label>All</label>'+
+							    '</listViews>'+
+							    '<nameField>'+
+							        '<displayFormat>Build-{YY}-{MM}-{DD}-{00000}</displayFormat>'+
+							        '<label>Build Name</label>'+
+							        '<type>AutoNumber</type>'+
+							    '</nameField>'+
+							    '<pluralLabel>Builds</pluralLabel>'+
+							    '<searchLayouts>'+
+							        '<customTabListAdditionalFields>Number_of_Components__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Start_Time__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>UPDATEDBY_USER</customTabListAdditionalFields>'+
+							        '<excludedStandardButtons>New</excludedStandardButtons>'+
+							        '<excludedStandardButtons>Accept</excludedStandardButtons>'+
+							        '<excludedStandardButtons>ChangeOwner</excludedStandardButtons>'+
+							        '<searchResultsAdditionalFields>Number_of_Components__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Start_Time__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>UPDATEDBY_USER</searchResultsAdditionalFields>'+
+							    '</searchLayouts>'+
+							    '<sharingModel>ReadWrite</sharingModel>'+
+							 '</CustomObject>';
+			var branchXml = '<?xml version="1.0" encoding="UTF-8"?>'+
+							'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+								'<deploymentStatus>Deployed</deploymentStatus>'+
+								'<enableFeeds>true</enableFeeds>'+
+								'<label>Branch</label>'+
+							    '<listViews>'+
+							        '<fullName>All</fullName>'+
+							        '<columns>NAME</columns>'+
+							        '<columns>Branch_Name__c</columns>'+
+							        '<columns>Branch_Description__c</columns>'+
+							        '<columns>LAST_UPDATE</columns>'+
+							        '<filterScope>Everything</filterScope>'+
+							        '<label>All</label>'+
+							    '</listViews>'+
+							    '<nameField>'+
+							        '<displayFormat>B-{0000}</displayFormat>'+
+							        '<label>Branch Number</label>'+
+							        '<type>AutoNumber</type>'+
+							    '</nameField>'+
+							    '<pluralLabel>Branches</pluralLabel>'+
+							    '<searchLayouts>'+
+							        '<customTabListAdditionalFields>Branch_Name__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Branch_Description__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>LAST_UPDATE</customTabListAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Branch_Name__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Branch_Description__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>LAST_UPDATE</searchResultsAdditionalFields>'+
+							    '</searchLayouts>'+
+							    '<sharingModel>ReadWrite</sharingModel>'+
+							'</CustomObject>';
+			var comptXML =  '<?xml version="1.0" encoding="UTF-8"?>'+
+							'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+								'<deploymentStatus>Deployed</deploymentStatus>'+
+								'<enableFeeds>true</enableFeeds>'+
+								'<label>Component</label>'+
+								'<nameField>'+
+							        '<displayFormat>C-{00000}</displayFormat>'+
+							        '<label>Component Number</label>'+
+							        '<trackFeedHistory>false</trackFeedHistory>'+
+							        '<type>AutoNumber</type>'+
+						    	'</nameField>'+
+								'<pluralLabel>Components</pluralLabel>'+
+								'<sharingModel>ReadWrite</sharingModel>'+
+							'</CustomObject>';
+			var pullRXML =  '<?xml version="1.0" encoding="UTF-8"?>'+
+							'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+								'<deploymentStatus>Deployed</deploymentStatus>'+
+								'<enableFeeds>true</enableFeeds>'+
+								'<label>Pull Request</label>'+
+								'<nameField>'+
+							        '<label>Title</label>'+
+							        '<trackFeedHistory>false</trackFeedHistory>'+
+							        '<type>Text</type>'+
+							    '</nameField>'+
+								'<pluralLabel>Pull Requests</pluralLabel>'+
+								'<sharingModel>ReadWrite</sharingModel>'+
+							'</CustomObject>';
+
+			var orgXml = '<?xml version="1.0" encoding="UTF-8"?>'+
+					 		'<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">'+
+					 		'<deploymentStatus>Deployed</deploymentStatus>'+
+					 		'<label>Org</label>'+
+					     		'<listViews>'+
+					         		'<fullName>All</fullName>'+
+					         		'<columns>NAME</columns>'+
+					         		'<columns>Username__c</columns>'+
+					         		'<columns>User_Full_Name__c</columns>'+
+					         		'<columns>Organisation_Type__c</columns>'+
+					         		'<columns>Owner_Name__c</columns>'+
+					         		'<filterScope>Everything</filterScope>'+
+					        	 	'<label>All</label>'+
+					    		'</listViews>'+
+					    		'<nameField>'+
+						        	'<label>Organization Name</label>'+
+						        	'<type>Text</type>'+
+						    	'</nameField>'+
+					    		'<pluralLabel>Orgs</pluralLabel>'+
+					    		'<searchLayouts>'+
+							        '<customTabListAdditionalFields>Username__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>User_Full_Name__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Organisation_Type__c</customTabListAdditionalFields>'+
+							        '<customTabListAdditionalFields>Owner_Name__c</customTabListAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Username__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>User_Full_Name__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Organisation_Type__c</searchResultsAdditionalFields>'+
+							        '<searchResultsAdditionalFields>Owner_Name__c</searchResultsAdditionalFields>'+
+							    '</searchLayouts>'+
+					    		'<sharingModel>Private</sharingModel>'+
+						 	'</CustomObject>';
+				    	
+			var updateSearchLayoutsAndListView = $("[id$='updateSearchLayoutsAndListView']").prop('checked') == true;
+			if(updateSearchLayoutsAndListView) {    	
+				flosumTabandListViewMap['objects/Patch__c.object']  = patchXml;
+				flosumTabandListViewMap['objects/Commit__c.object'] = commitXml;
+				flosumTabandListViewMap['objects/Build__c.object']  = buildXml;
+				flosumTabandListViewMap['objects/Branch__c.object'] = branchXml;
+				flosumTabandListViewMap['objects/Organisation__c.object'] = orgXml;
+				flosumTabandListViewMap['objects/Component__c.object'] = comptXML;
+				flosumTabandListViewMap['objects/Pull_Request__c.object'] = pullRXML;
+			}
+			for(var key in flosumTabandListViewMap)
+			{
+				var fileName = NameSpacePrefix != '' ? NameSpacePrefix+'/'+key : key;
+				myZip.file(fileName,flosumTabandListViewMap[key]);
+			}
+
+			flosumPackageXml+='<types>';
+			flosumPackageXml+='<members>*</members>';
+			flosumPackageXml+='<name>CustomObject</name>';
+			flosumPackageXml+='</types>';
+			flosumPackageXml+='<types>';
+			flosumPackageXml+='<members>*</members>';
+			flosumPackageXml+='<name>ListView</name>';
+			flosumPackageXml+='</types>';
+			flosumPackageXml+='<version>35.0</version>';
+			flosumPackageXml+='</Package>';
+			myZip.file(flosumPackageXmlName,flosumPackageXml);
+			var deployZipStr = myZip.generate({type:"base64",compression:"DEFLATE"});
+			if(NameSpacePrefix != '')
+				deployLayout(deployZipStr,true);
+			else
+				deployLayout(deployZipStr,false);
+		}
+		
+		function createApplicationZip()
+		{
+			var flosumPackageXmlName= NameSpacePrefix != '' ? NameSpacePrefix+'/package.xml' : 'package.xml';
+			var flosumPackageXml = '';
+			flosumPackageXml+='<?xml version="1.0" encoding="UTF-8"?>';
+			flosumPackageXml+='<Package xmlns="http://soap.sforce.com/2006/04/metadata">';
+			
+			var myZip = new JSZip();
+			if(NameSpacePrefix != '')
+			{
+				flosumPackageXml+='<fullName>'+NameSpacePrefix+'</fullName>';
+				flosumPackageXml+='<apiAccessLevel>Unrestricted</apiAccessLevel>';
+				flosumPackageXml+='<namespacePrefix>'+NameSpacePrefix+'</namespacePrefix>';
+			}
+			//custom application
+			flosumPackageXml+='<types>';
+			var isLogoExist = {!isLogoExist};
+			if(isLogoExist)
+			{
+				for(var key in flosumAppMap)
+				{
+					var fileName = NameSpacePrefix != '' ? NameSpacePrefix+'/'+key : key;
+	                myZip.file(fileName ,flosumAppMap[key]);
+				}
+			}
+			else{
+				for(var key in flosumNoLogoAppMap)
+				{
+					var fileName = NameSpacePrefix != '' ? NameSpacePrefix+'/'+key : key;
+	                myZip.file(fileName ,flosumNoLogoAppMap[key]);
+				}
+			}
+			flosumPackageXml+='<members>Flosum</members>';
+			flosumPackageXml+='<name>CustomApplication</name>';
+			flosumPackageXml+='</types>';
+			flosumPackageXml+='<version>43.0</version>';
+			flosumPackageXml+='</Package>';
+			myZip.file(flosumPackageXmlName,flosumPackageXml);
+			var deployZipStr = myZip.generate({type:"base64",compression:"DEFLATE"});
+			if(NameSpacePrefix != '')
+				deployLayout(deployZipStr,true);
+			else
+				deployLayout(deployZipStr,false);
+		}
+		
+		function createProfilePermissionZip(profileNames,profileXml)
+		{
+			if(profileNames != '')
+			{
+				var myZip = new JSZip();
+				var proLi = JSON.parse(profileNames);
+				var packageXmlPre = '<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">';
+				packageXmlPre+=	'<types>';	    
+				for(var key in proLi)
+				{
+					myZip.file(key,profileXml);
+					packageXmlPre+=	'<members>'+proLi[key]+'</members>';	
+				}
+				packageXmlPre+=	'<name>Profile</name></types>';
+				packageXmlPre+=	'<version>33.0</version></Package>';
+				myZip.file(packageXmlName,packageXmlPre);
+				var deployZipStr = myZip.generate({type:"base64",compression:"DEFLATE"});
+				deployLayout(deployZipStr,false);
+			}
+			else
+			{
+				hide();
+			}
+		}
+		
+		function checkDeploymentStatus(asyncId,isProfileFirstStep)
+		{
+			if(asyncId != undefined && asyncId != null && asyncId.length == 18)
+			{
+				setTimeout(checkStatus, 5000);
+			}
+			else
+			{
+				if(isProfileFirstStep)
+				{
+					profileSecondStep();
+				}
+				else
+					hide(); 
+			}
+		}
+		
+		function listRemoteSiteSetting(RSURL,placeOfEX)
+		{
+			var reg = /[^a-zA-Z0-9]+/g
+		    var host = RSURL;
+		    var fullName = RSURL.slice(8,RSURL.indexOf('.visual.force.com'));
+		    fullName = fullName.replace(reg,'');
+		    var firstChar = fullName.charAt(0);
+			if(firstChar >= 0 && firstChar <= 9)
+			{
+			    fullName = 'A' + fullName;
+			}
+		    
+			var ExistingNames = {};
+			var selfConn = new flosumsf.Connection({ accessToken: '{!$API.Session_Id}' });
+			var queryLi = [];
+        	var query = new Object();
+        	query.folder = '';
+        	query.type = 'RemoteSiteSetting';
+        	queryLi.push(query);
+        	selfConn.metadata.list(queryLi, '34.0', function(err,result){
+        		if(err) 
+            	{
+            		console.log(err);
+            	}
+            	else
+            	{
+            		if(Array.isArray(result))
+           			{
+           				for(var index in result)
+           				{
+           					if(index < result.length)
+           					{
+           						var mi = result[index];
+           						ExistingNames[mi.fullName]= mi.fullName;
+           					}
+           				}
+           			}
+           			else
+           			{
+           				ExistingNames[result.fullName]= result.fullName;
+           			}
+           			var remoteSite = new Object();
+           			remoteSite.fullName = ExistingNames[fullName] != undefined ?  getRemoteSiteName(fullName+'1',ExistingNames) : fullName;
+           			remoteSite.description = 'Metadata API Remote Site Setting for Flosum Application';
+           			remoteSite.isActive = true;
+           			remoteSite.url = host;
+           			selfConn.metadata.create('RemoteSiteSetting',remoteSite,function(err2,result2){
+           				if(err2) 
+		            	{
+		            		console.log(err2);
+		            		hide();
+		            	}
+		            	else
+		            	{
+		            		if(result2 != undefined && result2.success)
+		            		{
+		            			console.log('Created Successfully.');
+		            			location.reload();
+		            		}
+		            		else
+		            		{
+		            			console.log(JSON.stringify(result2.errors));
+		            			hide();
+		            		}
+		            	}
+           			});
+            	}
+        	});
+		}
+			
+		function getRemoteSiteName(fullName,ExistingNames)
+		{
+			if(ExistingNames[fullName] != undefined)
+			{
+				fullName = calculateName(fullName);
+				return getRemoteSiteName(fullName,ExistingNames);
+			}
+			else
+			{
+				return fullName;
+			}
+		}
+		
+		function calculateName(input)
+		{
+			var result = input;
+			var i = input.length;
+			var last = input.charAt(--i);
+			if(isNaN(last))
+			{
+				return result+'1';
+			}
+			else
+			{
+                   last = parseInt(last) + 1;
+                   result = result.slice(0,result.length - 1);
+				return result  + ''+last ;
+			}
+		}
+				
+		function overridePageMessages(){    
+			var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>
+</apex:page>

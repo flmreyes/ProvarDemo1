@@ -1,0 +1,193 @@
+<apex:page controller="Flosum.RepositoryController" tabStyle="Repository__tab" sidebar="false">
+    <c:TrackPanel />
+    <c:Wait />
+    <apex:slds />
+    
+    <style>
+        .pagination { 
+            padding: 1%; 
+        } 
+        div .pagination { 
+            text-align: center; 
+        } 
+        td .dataCell label { 
+            font-weight: normal; 
+        } 
+        .pagination input { 
+            margin-left: 4px; 
+        } 
+        .outputPanelFieldLabel{
+		    color: rgb(79, 74, 96);
+   			font-size: 11px;
+		}
+		.repList{
+		    margin-left: 10px;
+		}
+		.message {
+		    list-style-type: none;
+		}
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		table thead tr th {
+			font-weight: 700 !important;
+		}
+		.dscMargin {
+			margin-top: 10px !important;
+		}
+		.btnMargin {
+			margin-top: -10px !important;
+    		margin-bottom: -25px !important;
+		}
+		.paginationStr {
+			margin-top: 6px !important;
+		}
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+	</style>
+      
+   	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form styleClass="slds-form--stacked">
+			<apex:actionFunction name="listRecords" action="{!fillMetadataItems}" reRender="msg,tb" onComplete="hide();">
+	            <apex:param assignTo="{!localCount}" value="" name="localCount"/>
+	        </apex:actionFunction>
+			<apex:pagemessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media__body">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Metadata Deployment">Repository</h1>
+					<p class="slds-text-body_small slds-line-height_reset dscMargin">{!$Label.flosum__repository_description}</p>
+				</div>
+			</apex:outputPanel>
+			<apex:outputPanel styleClass="slds-box slds-theme--default" layout="block" id="tb">
+				<div class="slds-float--right" role="group">
+					<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" immediate="true" action="{!cancel}"/>
+				</div>
+				<apex:outputPanel layout="block">
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Repository" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList styleClass="slds-select slds-text-heading_regular repList" label="Repository" size="1" value="{!selectedRepository}" >
+					                <apex:selectOptions value="{!RepositoryOptions}" />
+					                <apex:actionSupport event="onchange" reRender="tb,msg" action="{!onSelectRepository}" oncomplete="startCount('{!JSENCODE(selectedMetadataType)}','{!JSENCODE(selectedRepository)}'); overridePageMessages();" onsubmit="show();"/> 
+					            </apex:selectList>
+							</div>
+						</div>
+       				</apex:outputPanel>
+  					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-m-top--medium slds-form-element__label slds-text-heading_regular outputPanelFieldLabel lbcls" value="{!$Label.flosum__component_type} :" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList styleClass="slds-select slds-text-heading_regular" value="{!selectedMetadataType}" multiselect="false" size="1" onChange="startCount(this.value,'{!JSENCODE(selectedRepository)}');show();" >
+									<apex:selectOptions value="{!paginationMetaTypes}" />
+								</apex:selectList>
+							</div>
+						</div>
+						<div class="slds-m-top--medium slds-m-bottom--medium slds-grid">
+							<div class="slds-size--1-of-2 slds-m-right--small">
+								<apex:inputText value="{!searchText}" styleClass="searchRow slds-text-heading_regular slds-input slds-float_left"/>
+							</div>
+							<div class="slds-size--1-of-2">
+								<apex:commandButton action="{!componentSearch}" value="Search" onClick="show();" onComplete="hide();overridePageMessages();" reRender="tb,msg" styleClass="searchRow btn slds-button slds-button_neutral slds-float_left" />
+				      			<apex:commandButton action="{!hideSearch}" value="Hide Search" onClick="show();" onComplete="startCount('{!selectedMetadataType}','{!JSENCODE(selectedRepository)}');" reRender="tb,msg" rendered="{!isSearch}" styleClass="searchRowLast btn slds-button slds-button_neutral slds-float_left" />
+							</div>
+						</div>
+         			</apex:outputPanel>
+     			</apex:outputPanel>
+        		<apex:outputPanel layout="block">
+					<div class="slds-float--right">
+						<apex:outputLink value="{!$Page.Flosum__SyncJobs}" id="eventlink">View sync jobs</apex:outputLink>
+					</div>
+        			<apex:dataTable value="{!componentList}" var="item" rendered="{!if(componentList.size>0,true,false)}" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+        			    <apex:column headerValue="{!$Label.flosum__component_name}" value="{!item.Flosum__Component_Link__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__component_type}" value="{!item.Flosum__Component_Type__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__version}" value="{!item.Flosum__Version__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__comments}" value="{!item.Flosum__Comments__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__developer}" value="{!item.Flosum__Last_Updated_By__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__changed_on}" value="{!item.Flosum__Last_Modified_Date__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__committed_by}" value="{!item.Flosum__Last_Modified_By__c}"/>
+	                    <apex:column headerValue="{!$Label.flosum__committed_on}" value="{!item.Flosum__Committed_On__c}"/>
+	                </apex:dataTable>
+	                <apex:outputPanel rendered="{!if(componentList.size > 0,true,false)}" layout="block" styleClass="btnMargin pagination slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded">
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="Previous" action="{!previous}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="First" action="{!FirstPage}" reRender="tb,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+						</div>
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 paginationStr">
+							<apex:outputText value="{!paginationStr}"/>
+						</div>
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Next" action="{!next}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Last" action="{!LastPage}" reRender="tb,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+						</div>
+					</apex:outputPanel>
+					<apex:outputText styleClass="slds-input" value="No records to display." rendered="{!if(componentList.size == 0,true,false)}"/>
+				</apex:outputPanel>
+ 			</apex:outputPanel>
+		</apex:form>
+   	</apex:outputPanel>
+    
+    <script>
+        $(document).ready(function() {
+            show();
+            overridePageMessages();
+            startCount('{!JSENCODE(selectedMetadataType)}','{!JSENCODE(selectedRepository)}');
+        });
+
+        function startCount(metaType,repositoryId)
+        {
+        	console.log('metaType------'+metaType);
+        	console.log('repositoryId--'+repositoryId);
+            Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.RepositoryController.countRepositoryItems}',
+                            metaType,
+                            repositoryId,
+                            handleResult   
+                        );
+        }
+        
+        function handleResult(r,e)
+        {
+            if(e.status) 
+            {
+            	console.log(e.status);
+                console.log('r   ' + r);
+                listRecords(r);
+            }
+            else
+            {
+                console.log('e.message    '  + e.message);
+                hide();
+            }
+        }
+				
+		function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	                     
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);                    
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');
+	    }
+	</script>
+</apex:page>

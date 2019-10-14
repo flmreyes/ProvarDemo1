@@ -1,0 +1,716 @@
+<apex:page standardController="Flosum__Organisation__c" extensions="Flosum.ScheduleSnapshotController" action="{!orgAction}" sidebar="false" doctype="html-5.0">
+	<c:TrackPanel />
+	<c:Wait />
+	
+	<apex:slds />
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__Utility, 'JS/angular.min.js')}"/>
+	
+	<style>
+		span#filterLabelId-_help {
+            margin-right: 24px;
+        }
+        td.filterheaderclass, th.filterheaderclass {
+            padding-left: 15px;
+        }
+        a.disablePageLink{
+        	pointer-events : none;
+        }
+        .lbcls {
+			font-weight: 700 !important;
+		}
+		input[type="checkbox"] {
+			width: 1rem;
+		    height: 1rem;
+		   	border: 1px solid #dddbda;
+		    border-radius: 0.125rem;
+		    background: white!important;
+		    transition: border 0.1s linear, background-color 0.1s linear;
+		}
+		.slds-input {
+	    	font-size: small;
+	    }
+		.slds-page-header__title{
+		    font-weight: 500!important;
+		}
+		.customMessage * {
+			color: #fff!important
+		}
+		.message {
+			opacity: 0;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.hourClass {
+			width: 5rem !important;
+		}
+		.minuteClass {
+			width: 55px !important;
+		}
+		.slds-scope .slds-table th {
+			font-weight: 700 !important;
+		}
+		.btnBorder {
+			border-radius: 5px !important;
+		}
+		.imgLookup {
+			height: 27px !important;
+			margin-left: 2%;
+			margin-top: 3px;"
+		}
+	</style>
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<div id="defaultMsg" />
+		<apex:pagemessages id="msg"/>
+		<apex:outputPanel layout="block" styleClass="slds-page-header">
+			<div class="slds-media">
+				<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Schedule Snapshot">Organization ({!Flosum__Organisation__c.Name})</h1>
+			</div>
+		</apex:outputPanel>
+		<apex:form id="meta" styleClass="slds-form--stacked myapp">
+			<apex:actionfunction action="{!redirectToSnapshot}" reRender="msg" name="redirectToSnapshot" onComplete="overridePageMessages();hide();">
+				<apex:param assignTo="{!metadataTypesForBatch}" value="" name="metadataTypesForBatch"/>
+				<apex:param assignTo="{!filterJSON}" value="" name="filterJSON"/>
+				<apex:param assignTo="{!noOfDays}" value="" name="noOfDays"/>
+		  	</apex:actionfunction>
+		  	<apex:actionFunction name="radioChange" rerender="frequencyBlock,monthlyBlock" oncomplete="hide();"/>
+		  	<fieldset class="slds-box slds-theme--default" ng-disabled="disableUi">
+				<div ng-app="snapshotRetrieval" >
+		            <div ng-controller ="RetrieveChangesController" id="angularControllerId">
+		                <div class="ng-cloak">
+	                		<apex:outputPanel styleClass="slds-form--stacked" layout="block" html-ng-show="CommitStep == 1" rendered="{!Flosum__Organisation__c.Name != null && authDetails.isSuccess && metadataTypeStr != null && metadataTypeStr != ''}">
+                            	<apex:outputPanel >
+									<div class="slds-col slds-no-flex slds-grid slds-align-top slds-float--right">
+										<div class="slds-button-group" role="group">
+											<apex:commandbutton styleClass="slds-button slds-button_neutral btnBorder" value="Schedule Snapshot" reRender="none" html-ng-click="filterOrgComponents();" onClick="show();" html-ng-disabled="disableRetrieveChangesButton"/>
+										</div>
+									</div>
+								</apex:outputPanel>
+	                            <apex:outputPanel layout="block" id="cronBlock">
+							        <apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+				                        <apex:outputPanel styleClass="slds-size_4-of-12" layout="block">
+				                          	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Target Org :" />
+					                     	<div class="slds-form-element__control">
+					                     		<apex:outputText style="background-color: #eef1f6" Styleclass="slds-input" value="{!Flosum__Organisation__c.Name}"/>
+					                     	</div>
+				                        </apex:outputPanel>
+									</apex:outputPanel>
+						          	<apex:inputHidden value="{!selectedFrequency}" id="rad_opt"/>
+									<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+				                    	<apex:outputPanel styleClass="slds-size_4-of-12">
+				                        	<label class="lbcls slds-form-element__label ">Frequency :</label>
+								  			<div class="slds-form-element__control" id="rdo_options">
+							    	  			<apex:repeat value="{!frequencyOptions}" var="selfrequency" >
+						                    		<span class="slds-radio">
+						                     			<input type="radio" id="selectedfrequency-{!selfrequency.value}" name="selectedFrequency" onclick="document.getElementById(this.htmlFor).checked=true;" value="{!selfrequency.value}" />
+						                      			<label class="slds-radio__label" for="selectedfrequency-{!selfrequency.value}" >
+						                        			<span class="slds-radio--faux"/>
+						                        			<span class="slds-form-element__label">{!selfrequency.label}</span>
+						                      			</label>
+						                    		</span>
+						                		</apex:repeat>
+								   			</div>
+				                    	</apex:outputPanel>
+									</apex:outputPanel>
+							    	<apex:outputPanel id="frequencyBlock">
+										<apex:outputPanel rendered="{!selectedFrequency == 'Weekly'}">
+											<fieldset class="slds-form-element slds-m-top_medium">
+						                		<label class="lbcls slds-form-element__label">Recurs every week on :</label>
+							                	<apex:selectCheckboxes value="{!selecteddayOfWeek}" layout="pageDirection">
+								    				<apex:selectOptions value="{!dayOfWeekOptions}"/>
+								    			</apex:selectCheckboxes>
+						            		</fieldset>
+										</apex:outputPanel>
+									</apex:outputPanel>
+							    	<apex:outputPanel id="monthlyBlock">
+										<apex:outputPanel rendered="{!selectedFrequency == 'Monthly'}">
+											<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+				                        		<apex:outputPanel styleClass="slds-size_6-of-12" layout="block">
+					                        		<apex:outputPanel styleClass="slds-size_2-of-6">
+					                          			<label class="lbcls slds-form-element__label" for="onday">On Day :</label>
+					                        		</apex:outputPanel>
+					                        		<apex:outputPanel >
+					                          			<apex:selectList size="1" value="{!selectedMonthlyDate}" styleClass="slds-size_small slds-select slds-combobox__input  minuteClass">
+												    		<apex:selectOptions value="{!monthlyDateOptions}"/>
+														</apex:selectList>
+					                        		</apex:outputPanel>
+					                         		<apex:outputPanel styleClass="slds-size_2-of-6">
+					                           			<label class="slds-form-element__label slds-p-left_xx-small">of every month</label>
+					                        		</apex:outputPanel>
+				                        		</apex:outputPanel>
+											</apex:outputPanel>
+										</apex:outputPanel>
+									</apex:outputPanel>
+							    	<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+				                    	<apex:outputPanel styleClass="slds-size_8-of-12" layout="block">
+				                       		<apex:outputPanel styleClass="slds-size_3-of-8">
+					                           <label class="lbcls slds-form-element__label " for="onday">Preferred Start Time :</label>
+					                        </apex:outputPanel>
+					                        <apex:outputPanel >
+					                         	<apex:selectList size="1" value="{!selectedPreferedTime}" styleClass="slds-size_small slds-select slds-combobox__input hourClass">
+								                	<apex:selectOptions value="{!preferedTimeOptions}"/>
+								            	</apex:selectList>
+					                        </apex:outputPanel>
+					                        <apex:outputPanel styleClass="slds-size_1-of-8">
+					                           <label class="slds-form-element__label slds-p-left_xx-small">And</label>
+					                        </apex:outputPanel>
+					                        <apex:outputPanel >
+					                           <apex:selectList size="1" value="{!selectedPreferedMinute}" styleClass="slds-size_small slds-select slds-combobox__input minuteClass">
+								                	<apex:selectOptions value="{!preferedTimeMinuteOptions}"/>
+								            	</apex:selectList>
+					                        </apex:outputPanel>
+					                        <apex:outputPanel styleClass="slds-size_1-of-8">
+					                        	<label class="slds-form-element__label slds-p-left_xx-small">Minutes</label>
+					                        </apex:outputPanel>
+				                    	</apex:outputPanel>
+									</apex:outputPanel>
+	                            </apex:outputPanel>
+	                            <apex:outputPanel layout="block" html-ng-show="!disableRetrieveChangesButton">
+	                                <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+										<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Retrieve changes in the last" />
+										<div class="slds-form-element__control slds-grid">
+											<div class="slds-col">
+												<apex:input label="Retrieve changes in the last" value="{!lastModifiedInDays}" type="number" html-ng-model="filterDays" html-min="0" required="true" html-max="3650" styleClass="slds-input slds-text-heading_regular"/>
+											</div>
+											<div class="slds-col slds-m-left--small slds-p-top_xx-small">
+												<apex:outputLabel styleClass="lbcls" value="days"/>
+											</div>
+										</div>
+									</apex:outputPanel>
+	                                <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-bottom--medium" layout="block">
+									    <div class="slds-form-element__control">
+									        <span class="slds-checkbox">
+									            <apex:inputCheckbox html-ng-model="IsRetrieveStandard" id="divsup" styleclass="slds-input"/>
+									            <apex:outputLabel for="divsup" styleClass="slds-checkbox__label">
+									            	<apex:outputLabel styleClass="lbcls" value="Retrieve standard components" />&nbsp;&nbsp;&nbsp;
+									                <span class="slds-checkbox--faux"></span>
+									                <span class="slds-form-element__label"></span>
+									            </apex:outputLabel>
+									        </span>
+									    </div>
+									</apex:outputPanel>
+	                            </apex:outputPanel>
+                                <apex:outputPanel layout="block">
+                                    <table class="slds-table slds-table_bordered slds-cell-buffer_left" ng-show="filterList.length > 0">
+                                        <thead>
+                                            <tr class="slds-text-title_caps">
+                                                <th scope="col" class="filterheaderclass"></th>
+                                                <th scope="col" class="filterheaderclass">Field</th>
+                                                <th scope="col" class="filterheaderclass">Operator</th>
+                                                <th scope="col" class="filterheaderclass">Value</th>
+                                                <th scope="col" class="filterheaderclass"></th>
+		                                        <th scope="col" class="filterheaderclass"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="filterRow in filterList">
+                                                <td class="filterheaderclass">{{ $index+1 +'.'}}</td>
+                                                <td class="filterheaderclass">
+                                                  	<div class="slds-form-element">
+														<div class="slds-form-element__control">
+															<div class="slds-select_container">
+																<select ng-model="filterRow.field" class="slds-select">
+																	<option value="{{''}}">--None--</option>
+                                                          			<option ng-repeat="(key, value) in fieldList" value="{{key}}">{{value}}</option>
+                                                      			</select>
+															</div>
+														</div>
+													</div>
+                                                </td>
+                                                <td class="filterheaderclass">
+                                                  	<div class="slds-form-element">
+														<div class="slds-form-element__control">
+															<div class="slds-select_container">
+																<select ng-model="filterRow.operator" class="slds-select">
+																	<option value="{{''}}">--None--</option>
+                                                          			<option ng-repeat="operatorOne in compareList" value="{{operatorOne}}">{{operatorOne}}</option>
+                                                      			</select>
+															</div>
+														</div>
+													</div>
+                                                </td>
+                                                <td class="filterheaderclass">
+                                                    <input type="text" id="jstextboxval{{$index}}" ng-model="filterRow.value" class="slds-input slds-text-heading_regular" filterIndex="{{$index}}" size="50"/>
+                                                </td>
+                                                <td class="filterheaderclass" ng-show="filterRow.field == 'type'">
+                                                	<a class="{{disableUi == true ? 'disablePageLink' : ''}}" ng-click="createLookupLink(filterRow.field,$index,filterRow.value);">
+                                                        <img class="imgLookup" src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}" alt="Metadata type list)" />
+                                                    </a>
+                                                </td>
+                                                <td class="filterheaderclass" ng-show="!enableFilterLogic">
+                                                	AND
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="block" styleClass="slds-form-element slds-size--4-of-12 slds-m-around_small">
+                                    <a class="{{disableUi == true ? 'disablePageLink' : ''}} slds-text-heading_regular" id="link-2" href="" ng-click="addRowToSearch();">Add Row</a>
+                                </apex:outputPanel>
+							</apex:outputPanel>
+		                </div>
+		            </div>
+		        </div>
+	        </fieldset>
+		</apex:form>
+	</apex:outputPanel>
+	
+	<script>         
+        var myApp = angular.module("snapshotRetrieval", []);
+        myApp.controller("RetrieveChangesController", ['$scope',function($scope) {
+			/****************************Default Properties*******************************/
+        	
+			$scope.metadataTypeAvailableStr = '{!JSENCODE(metadataTypeStr)}';
+			$scope.metaTypeLi = [];
+			$scope.selectedTypes = []
+            $scope.disableUi = false;
+			$scope.visibleStateConditionStr = '';
+			$scope.CommitStep = 1;
+			$scope.filterDays = 14;
+			$scope.filterTime;
+			$scope.IsRetrieveStandard = false;
+	        
+            /**************************************************************************/
+            /****************************Filter Properties*****************************/
+			$scope.enableFilterLogic = false;
+			$scope.filterList = [];
+            $scope.compareList = [];
+            $scope.compareList.push('equals');
+            $scope.compareList.push('not equals');
+            $scope.compareList.push('contains');
+            $scope.compareList.push('starts with');
+            $scope.compareList.push('does not contain');
+            $scope.fieldList = {};
+            $scope.fieldList['type'] = 'Component Type';
+            $scope.fieldList['fullName'] = 'Component Name';
+            $scope.fieldList['lastModifiedByName'] = 'Changed By';
+            //$scope.fieldList['createdByName'] = 'Created By';
+            $scope.mainFilterList = [];
+
+            if('{!JSENCODE(metadataTypeStr)}' != '')
+            {
+                var metaStrLi = $scope.metadataTypeAvailableStr.split(',');
+                for(var listIndex = 0; listIndex < metaStrLi.length; listIndex++)
+                {
+                    $scope.metaTypeLi.push(metaStrLi[listIndex]);
+                }
+            }
+			
+            $scope.filterOrgComponents = function() {
+            	$scope.disableUi = true;
+            	console.log('$scope.filterDays-'+$scope.filterDays);
+         		if($scope.filterDays != undefined)
+				{
+					$scope.filterSnapshotItems();
+					$scope.defaultFilterType();
+					if($scope.selectedTypes != undefined && $scope.selectedTypes.length > 0)
+					{
+						var filterDetail = {};
+	                    filterDetail.IsRetrieveStandard = $scope.IsRetrieveStandard;
+	                    filterDetail.filterList = $scope.mainFilterList;
+	                    var filterInfoJSON = JSON.stringify(filterDetail);
+						$scope.disableUi = false;
+		            	redirectToSnapshot(JSON.stringify($scope.selectedTypes), filterInfoJSON, $scope.filterDays);
+					}
+					else
+					{
+						$scope.showMessage('Please select a component type.','ERROR');
+						hide();
+					}
+				}
+	           	else
+	           	{
+	           		if($scope.filterDays == undefined || $scope.filterDays < 0)
+	           		{
+	           			$scope.showMessage('Please enter a positive number between 0 to 3650.','ERROR');
+	           			hide();
+           			}
+	           	}
+       		};
+
+            /**********************************************************************/
+            /****************************Filter Methods****************************/
+                      
+            $scope.addRowToSearch = function(){
+                if($scope.filterList.length < 9)
+                {
+                    var filterRow = {};
+                    filterRow.field = '';
+                    filterRow.operator = '';
+                    filterRow.value = '';
+                    $scope.filterList.push(filterRow);
+                }
+            }
+
+            $scope.applySearch = function(){
+                $scope.mainFilterList = [];
+                for(var index=0; index < $scope.filterList.length; index++)
+                {
+                    var filterRow = $scope.filterList[index];
+                    $scope.mainFilterList.push(JSON.parse(JSON.stringify(filterRow)));
+                }
+            }
+            $scope.addRowToSearch();
+            $scope.addRowToSearch();
+            $scope.addRowToSearch();
+            $scope.addRowToSearch();
+            $scope.addRowToSearch();
+            $scope.applySearch();
+            
+            
+            $scope.createLookupLink = function(fieldName,filterIndex,fieldValue){
+                var link = '{!customLookupPageName}fieldName='+fieldName+'&filterIndex='+filterIndex+'&fieldValue='+fieldValue;
+                console.log(link);
+                window.open(link, 'MsgWindow', 'width=600,height=600,resizable=1,scrollbars=1');
+            };
+            
+            $scope.setFilterRow = function(filterIndex,fieldType,selectedItems){
+                if(filterIndex < $scope.filterList.length)
+                {
+                    var filterRow = $scope.filterList[filterIndex];
+                    var tempStr = '';
+                    angular.forEach(selectedItems, function(str) {
+                        if(tempStr == '')
+                            tempStr += str;
+                        else
+                            tempStr += ','+str;
+                    });
+                    $scope.$apply(function() {
+                        filterRow.value = tempStr;
+                    });
+                }
+            };
+            /**********************************************************************/
+            /****************************Utility Methods*****************************/
+			
+            $scope.defaultFilterType = function() {
+            	$scope.selectedTypes = [];
+	            $scope.allTypeUniqueMap = {};
+	            var localFilterList = [];
+	            var tempFilterList = $scope.filterList;
+	            for(var index=0; index < tempFilterList.length; index++)
+	            {
+	                var filterRow = tempFilterList[index];
+	                if(filterRow != undefined && filterRow.field == 'type' && filterRow.value != undefined && filterRow.value != '' && filterRow.operator != undefined && filterRow.operator != '')
+	                {
+	                    localFilterList.push(filterRow);
+	                }
+	            }
+	            var angMetaTypeLi = $scope.metaTypeLi;
+	            for(var index=0; index < angMetaTypeLi.length; index++)
+	            {
+	                var metaType = angMetaTypeLi[index];
+	                if(metaType != undefined && metaType != '' )
+	                {
+	                    if($scope.enableFilterLogic)
+	                    {
+	                        var IsSingleTypeFilter = false;
+	                        var compoentTypesSelectedInFilterLi = [];
+	                        for(var index2=0; index2 < localFilterList.length; index2++)
+	                        {
+	                            var filterRow = localFilterList[index2];
+	                            var filterVal = filterRow.value.toLowerCase();
+	                            var metadataTypeValue = metaType.toLowerCase();
+	                            if(filterRow.field == 'type' && filterRow.operator == 'equals')
+	                            {
+	                            	IsSingleTypeFilter = true;
+	                            	var allMetadataTypes = filterVal.split(',');
+	                            	for(var tempFilterIndex in allMetadataTypes)
+	                            	{
+	                            		if(tempFilterIndex < allMetadataTypes.length && metadataTypeValue == allMetadataTypes[tempFilterIndex])
+	                            		{
+	                            			compoentTypesSelectedInFilterLi.push(metaType);
+	                            		}
+	                            	}
+	                            }
+	                        }
+	                        if(IsSingleTypeFilter)
+	                        {
+	                        	if(compoentTypesSelectedInFilterLi.length > 0)
+                           		{
+		                        	$scope.selectedTypes.push(metaType);
+		                        	$scope.allTypeUniqueMap[metaType] = metaType;
+		                        }
+	                        }
+	                        else
+	                        {
+	                        	$scope.selectedTypes.push(metaType);
+	                        	$scope.allTypeUniqueMap[metaType] = metaType;
+	                        }
+	                    }
+	                    else
+	                    {
+	                        var finalResult = true;
+	                        for(var index2=0; index2 < localFilterList.length; index2++)
+	                        {
+	                            var filterRow = localFilterList[index2];
+	                            var filterVal = filterRow.value.toLowerCase();
+	                            if(filterVal == 'all' && filterRow.operator == 'equals')
+	                            {}
+	                            else
+	                            {
+	                                finalResult = $scope.checkValidCondition(metaType.toLowerCase(),filterVal,filterRow.operator,'type');
+	                                if(!finalResult)
+	                                    break;
+	                            }
+	                        }
+	                        if(finalResult)
+	                        {
+	                            $scope.selectedTypes.push(metaType);
+	                        	$scope.allTypeUniqueMap[metaType] = metaType;
+	                        }
+	                    }
+	                }
+	            }
+            };
+            
+            $scope.filterSnapshotItems = function(){
+            	$scope.applySearch();
+            	$scope.visibleStateConditionStr = '';
+	            if($scope.enableFilterLogic)
+	            {
+	                $scope.visibleStateConditionStr = $scope.filterCondition;
+	            }
+	            else
+	            {
+	                for(var index=0; index < $scope.mainFilterList.length; index++)
+	                {
+	                    var filterRow = $scope.mainFilterList[index];
+	                    if(filterRow != undefined && filterRow.value != undefined && filterRow.value != '' && filterRow.operator != undefined && filterRow.operator != '')
+	                    {
+	                        if($scope.visibleStateConditionStr == '')
+	                            $scope.visibleStateConditionStr += (index+1)+' ';
+	                        else
+	                            $scope.visibleStateConditionStr += 'AND '+(index+1)+' ';
+	                    }
+	                }
+	            }
+            };
+	        
+            $scope.checkValidCondition = function(fieldValue,filterVal,filterOperator,fieldName) {
+	            if(filterOperator == 'equals')
+	            {
+	                if(fieldName == 'type' || fieldName == 'lastModifiedByName' || fieldName == 'createdByName')
+	                {
+	                    var typeLi = filterVal.split(',');
+	                    for(var index = 0; index < typeLi.length; index++)
+	                    {
+	                        if(fieldValue == typeLi[index])
+	                            return true;
+	                    }
+	                }
+	                else
+	                {
+	                    if(fieldValue == filterVal)
+	                    {
+	                        return true;
+	                    }
+	                }
+	            }
+	            else if(filterOperator == 'not equals')
+	            {
+	                if(fieldName == 'type' || fieldName == 'lastModifiedByName' || fieldName == 'createdByName')
+	                {
+	                    var finalResult = true;
+	                    var typeLi = filterVal.split(',');
+	                    for(var index = 0; index < typeLi.length; index++)
+	                    {
+	                        if(fieldValue == typeLi[index])
+	                        {
+	                            finalResult = false;
+	                            break;
+	                        }
+	                    }
+	                    return finalResult;
+	                }
+	                else
+	                {
+	                    if(fieldValue != filterVal)
+	                    {
+	                        return true;
+	                    }
+	                }
+	            }
+	            else if(filterOperator == 'contains' && fieldValue != undefined && fieldValue != null)
+	            {
+	                if(fieldName == 'type')
+	                {
+	                    var typeLi = filterVal.split(',');
+	                    for(var index = 0; index < typeLi.length; index++)
+	                    {
+	                        if(fieldValue.indexOf(typeLi[index]) > -1)
+	                            return true;
+	                    }
+	                }
+	                else
+	                {
+	                    if(fieldValue.indexOf(filterVal) > -1)
+	                    {
+	                        return true;
+	                    }
+	                }
+	            }
+	            else if(filterOperator == 'starts with' && fieldValue != undefined && fieldValue != null)
+	            {
+	                if(fieldName == 'type')
+	                {
+	                    var typeLi = filterVal.split(',');
+	                    for(var index = 0; index < typeLi.length; index++)
+	                    {
+	                        if(fieldValue.indexOf(typeLi[index]) == 0)
+	                            return true;
+	                    }
+	                }
+	                else
+	                {
+	                    if((fieldValue.indexOf(filterVal) == 0))
+	                    {
+	                        return true;
+	                    }
+	                }
+	            }
+	            else if(filterOperator == 'does not contain' && fieldValue != undefined && fieldValue != null)
+	            {
+	                if(fieldName == 'type')
+	                {
+	                    var finalResult = true;
+	                    var typeLi = filterVal.split(',');
+	                    for(var index = 0; index < typeLi.length; index++)
+	                    {
+	                        if(fieldValue.indexOf(typeLi[index])  > -1)
+	                        {
+	                            finalResult = false;
+	                            break;
+	                        }
+	                    }
+	                    return finalResult;
+	                }
+	                else
+	                {
+	                    if(fieldValue.indexOf(filterVal) < 0)
+	                    {
+	                        return true;
+	                    }
+	                }
+	            }
+	            return false;
+	        };
+	        
+	        $scope.showMessage = function(Message_Str,Message_Type) {
+	        	var parentVal = $("[id$='msg']");
+				if(parentVal != undefined)
+				{
+				    parentVal.html('');
+				    if(Message_Str != '')
+				    {
+					    if(Message_Type == 'ERROR')
+					    {
+					    	var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+											'<div class="message errorM3 slds-notify slds-notify--alert slds-theme--error customMessage" role="alert">'+
+												'<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+													'<tbody>'+
+														'<tr valign="top">'+
+															/*'<td><img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"></td>'+*/
+															'<td class="messageCell">'+
+																'<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+																	'<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25" style="color:#cc0000">'+
+																		'<h4>Error:</h4>'+
+																	'</span>'+Message_Str+'<br>'+
+																'</div>'+
+															'</td>'+
+														'</tr>'+
+														'<tr>'+
+															'<td></td>'+
+															'<td></td>'+
+														'</tr>'+
+													'</tbody>'+
+												'</table>'+
+											'</div>'+
+										'</span>';
+							parentVal.append(childVal);
+							$scope.disableUi = false;
+					    }
+					}
+				}
+	        };
+	        /**********************************************************************/
+        }]);
+                
+        function setFilterFromLookup(filterIndex,fieldType,selectedItems)
+        {
+        	console.log(filterIndex);
+        	console.log(fieldType);
+        	console.log(selectedItems);
+            //angular.element('#angularControllerId').scope().setFilterRow(filterIndex,fieldType,selectedItems);
+            var filterId = '#jstextboxval'+filterIndex;
+            var tempFilterRow = $(filterId);
+            console.log(tempFilterRow);
+            if(tempFilterRow != undefined)
+            {
+            	var tempStr = '';
+				if(selectedItems != undefined)
+	            {
+		            for(var index in selectedItems)
+		            {
+		            	if(index < selectedItems.length)
+		            	{
+			            	if(tempStr == '')
+			                	tempStr += selectedItems[index];
+			            	else
+			                	tempStr += ','+selectedItems[index];
+		                }
+		            }
+	            }
+	            tempFilterRow.val(tempStr);
+				tempFilterRow.trigger("change");
+            }
+        }
+        
+        $(function() {
+		    var $radios = $('input:radio[name=selectedFrequency]');
+		    if($radios.is(':checked') === false) {
+		        $radios.filter('[value=Weekly]').prop('checked', true);
+		    }
+		});
+		
+		$(document).ready(function(){
+	       overridePageMessages();
+	       isLightningExperienceOrSalesforce1();    
+	    });
+	        
+	    function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	    
+        $('[id$=rdo_options] input').on('change', function () {
+        	show();
+            if ($(this).is(':radio')) {
+                $('[id$=rad_opt]').val($(this).attr('value'));
+            }
+            radioChange();
+        });
+        
+	    function isLightningExperienceOrSalesforce1() {
+		    if(!((typeof sforce != 'undefined') && sforce && (!!sforce.one))){
+		    	$("html").css({"background-color": "#1797c0"});
+		    }
+		}
+	</script>
+</apex:page>

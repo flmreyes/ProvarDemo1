@@ -1,0 +1,156 @@
+<apex:page sidebar="false" controller="Flosum.CustomLookupController" showHeader="false" docType="html-5.0">
+	<c:Wait />
+	<apex:slds />
+	<style>
+		.slds-checkbox__label {
+		    float: right;
+		    margin-right: 4px;
+		}
+		.slds-checkbox__label .slds-checkbox_faux {
+	    	margin-right: 12px !important;
+		}
+	    html {
+			overflow-y:scroll;
+		}
+	    .topButton, .bottomButton {
+	        padding: 2px 0;
+	        text-align: center;
+	    }
+	    .bgClass {
+	    	background-color: inherit !important;
+	    }
+    </style>
+    
+    <apex:outputPanel layout="block" styleClass="slds-scope">
+    	<apex:outputPanel layout="block" styleClass="slds-page-header">
+			<div class="slds-media">
+				<div class="slds-media__figure">
+					<span class="slds-icon_container slds-icon-standard-opportunity bgClass" title="Description of icon when needed">
+						<div class="slds-icon">
+							<img src="{!URLFOR($Asset.SLDS, 'assets/icons/utility/search_60.png')}" />
+						</div>
+					</span>
+				</div>
+				<div class="slds-media__body">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Component Edit">Lookup</h1>
+					<p class="slds-text-body_small slds-line-height_reset">Select the picklist values to add below.</p>
+				</div>
+			</div>
+		</apex:outputPanel>
+		<apex:outputPanel layout="block" styleClass="myapp">
+			<apex:form styleClass="slds-form--stacked">
+				<fieldset class="slds-box slds-theme--default">
+					<apex:outputPanel layout="block" id="metapanel">
+						<body class="hasMotif lookupTab FilterLookupPage">
+							<apex:outputPanel layout="block" styleClass="lookup">
+								<div class="slds-float--right slds-m-top--small slds-m-bottom--small" role="group">
+			                    	<input type="button" class="slds-button slds-button_neutral" value="Insert Selected" title="Insert Selected" onclick="setValuesToParentPage();" />
+			                    </div>
+			                    <apex:outputPanel layout="block" styleClass="listRelatedObject lookupBlock">
+			                        <apex:outputPanel layout="block" styleClass="bPageBlock brandSecondaryBrd secondaryPalette">
+			                            <apex:outputPanel layout="block" styleClass="pbBody">
+			                                <apex:dataTable value="{!metatypesList}" var="line" styleClass="list slds-table slds-table_bordered slds-table_cell-buffer" headerClass="headerRow" width="100%" >
+			                                    <apex:column styleClass="actionColumn">
+			                                        <apex:facet name="header">
+			                                        	<div class="slds-form-element">
+															<div class="slds-form-element__control">
+																<span class="slds-checkbox">
+																	<input type="checkbox" class="psli" name="options" id="metaTypeCheckbox" onclick="checkAll(this);" />
+																	<label class="slds-checkbox__label" for="metaTypeCheckbox">
+																		<span class="slds-checkbox_faux"></span>
+																		<span class="slds-form-element__label"></span>
+																	</label>
+																</span>
+															</div>
+														</div>
+													</apex:facet>
+			                                        <apex:outputPanel layout="none">
+			                                        	<div class="slds-form-element">
+														    <div class="slds-form-element__control">
+														        <span class="slds-checkbox">
+														            <apex:inputCheckbox onClick="checkUnCheck();" id="divsup" styleclass="sli slds-input" value="{!line.selected}" html-metaType="{!line.metatype}"></apex:inputCheckbox>
+														            <apex:outputLabel for="divsup" styleClass="slds-checkbox__label">
+														                <span class="slds-checkbox--faux"></span>
+														                <span class="slds-form-element__label"></span>
+														            </apex:outputLabel>
+														        </span>
+														    </div>
+														</div>
+			                                        </apex:outputPanel>
+			                                    </apex:column>
+			                                    <apex:column headerValue="Value">
+			                                        <label>
+			                                        	<apex:outputText styleClass="slds-text-heading_regular" value="{!line.metatype}" />
+		                                        	</label>
+			                                    </apex:column>
+			                                </apex:dataTable>
+			                            </apex:outputPanel>
+			                        </apex:outputPanel>
+			                    </apex:outputPanel>
+			                    <div class="slds-float--right slds-m-bottom--small" role="group">
+			                    	<input type="button" class="slds-button slds-button_neutral" value="Insert Selected" title="Insert Selected" onclick="setValuesToParentPage();" />
+			                    </div>
+							</apex:outputPanel>
+						</body>
+					</apex:outputPanel>
+				</fieldset>
+			</apex:form>
+		</apex:outputPanel>
+    </apex:outputPanel>
+    
+    <script>
+        function onBlurCustomFunction()
+        {
+            window.close();
+        }
+        
+        function checkAll(cb) 
+        {
+            console.log(cb.checked);
+            var elements = $('.sli');
+            for(var i = 0 ; i < elements.length; i++) {
+                if(elements[i] != undefined)
+                    elements[i].checked = cb.checked;
+            }
+        }
+        
+        function checkUnCheck()
+		{	
+            var elements = $('.sli');
+            var allChecked = true;
+            for(var i = 0 ; i < elements.length; i++) {
+                if(elements[i] != undefined && !elements[i].checked) {
+                   	allChecked = false;
+                   	break;
+                }
+            }
+            var parentCheckboxes = $('.psli');
+           	if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+        	{
+        		if(allChecked)
+        			parentCheckboxes[0].checked = allChecked;
+       			else
+       				parentCheckboxes[0].checked = allChecked;
+        	}
+		}
+    
+        function setValuesToParentPage() 
+        {
+            var values = [];
+            var elements = $('.sli');
+            for (var i = 0 ; i < elements.length; i++) {
+                var el = elements[i];
+                var metaType = el.getAttribute('metaType')
+                if(el.checked && metaType != undefined)
+                    values.push(metaType);
+            }
+            var filterIndex = {!filterIndex};
+            var fieldName = '{!fieldName}';
+            console.log(filterIndex);
+            console.log(fieldName);
+            console.log(values);
+            window.opener.setFilterFromLookup(filterIndex,fieldName,values);
+            onBlurCustomFunction();
+        }
+    </script>
+</apex:page>

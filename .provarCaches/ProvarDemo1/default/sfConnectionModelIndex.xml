@@ -1,0 +1,1747 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sfConnectionModelIndex builtAgainstConnectionString="user=lloyd@ips-provar.sfdc;environment=PROD_DEV;partnerUser=lloyd@ips-provar.sfdc;partnerEndpoint=https://ips-provar.my.salesforce.com/services/Soap/u/46.0/00D4P000000xR5Z;metadataUser=lloyd@ips-provar.sfdc;metadataEndpoint=https://ips-provar.my.salesforce.com/services/Soap/m/46.0/00D4P000000xR5Z" builtAgainstVersion="1.9.13.06" orgId="00D4P000000xR5ZUAU" orgMostRecentModifiedUtc="1571000520000">
+  <modelItemTypes>
+    <entry>
+      <key valueClass="string">SfObject</key>
+      <value valueClass="list">
+        <sfModelItem l="Accepted Event Relation" lp="Accepted Event Relations" n="AcceptedEventRelation"/>
+        <sfModelItem kp="001" l="Account" lo="true" lp="Accounts" n="Account"/>
+        <sfModelItem kp="0TU" l="Account Brand" lo="true" lp="Account Brands" n="AccountBrand"/>
+        <sfModelItem l="Account Brand Share" lp="Account Brand Share" n="AccountBrandShare"/>
+        <sfModelItem l="Account Change Event" lp="Account Change Event" n="AccountChangeEvent"/>
+        <sfModelItem kp="02Z" l="Account Contact Role" lp="Account Contact Roles" n="AccountContactRole"/>
+        <sfModelItem l="Account Contact Role Change Event" lp="Account Contact Role Change Event" n="AccountContactRoleChangeEvent"/>
+        <sfModelItem l="Account Feed" lp="Account Feed" n="AccountFeed"/>
+        <sfModelItem l="Account History" lp="Account History" n="AccountHistory"/>
+        <sfModelItem kp="00I" l="Account Partner" lo="true" lp="Account Partner" n="AccountPartner"/>
+        <sfModelItem kp="00r" l="Account Share" lp="Account Share" n="AccountShare"/>
+        <sfModelItem kp="07g" l="Action Link Group Template" lo="true" lp="Action Link Group Templates" n="ActionLinkGroupTemplate"/>
+        <sfModelItem kp="07l" l="Action Link Template" lo="true" lp="Action Link Templates" n="ActionLinkTemplate"/>
+        <sfModelItem l="Activity History" lp="Activity History" n="ActivityHistory"/>
+        <sfModelItem kp="04m" l="Additional Directory Number" lp="Additional Directory Numbers" n="AdditionalNumber"/>
+        <sfModelItem l="Aggregate Result" lp="Aggregate Result" n="AggregateResult"/>
+        <sfModelItem kp="0Bt" l="Announcement" lp="Announcements" n="Announcement"/>
+        <sfModelItem kp="01p" l="Apex Class" lp="Apex Classes" n="ApexClass"/>
+        <sfModelItem kp="099" l="Visualforce Component" lp="Visualforce Components" n="ApexComponent"/>
+        <sfModelItem kp="06j" l="Apex Email Notification" lp="Apex Email Notifications" n="ApexEmailNotification"/>
+        <sfModelItem kp="07L" l="Apex Debug Log" lp="Apex Debug Log" n="ApexLog"/>
+        <sfModelItem kp="066" l="Visualforce Page" lp="Visualforce Pages" n="ApexPage"/>
+        <sfModelItem kp="4ve" l="Apex Page Info" lp="Apex Pages Info" n="ApexPageInfo"/>
+        <sfModelItem kp="709" l="Apex Test Queue Item" lp="Apex Test Queue Items" n="ApexTestQueueItem"/>
+        <sfModelItem kp="07M" l="Apex Test Result" lp="Apex Test Results" n="ApexTestResult"/>
+        <sfModelItem kp="05n" l="Apex Test Result Limit" lp="Apex Test Result Limit" n="ApexTestResultLimits"/>
+        <sfModelItem kp="05m" l="Apex Test Run Result" lp="Apex Test Run Result" n="ApexTestRunResult"/>
+        <sfModelItem kp="05F" l="Apex Test Suite" lp="Apex Test Suites" n="ApexTestSuite"/>
+        <sfModelItem kp="01q" l="Apex Trigger" lp="Apex Triggers" n="ApexTrigger"/>
+        <sfModelItem kp="0XI" l="App Analytics Query Request" lp="App Analytics Query Requests" n="AppAnalyticsQueryRequest"/>
+        <sfModelItem kp="06m" l="App Definition" lp="App Definitions" n="AppDefinition"/>
+        <sfModelItem kp="0DS" l="AppMenuItem" lp="AppMenuItems" n="AppMenuItem"/>
+        <sfModelItem kp="06o" l="App Tab Member" lp="App Tab Members" n="AppTabMember"/>
+        <sfModelItem kp="806" l="Approval" lp="Approval" n="Approval"/>
+        <sfModelItem kp="02i" l="Asset" lo="true" lp="Assets" n="Asset"/>
+        <sfModelItem l="Asset Change Event" lp="Asset Change Event" n="AssetChangeEvent"/>
+        <sfModelItem l="Asset Feed" lp="Asset Feed" n="AssetFeed"/>
+        <sfModelItem l="Asset History" lp="Asset History" n="AssetHistory"/>
+        <sfModelItem kp="1AR" l="Asset Relationship" lo="true" lp="Asset Relationships" n="AssetRelationship"/>
+        <sfModelItem l="Asset Relationship Feed" lp="Asset Relationship Feed" n="AssetRelationshipFeed"/>
+        <sfModelItem l="Asset Relationship History" lp="Asset Relationship History" n="AssetRelationshipHistory"/>
+        <sfModelItem kp="0Li" l="Asset Token Event" lp="Asset Token Events" n="AssetTokenEvent"/>
+        <sfModelItem kp="01Q" l="Assignment Rule" lp="Assignment Rules" n="AssignmentRule"/>
+        <sfModelItem kp="707" l="Apex Job" lp="Apex Jobs" n="AsyncApexJob"/>
+        <sfModelItem kp="0Xw" l="Async Operation Event" lp="Async Operation Events" n="AsyncOperationEvent"/>
+        <sfModelItem kp="0YD" l="Async Operation Status" lp="Async Operation Status" n="AsyncOperationStatus"/>
+        <sfModelItem l="Attached Content Document" lp="Attached Content Documents" n="AttachedContentDocument"/>
+        <sfModelItem l="Note" lp="Notes" n="AttachedContentNote"/>
+        <sfModelItem kp="00P" l="Attachment" lp="Attachments" n="Attachment"/>
+        <sfModelItem kp="0Ad" l="Lightning Component Definition" lp="Lightning Component Definitions" n="AuraDefinition"/>
+        <sfModelItem kp="0Ab" l="Aura Component Bundle" lp="Aura Component Bundles" n="AuraDefinitionBundle"/>
+        <sfModelItem kp="0ab" l="AuraDefinitionBundle Info" lp="AuraDefinitionBundle Infos" n="AuraDefinitionBundleInfo"/>
+        <sfModelItem kp="0ad" l="AuraDefinition Info" lp="AuraDefinition Infos" n="AuraDefinitionInfo"/>
+        <sfModelItem kp="07T" l="Authentication Configuration" lp="Authentication Configurations" n="AuthConfig"/>
+        <sfModelItem kp="07U" l="Authentication Configuration Auth. Provider" lp="Authentication Configuration Auth. Providers" n="AuthConfigProviders"/>
+        <sfModelItem kp="0SO" l="Auth. Provider" lp="Auth. Providers" n="AuthProvider"/>
+        <sfModelItem kp="0Ak" l="Auth Session" lp="Auth Sessions" n="AuthSession"/>
+        <sfModelItem kp="0cI" l="Authorization Form" lo="true" lp="Authorization Form" n="AuthorizationForm"/>
+        <sfModelItem kp="0cK" l="Authorization Form Consent" lo="true" lp="Authorization Form Consent" n="AuthorizationFormConsent"/>
+        <sfModelItem l="Authorization Form Consent History" lp="Authorization Form Consent History" n="AuthorizationFormConsentHistory"/>
+        <sfModelItem l="Authorization Form Consent Share" lp="Authorization Form Consent Share" n="AuthorizationFormConsentShare"/>
+        <sfModelItem kp="0cM" l="Authorization Form Data Use" lo="true" lp="Authorization Form Data Use" n="AuthorizationFormDataUse"/>
+        <sfModelItem l="Authorization Form Data Use History" lp="Authorization Form Data Use History" n="AuthorizationFormDataUseHistory"/>
+        <sfModelItem l="Authorization Form Data Use Share" lp="Authorization Form Data Use Share" n="AuthorizationFormDataUseShare"/>
+        <sfModelItem l="Authorization Form History" lp="Authorization Form History" n="AuthorizationFormHistory"/>
+        <sfModelItem l="Authorization Form Share" lp="Authorization Form Share" n="AuthorizationFormShare"/>
+        <sfModelItem kp="0cN" l="Authorization Form Text" lo="true" lp="Authorization Form Text" n="AuthorizationFormText"/>
+        <sfModelItem l="Authorization Form Text History" lp="Authorization Form Text History" n="AuthorizationFormTextHistory"/>
+        <sfModelItem kp="08P" l="Background Operation" lp="Background Operations" n="BackgroundOperation"/>
+        <sfModelItem kp="1QQ" l="Batch Apex Error Platform Event" lp="Batch Apex Error Platform Events" n="BatchApexErrorEvent"/>
+        <sfModelItem kp="016" l="Letterhead" lp="Letterheads" n="BrandTemplate"/>
+        <sfModelItem kp="0Lw" l="Branding Set" lp="Branding Sets" n="BrandingSet"/>
+        <sfModelItem kp="0Ly" l="Branding Set Property" lp="Branding Set Properties" n="BrandingSetProperty"/>
+        <sfModelItem kp="01m" l="Business Hours" lo="true" lp="Business Hours" n="BusinessHours"/>
+        <sfModelItem kp="019" l="Business Process" lp="Business Process" n="BusinessProcess"/>
+        <sfModelItem kp="023" l="Calendar" lp="Calendars" n="Calendar"/>
+        <sfModelItem kp="04v" l="Call Center" lp="Call Centers" n="CallCenter"/>
+        <sfModelItem kp="701" l="Campaign" lo="true" lp="Campaigns" n="Campaign"/>
+        <sfModelItem l="Campaign Change Event" lp="Campaign Change Event" n="CampaignChangeEvent"/>
+        <sfModelItem l="Campaign Feed" lp="Campaign Feed" n="CampaignFeed"/>
+        <sfModelItem l="Campaign Field History" lp="Campaign Field History" n="CampaignHistory"/>
+        <sfModelItem kp="00v" l="Campaign Member" lo="true" lp="Campaign Members" n="CampaignMember"/>
+        <sfModelItem l="Campaign Member Change Event" lp="Campaign Member Change Event" n="CampaignMemberChangeEvent"/>
+        <sfModelItem kp="01Y" l="Campaign Member Status" lo="true" lp="Campaign Member Statuses" n="CampaignMemberStatus"/>
+        <sfModelItem l="Campaign Member Status Change Event" lp="Campaign Member Status Change Event" n="CampaignMemberStatusChangeEvent"/>
+        <sfModelItem kp="08s" l="Campaign Share" lp="Campaign Share" n="CampaignShare"/>
+        <sfModelItem kp="500" l="Case" lo="true" lp="Cases" n="Case"/>
+        <sfModelItem kp="0gv" l="Case Article" lp="Case Article" n="CaseArticle"/>
+        <sfModelItem l="Case Change Event" lp="Case Change Event" n="CaseChangeEvent"/>
+        <sfModelItem kp="00a" l="Case Comment" lo="true" lp="Case Comments" n="CaseComment"/>
+        <sfModelItem kp="03j" l="Case Contact Role" lo="true" lp="Case Contact Role" n="CaseContactRole"/>
+        <sfModelItem kp="1OZ" l="Case External Document" lp="Case External Documents" n="CaseExternalDocument"/>
+        <sfModelItem l="Case Feed" lp="Case Feed" n="CaseFeed"/>
+        <sfModelItem l="Case History" lp="Case History" n="CaseHistory"/>
+        <sfModelItem kp="555" l="Case Milestone" lo="true" lp="Case Milestones" n="CaseMilestone"/>
+        <sfModelItem kp="01n" l="Case Share" lp="Case Share" n="CaseShare"/>
+        <sfModelItem kp="010" l="Case Solution" lp="Case Solution" n="CaseSolution"/>
+        <sfModelItem l="Case Status Value" lp="Case Status Value" n="CaseStatus"/>
+        <sfModelItem kp="0Oi" l="Case Subject Particle" lp="Case Subject Particles" n="CaseSubjectParticle"/>
+        <sfModelItem kp="0B6" l="Case Team Member" lp="Case Team Member" n="CaseTeamMember"/>
+        <sfModelItem l="Case Team Member Role" lp="Case Team Member Role" n="CaseTeamRole"/>
+        <sfModelItem l="Predefined Case Team" lp="Predefined Case Team" n="CaseTeamTemplate"/>
+        <sfModelItem l="Predefined Case Team Member" lp="Predefined Case Team Member" n="CaseTeamTemplateMember"/>
+        <sfModelItem l="Predefined Case Team Record" lp="Predefined Case Team Record" n="CaseTeamTemplateRecord"/>
+        <sfModelItem kp="02o" l="Category Data" lp="Category Data" n="CategoryData"/>
+        <sfModelItem kp="02n" l="Category Node" lp="Category Nodes" n="CategoryNode"/>
+        <sfModelItem kp="0ca" l="Chatter Activity" lp="Chatter Activity" n="ChatterActivity"/>
+        <sfModelItem kp="0MY" l="Chatter Extension" lp="Chatter Extensions" n="ChatterExtension"/>
+        <sfModelItem kp="0Ob" l="Chatter Extension Configuration" lp="Chatter Extension Configurations" n="ChatterExtensionConfig"/>
+        <sfModelItem kp="713" l="Client Browser" lp="Client Browser" n="ClientBrowser"/>
+        <sfModelItem kp="0F9" l="Group" lo="true" lp="Groups" n="CollaborationGroup"/>
+        <sfModelItem l="Group Feed" lp="Group Feed" n="CollaborationGroupFeed"/>
+        <sfModelItem kp="0FB" l="Group Member" lo="true" lp="Group Members" n="CollaborationGroupMember"/>
+        <sfModelItem kp="0I5" l="Group Member Request" lp="Group Member Requests" n="CollaborationGroupMemberRequest"/>
+        <sfModelItem kp="0Aa" l="Group Record" lo="true" lp="Group Records" n="CollaborationGroupRecord"/>
+        <sfModelItem kp="0H1" l="Chatter Invitation" lp="Chatter Invitations" n="CollaborationInvitation"/>
+        <sfModelItem kp="05k" l="Color Definition" lp="Color Definitions" n="ColorDefinition"/>
+        <sfModelItem l="Note, Attachment, Google Doc And File" lp="Notes, Attachments, Google Docs And Files" n="CombinedAttachment"/>
+        <sfModelItem kp="09a" l="Zone" lp="Zones" n="Community"/>
+        <sfModelItem kp="0H4" l="Connected App" lp="Connected Apps" n="ConnectedApplication"/>
+        <sfModelItem kp="003" l="Contact" lo="true" lp="Contacts" n="Contact"/>
+        <sfModelItem l="Contact Change Event" lp="Contact Change Event" n="ContactChangeEvent"/>
+        <sfModelItem l="Contact Feed" lp="Contact Feed" n="ContactFeed"/>
+        <sfModelItem l="Contact History" lp="Contact History" n="ContactHistory"/>
+        <sfModelItem kp="0ZY" l="Contact Point Type Consent" lo="true" lp="Contact Point Type Consent" n="ContactPointTypeConsent"/>
+        <sfModelItem l="Contact Point Type Consent History" lp="Contact Point Type Consent History" n="ContactPointTypeConsentHistory"/>
+        <sfModelItem l="Contact Point Type Consent Share" lp="Contact Point Type Consent Share" n="ContactPointTypeConsentShare"/>
+        <sfModelItem kp="03s" l="Contact Share" lp="Contact Share" n="ContactShare"/>
+        <sfModelItem kp="03S" l="Asset File" lp="Asset Files" n="ContentAsset"/>
+        <sfModelItem kp="05T" l="Content Body" lp="Content Bodies" n="ContentBody"/>
+        <sfModelItem kp="05D" l="Content Delivery" lp="Content Deliveries" n="ContentDistribution"/>
+        <sfModelItem kp="05H" l="Content Delivery View" lp="Content Delivery Views" n="ContentDistributionView"/>
+        <sfModelItem kp="069" l="Content Document" lo="true" lp="Content Documents" n="ContentDocument"/>
+        <sfModelItem l="ContentDocument Feed" lp="ContentDocument Feed" n="ContentDocumentFeed"/>
+        <sfModelItem l="Content Document History" lp="Content Document History" n="ContentDocumentHistory"/>
+        <sfModelItem kp="06A" l="Content Document Link" lp="Content Document Link" n="ContentDocumentLink"/>
+        <sfModelItem kp="057" l="Content Document Subscription" lp="Content Document Subscriptions" n="ContentDocumentSubscription"/>
+        <sfModelItem kp="07H" l="Content Folder" lp="Content Folders" n="ContentFolder"/>
+        <sfModelItem l="Content Folder Item" lo="true" lp="Content Folder Items" n="ContentFolderItem"/>
+        <sfModelItem kp="07v" l="Content Folder Link" lp="Content Folder Links" n="ContentFolderLink"/>
+        <sfModelItem kp="07I" l="Content Folder Member" lp="Content Folder Members" n="ContentFolderMember"/>
+        <sfModelItem kp="0CH" l="Files Connect item" lp="Files Connect items" n="ContentHubItem"/>
+        <sfModelItem kp="0XC" l="Files Connect repository" lo="true" lp="Files Connect repositories" n="ContentHubRepository"/>
+        <sfModelItem kp="069" l="Note" lo="true" lp="Notes" n="ContentNote"/>
+        <sfModelItem kp="05V" l="Content Notification" lp="Content Notifications" n="ContentNotification"/>
+        <sfModelItem kp="05Q" l="Content Tag Subscription" lp="Content Tag Subscriptions" n="ContentTagSubscription"/>
+        <sfModelItem kp="05S" l="Content User Subscription" lp="Content User Subscriptions" n="ContentUserSubscription"/>
+        <sfModelItem kp="068" l="Content Version" lo="true" lp="Content Versions" n="ContentVersion"/>
+        <sfModelItem kp="05C" l="Content Version Comment" lp="Content Version Comments" n="ContentVersionComment"/>
+        <sfModelItem l="Content Version History" lp="Content Version History" n="ContentVersionHistory"/>
+        <sfModelItem kp="05J" l="Content Version Rating" lp="Content Version Ratings" n="ContentVersionRating"/>
+        <sfModelItem kp="058" l="Library" lo="true" lp="Libraries" n="ContentWorkspace"/>
+        <sfModelItem kp="059" l="Library Document" lp="Library Documents" n="ContentWorkspaceDoc"/>
+        <sfModelItem kp="05A" l="Library Member" lp="Library Members" n="ContentWorkspaceMember"/>
+        <sfModelItem kp="05P" l="Library Permission" lp="Library Permissions" n="ContentWorkspacePermission"/>
+        <sfModelItem kp="05R" l="Content Workspace Subscription" lp="Content Workspace Subscriptions" n="ContentWorkspaceSubscription"/>
+        <sfModelItem kp="800" l="Contract" lo="true" lp="Contracts" n="Contract"/>
+        <sfModelItem l="Contract Change Event" lp="Contract Change Event" n="ContractChangeEvent"/>
+        <sfModelItem kp="02a" l="Contract Contact Role" lo="true" lp="Contract Contact Role" n="ContractContactRole"/>
+        <sfModelItem l="Contract Feed" lp="Contract Feed" n="ContractFeed"/>
+        <sfModelItem l="Contract History" lp="Contract History" n="ContractHistory"/>
+        <sfModelItem kp="811" l="Contract Line Item" lo="true" lp="Contract Line Items" n="ContractLineItem"/>
+        <sfModelItem l="Contract Line Item Change Event" lp="Contract Line Item Change Event" n="ContractLineItemChangeEvent"/>
+        <sfModelItem l="Contract Line Item History" lp="Contract Line Item History" n="ContractLineItemHistory"/>
+        <sfModelItem l="Contract Status Value" lp="Contract Status Value" n="ContractStatus"/>
+        <sfModelItem kp="074" l="CORS Whitelist Origin" lp="CORS Whitelist Origins" n="CorsWhitelistEntry"/>
+        <sfModelItem kp="08a" l="Cron Job" lp="Cron Job" n="CronJobDetail"/>
+        <sfModelItem kp="08e" l="Scheduled Jobs" lp="Scheduled Jobs" n="CronTrigger"/>
+        <sfModelItem kp="08y" l="Content Security Policy Trusted Site" lp="Content Security Policy Trusted Sites" n="CspTrustedSite"/>
+        <sfModelItem kp="07W" l="Custom Brand" lp="Custom Brand" n="CustomBrand"/>
+        <sfModelItem kp="07X" l="Custom Brand Asset" lp="Custom Brand Asset" n="CustomBrandAsset"/>
+        <sfModelItem kp="2Ca" l="Custom Help Menu Item" lp="Custom Help Menu Items" n="CustomHelpMenuItem"/>
+        <sfModelItem kp="2Cx" l="Custom Help Menu Section" lp="Custom Help Menu Sections" n="CustomHelpMenuSection"/>
+        <sfModelItem kp="0XH" l="Custom HTTP Header" lo="true" lp="Custom HTTP Headers" n="CustomHttpHeader"/>
+        <sfModelItem kp="3NA" l="Custom Object Usage By User License Metric" lp="Custom Object Usage By User License Metrics" n="CustomObjectUserLicenseMetrics"/>
+        <sfModelItem kp="0CP" l="Custom Permission" lo="true" lp="Custom Permissions" n="CustomPermission"/>
+        <sfModelItem kp="0PD" l="Custom Permission Dependency" lo="true" lp="Custom Permission Dependencies" n="CustomPermissionDependency"/>
+        <sfModelItem kp="01Z" l="Dashboard" lo="true" lp="Dashboards" n="Dashboard"/>
+        <sfModelItem kp="01a" l="Dashboard Component" lp="Dashboard Components" n="DashboardComponent"/>
+        <sfModelItem l="Dashboard Component Feed" lp="Dashboard Component Feed" n="DashboardComponentFeed"/>
+        <sfModelItem l="Dashboard Feed" lp="Dashboard Feed" n="DashboardFeed"/>
+        <sfModelItem kp="03Q" l="Data Assessment Field Metric" lp="Data Assessment Field Metrics" n="DataAssessmentFieldMetric"/>
+        <sfModelItem kp="03P" l="Data Assessment Metric" lp="Data Assessment Metrics" n="DataAssessmentMetric"/>
+        <sfModelItem kp="03R" l="Data Assessment Field Value Metric" lp="Data Assessment Field Value Metrics" n="DataAssessmentValueMetric"/>
+        <sfModelItem kp="0Gy" l="DataIntegrationRecordPurchasePermission" lp="DataIntegrationRecordPurchasePermissions" n="DataIntegrationRecordPurchasePermission"/>
+        <sfModelItem kp="05a" l="Data Statistics" lp="Data Statistics" n="DataStatistics"/>
+        <sfModelItem kp="4dt" l="Data Type" lp="Data Types" n="DataType"/>
+        <sfModelItem kp="0ZT" l="Data Use Legal Basis" lo="true" lp="Data Use Legal Basis" n="DataUseLegalBasis"/>
+        <sfModelItem l="Data Use Legal Basis History" lp="Data Use Legal Basis History" n="DataUseLegalBasisHistory"/>
+        <sfModelItem l="Data Use Legal Basis Share" lp="Data Use Legal Basis Share" n="DataUseLegalBasisShare"/>
+        <sfModelItem kp="0ZW" l="Data Use Purpose" lo="true" lp="Data Use Purposes" n="DataUsePurpose"/>
+        <sfModelItem l="Data Use Purpose History" lp="Data Use Purpose History" n="DataUsePurposeHistory"/>
+        <sfModelItem l="Data Use Purpose Share" lp="Data Use Purpose Share" n="DataUsePurposeShare"/>
+        <sfModelItem kp="07m" l="Data.com Address" lp="Data.com Addresses" n="DatacloudAddress"/>
+        <sfModelItem l="Declined Event Relation" lp="Declined Event Relations" n="DeclinedEventRelation"/>
+        <sfModelItem kp="015" l="Document" lp="Documents" n="Document"/>
+        <sfModelItem kp="05X" l="Document Entity Map" lp="Document Entity Map" n="DocumentAttachmentMap"/>
+        <sfModelItem kp="0I4" l="Domain" lp="Domains" n="Domain"/>
+        <sfModelItem kp="0Jf" l="Custom URL" lp="Custom URLs" n="DomainSite"/>
+        <sfModelItem kp="0GL" l="Duplicate Record Item" lo="true" lp="Duplicate Record Items" n="DuplicateRecordItem"/>
+        <sfModelItem kp="0GK" l="Duplicate Record Set" lo="true" lp="Duplicate Record Sets" n="DuplicateRecordSet"/>
+        <sfModelItem kp="0Bm" l="Duplicate Rule" lo="true" lp="Duplicate Rules" n="DuplicateRule"/>
+        <sfModelItem kp="06F" l="EmailCapture" lp="Email Captures" n="EmailCapture"/>
+        <sfModelItem kp="0T6" l="Email Domain Filter" lp="Email Domain Filter" n="EmailDomainFilter"/>
+        <sfModelItem kp="09P" l="Email Domain Key" lp="Email Domain Keys" n="EmailDomainKey"/>
+        <sfModelItem kp="02s" l="Email Message" lo="true" lp="Email Messages" n="EmailMessage"/>
+        <sfModelItem kp="0CZ" l="Email Message Relation" lp="Email Message Relations" n="EmailMessageRelation"/>
+        <sfModelItem kp="26Z" l="Email Relay" lp="Email Relay" n="EmailRelay"/>
+        <sfModelItem kp="093" l="Email Services Address" lp="Email Services Address" n="EmailServicesAddress"/>
+        <sfModelItem kp="091" l="Email Service" lp="Email Services" n="EmailServicesFunction"/>
+        <sfModelItem kp="018" l="Email Status" lp="Email Status" n="EmailStatus"/>
+        <sfModelItem kp="00X" l="Email Template" lo="true" lp="Email Templates" n="EmailTemplate"/>
+        <sfModelItem kp="0Lq" l="Embedded Service" lp="Embedded Services" n="EmbeddedServiceDetail"/>
+        <sfModelItem kp="0Uu" l="Embedded Service Label" lp="Embedded Service Labels" n="EmbeddedServiceLabel"/>
+        <sfModelItem kp="0Rn" l="Enhanced Letterhead" lo="true" lp="Enhanced Letterheads" n="EnhancedLetterhead"/>
+        <sfModelItem kp="550" l="Entitlement" lo="true" lp="Entitlements" n="Entitlement"/>
+        <sfModelItem l="Entitlement Change Event" lp="Entitlement Change Event" n="EntitlementChangeEvent"/>
+        <sfModelItem kp="0E7" l="Entitlement Contact" lp="Entitlement Contacts" n="EntitlementContact"/>
+        <sfModelItem l="Entitlement Feed" lp="Entitlement Feed" n="EntitlementFeed"/>
+        <sfModelItem l="Entitlement History" lp="Entitlement History" n="EntitlementHistory"/>
+        <sfModelItem kp="551" l="Entitlement Template" lp="Entitlement Template" n="EntitlementTemplate"/>
+        <sfModelItem kp="4ie" l="Entity Definition" lp="Entity Definitions" n="EntityDefinition"/>
+        <sfModelItem kp="0Nv" l="Entity Particle" lp="Entity Particles" n="EntityParticle"/>
+        <sfModelItem kp="0E8" l="Entity Subscription" lp="Entity Subscriptions" n="EntitySubscription"/>
+        <sfModelItem kp="00U" l="Event" lo="true" lp="Events" n="Event"/>
+        <sfModelItem kp="0Cd" l="Platform Event Subscription" lp="Platform Event Subscription" n="EventBusSubscriber"/>
+        <sfModelItem l="Event Change Event" lp="Event Change Event" n="EventChangeEvent"/>
+        <sfModelItem l="Event Feed" lp="Event Feed" n="EventFeed"/>
+        <sfModelItem kp="0AT" l="Event Log File" lp="Event Log Files" n="EventLogFile"/>
+        <sfModelItem kp="0RE" l="Event Relation" lp="Event Relations" n="EventRelation"/>
+        <sfModelItem l="Event Relation Change Event" lp="Event Relation Change Event" n="EventRelationChangeEvent"/>
+        <sfModelItem kp="1GS" l="ExpressionFilter" lp="ExpressionFilters" n="ExpressionFilter"/>
+        <sfModelItem kp="8BM" l="ExpressionFilterCriteria" lp="ExpressionFilterCriteria" n="ExpressionFilterCriteria"/>
+        <sfModelItem kp="0XC" l="External Data Source" lp="External Data Sources" n="ExternalDataSource"/>
+        <sfModelItem kp="0XU" l="External Data User Authentication" lp="External Data User Authentications" n="ExternalDataUserAuth"/>
+        <sfModelItem kp="0AL" l="Managed Social Account" lp="Managed Social Accounts" n="ExternalSocialAccount"/>
+        <sfModelItem l="Data Category Selection: FAQ" lp="Data Category Selection: FAQ" n="FAQ__DataCategorySelection"/>
+        <sfModelItem l="Feed: FAQ" lp="Feed: FAQ" n="FAQ__Feed"/>
+        <sfModelItem l="Version History: FAQ" lp="Version History: FAQ" n="FAQ__VersionHistory"/>
+        <sfModelItem l="View Stat: FAQ" lp="View Stat: FAQ" n="FAQ__ViewStat"/>
+        <sfModelItem l="Vote Stat: FAQ" lp="Vote Stat: FAQ" n="FAQ__VoteStat"/>
+        <sfModelItem kp="kA0" l="FAQ" lo="true" lp="FAQs" n="FAQ__ka"/>
+        <sfModelItem kp="ka0" l="FAQ" lo="true" lp="FAQs" n="FAQ__kav"/>
+        <sfModelItem kp="08M" l="Feed Attachment" lp="Feed Attachments" n="FeedAttachment"/>
+        <sfModelItem kp="0D7" l="Feed Comment" lp="Feed Comments" n="FeedComment"/>
+        <sfModelItem kp="0D5" l="Feed Item" lo="true" lp="Feed Items" n="FeedItem"/>
+        <sfModelItem kp="0I0" l="Feed Like" lp="Feed Likes" n="FeedLike"/>
+        <sfModelItem kp="09A" l="Feed Poll Choice" lp="Feed Poll Choices" n="FeedPollChoice"/>
+        <sfModelItem kp="09B" l="Feed Poll Vote" lp="Feed Poll Votes" n="FeedPollVote"/>
+        <sfModelItem kp="08U" l="Feed Revision" lp="Feed Revisions" n="FeedRevision"/>
+        <sfModelItem kp="0QJ" l="Feed Signal" lp="Feed Signals" n="FeedSignal"/>
+        <sfModelItem kp="0D6" l="Feed Tracked Change" lp="Feed Tracked Changes" n="FeedTrackedChange"/>
+        <sfModelItem kp="4fe" l="Field Definition" lp="Field Definitions" n="FieldDefinition"/>
+        <sfModelItem kp="01k" l="Field Permissions" lp="Field Permissions" n="FieldPermissions"/>
+        <sfModelItem l="Field Security Classification" lp="Field Security Classifications" n="FieldSecurityClassification"/>
+        <sfModelItem kp="06h" l="FileSearchActivity" lp="File Search Activity" n="FileSearchActivity"/>
+        <sfModelItem kp="022" l="Fiscal Year Settings" lp="Fiscal Year Settings" n="FiscalYearSettings"/>
+        <sfModelItem kp="06i" l="Flex Queue Item" lp="Flex Queue Items" n="FlexQueueItem"/>
+        <sfModelItem kp="3dd" l="Flow Definition" lp="Flow Definitions" n="FlowDefinitionView"/>
+        <sfModelItem kp="0Fo" l="Flow Interview" lo="true" lp="Flow Interviews" n="FlowInterview"/>
+        <sfModelItem l="Flow Interview Share" lp="Flow Interview Share" n="FlowInterviewShare"/>
+        <sfModelItem kp="31z" l="Flow Record Relation" lp="Flow Record Relations" n="FlowRecordRelation"/>
+        <sfModelItem kp="31y" l="Flow Interview Stage Relation" lp="Flow Interview Stage Relations" n="FlowStageRelation"/>
+        <sfModelItem kp="3ad" l="Flow Variable" lp="Flow Variables" n="FlowVariableView"/>
+        <sfModelItem kp="3vd" l="Flow Version" lp="Flow Versions" n="FlowVersionView"/>
+        <sfModelItem kp="00l" l="Folder" lp="Folders" n="Folder"/>
+        <sfModelItem l="Foldered Content Document" lp="Foldered Content Documents" n="FolderedContentDocument"/>
+        <sfModelItem kp="608" l="Forecast Share" lp="Forecast Share" n="ForecastShare"/>
+        <sfModelItem kp="0Jc" l="Forecasting Share" lp="Forecasting Shares" n="ForecastingShare"/>
+        <sfModelItem kp="06d" l="Setting Granted By License" lp="Settings Granted By Licenses" n="GrantedByLicense"/>
+        <sfModelItem kp="00G" l="Group" lp="Group" n="Group"/>
+        <sfModelItem kp="011" l="Group Member" lp="Group Member" n="GroupMember"/>
+        <sfModelItem kp="0C0" l="Holiday" lp="Holidays" n="Holiday"/>
+        <sfModelItem kp="09k" l="Icon Definition" lp="Icon Definitions" n="IconDefinition"/>
+        <sfModelItem kp="087" l="Idea" lo="true" lp="Ideas" n="Idea"/>
+        <sfModelItem kp="00a" l="Idea Comment" lp="Idea Comments" n="IdeaComment"/>
+        <sfModelItem kp="0Yu" l="Identity Provider Event Log" lp="Identity Event Logs" n="IdpEventLog"/>
+        <sfModelItem kp="6TS" l="Whitelisted Domain for Visualforce Inline Frames" lp="Whitelisted Domains for Visualforce Inline Frames" n="IframeWhiteListUrl"/>
+        <sfModelItem kp="4YL" l="Image" lo="true" lp="Images" n="Image"/>
+        <sfModelItem l="Image Share" lp="Image Share" n="ImageShare"/>
+        <sfModelItem kp="0PK" l="Individual" lo="true" lp="Individuals" n="Individual"/>
+        <sfModelItem l="Individual History" lp="Individual History" n="IndividualHistory"/>
+        <sfModelItem kp="0T5" l="Individual Share" lp="Individual Share" n="IndividualShare"/>
+        <sfModelItem kp="0El" l="Installed Mobile App" lp="Installed Mobile Apps" n="InstalledMobileApp"/>
+        <sfModelItem kp="kA#" l="Knowledge Article" lp="Knowledge Articles" n="KnowledgeArticle"/>
+        <sfModelItem kp="ka#" l="Knowledge Article Version" lo="true" lp="Knowledge Article Versions" n="KnowledgeArticleVersion"/>
+        <sfModelItem l="Article Version History" lp="Article Version History" n="KnowledgeArticleVersionHistory"/>
+        <sfModelItem l="Article View Statistics" lp="Article View Statistics" n="KnowledgeArticleViewStat"/>
+        <sfModelItem l="Article Vote Statistics" lp="Article Vote Statistics" n="KnowledgeArticleVoteStat"/>
+        <sfModelItem kp="0in" l="Knowledgeable User" lp="Knowledgeable Users" n="KnowledgeableUser"/>
+        <sfModelItem kp="00Q" l="Lead" lo="true" lp="Leads" n="Lead"/>
+        <sfModelItem l="Lead Change Event" lp="Lead Change Event" n="LeadChangeEvent"/>
+        <sfModelItem l="Lead Feed" lp="Lead Feed" n="LeadFeed"/>
+        <sfModelItem l="Lead History" lp="Lead History" n="LeadHistory"/>
+        <sfModelItem kp="01o" l="Lead Share" lp="Lead Share" n="LeadShare"/>
+        <sfModelItem kp="01J" l="Lead Status Value" lp="Lead Status Value" n="LeadStatus"/>
+        <sfModelItem kp="0V9" l="LightningExitByPageMetrics" lp="LightningExitByPageMetrics" n="LightningExitByPageMetrics"/>
+        <sfModelItem kp="0S1" l="Lightning Experience Theme" lp="Lightning Experience Themes" n="LightningExperienceTheme"/>
+        <sfModelItem kp="1o1" l="LightningToggleMetrics" lp="LightningToggleMetrics" n="LightningToggleMetrics"/>
+        <sfModelItem kp="62C" l="LightningUsageByAppTypeMetrics" lp="LightningUsageByAppTypeMetrics" n="LightningUsageByAppTypeMetrics"/>
+        <sfModelItem kp="3mK" l="LightningUsageByBrowserMetrics" lp="LightningUsageByBrowserMetrics" n="LightningUsageByBrowserMetrics"/>
+        <sfModelItem kp="7pV" l="LightningUsageByFlexiPageMetrics" lp="LightningUsageByFlexiPageMetrics" n="LightningUsageByFlexiPageMetrics"/>
+        <sfModelItem kp="0U5" l="LightningUsageByPageMetrics" lp="LightningUsageByPageMetrics" n="LightningUsageByPageMetrics"/>
+        <sfModelItem kp="1WK" l="Linked Article" lo="true" lp="Linked Articles" n="LinkedArticle"/>
+        <sfModelItem l="Linked Article Feed" lp="Linked Article Feed" n="LinkedArticleFeed"/>
+        <sfModelItem l="Linked Article History" lp="Linked Article History" n="LinkedArticleHistory"/>
+        <sfModelItem kp="0XB" l="List Email" lo="true" lp="List Emails" n="ListEmail"/>
+        <sfModelItem l="List Email Change Event" lp="List Email Change Event" n="ListEmailChangeEvent"/>
+        <sfModelItem kp="0XF" l="List Email Individual Recipient" lp="List Email Individual Recipients" n="ListEmailIndividualRecipient"/>
+        <sfModelItem kp="0XD" l="List Email Recipient Source" lp="List Email Recipient Sources" n="ListEmailRecipientSource"/>
+        <sfModelItem l="List Email Share" lp="List Email Share" n="ListEmailShare"/>
+        <sfModelItem kp="00B" l="List View" lp="List Views" n="ListView"/>
+        <sfModelItem kp="0Dd" l="List View Chart" lp="List View Charts" n="ListViewChart"/>
+        <sfModelItem kp="0De" l="List View Chart Instance" lp="List View Chart Instances" n="ListViewChartInstance"/>
+        <sfModelItem kp="04F" l="Login Geo Data" lp="Login Geo Data" n="LoginGeo"/>
+        <sfModelItem kp="0Ya" l="Login History" lp="Login History" n="LoginHistory"/>
+        <sfModelItem kp="710" l="Login IP" lp="Login IP" n="LoginIp"/>
+        <sfModelItem kp="0PH" l="Logout Event Stream" lp="Logout Event Streams" n="LogoutEventStream"/>
+        <sfModelItem l="Lookups from Activity" lp="Lookups from Activities" n="LookedUpFromActivity"/>
+        <sfModelItem l="Change Event: Machine" lp="Change Event: Machine" n="Machine__ChangeEvent"/>
+        <sfModelItem l="History: Machine" lp="History: Machine" n="Machine__History"/>
+        <sfModelItem l="Share: Machine" lp="Share: Machine" n="Machine__Share"/>
+        <sfModelItem kp="a0d" l="Machine" lo="true" lp="Machines" n="Machine__c"/>
+        <sfModelItem kp="0JZ" l="Macro" lo="true" lp="Macros" n="Macro"/>
+        <sfModelItem l="Macro History" lp="Macro History" n="MacroHistory"/>
+        <sfModelItem kp="0Ji" l="Macro Instruction" lp="Macro Instructions" n="MacroInstruction"/>
+        <sfModelItem l="Macro Share" lp="Macro Share" n="MacroShare"/>
+        <sfModelItem kp="5ML" l="Macro Usage" lp="Macro Usages" n="MacroUsage"/>
+        <sfModelItem l="Macro Usage Share" lp="Macro Usage Share" n="MacroUsageShare"/>
+        <sfModelItem kp="01H" l="Mail Merge Template" lp="Mail Merge Template" n="MailmergeTemplate"/>
+        <sfModelItem kp="0JD" l="Matching Rule" lp="Matching Rules" n="MatchingRule"/>
+        <sfModelItem kp="0JE" l="Matching Rule Item" lp="Matching Rule Items" n="MatchingRuleItem"/>
+        <sfModelItem kp="557" l="Milestone" lp="Milestones" n="MilestoneType"/>
+        <sfModelItem kp="0IW" l="Mobile Application Detail" lp="Mobile Application Details" n="MobileApplicationDetail"/>
+        <sfModelItem kp="0QM" l="Muting Permission Set" lp="Muting Permission Set" n="MutingPermissionSet"/>
+        <sfModelItem kp="4hy" l="My Domain Discoverable Login" lp="My Domain Discoverable Logins" n="MyDomainDiscoverableLogin"/>
+        <sfModelItem l="Name" lp="Names" n="Name"/>
+        <sfModelItem kp="0XA" l="Named Credential" lp="Named Credentials" n="NamedCredential"/>
+        <sfModelItem kp="002" l="Note" lo="true" lp="Notes" n="Note"/>
+        <sfModelItem l="Note and Attachment" lp="Notes and Attachments" n="NoteAndAttachment"/>
+        <sfModelItem kp="7ud" l="OAuth Custom Scope" lp="OAuth Custom Scopes" n="OauthCustomScope"/>
+        <sfModelItem kp="0CQ" l="Oauth Token" lp="Oauth Tokens" n="OauthToken"/>
+        <sfModelItem kp="110" l="Object Permissions" lp="Object Permissions" n="ObjectPermissions"/>
+        <sfModelItem kp="0UG" l="Onboarding Metrics" lp="Onboarding Metrics" n="OnboardingMetrics"/>
+        <sfModelItem l="Open Activity" lp="Open Activities" n="OpenActivity"/>
+        <sfModelItem kp="006" l="Opportunity" lo="true" lp="Opportunities" n="Opportunity"/>
+        <sfModelItem l="Opportunity Change Event" lp="Opportunity Change Event" n="OpportunityChangeEvent"/>
+        <sfModelItem kp="00J" l="Opportunity: Competitor" lp="Opportunity: Competitor" n="OpportunityCompetitor"/>
+        <sfModelItem kp="00K" l="Opportunity Contact Role" lo="true" lp="Opportunity Contact Role" n="OpportunityContactRole"/>
+        <sfModelItem l="Opportunity Contact Role Change Event" lp="Opportunity Contact Role Change Event" n="OpportunityContactRoleChangeEvent"/>
+        <sfModelItem l="Opportunity Feed" lp="Opportunity Feed" n="OpportunityFeed"/>
+        <sfModelItem l="Opportunity Field History" lp="Opportunity Field History" n="OpportunityFieldHistory"/>
+        <sfModelItem kp="008" l="Opportunity History" lp="Opportunity History" n="OpportunityHistory"/>
+        <sfModelItem kp="00k" l="Opportunity Product" lo="true" lp="Opportunity Product" n="OpportunityLineItem"/>
+        <sfModelItem kp="00I" l="Opportunity Partner" lo="true" lp="Opportunity Partner" n="OpportunityPartner"/>
+        <sfModelItem kp="00t" l="Opportunity Share" lp="Opportunity Share" n="OpportunityShare"/>
+        <sfModelItem kp="01J" l="Opportunity Stage" lp="Opportunity Stage" n="OpportunityStage"/>
+        <sfModelItem kp="801" l="Order" lo="true" lp="Orders" n="Order"/>
+        <sfModelItem l="Order Change Event" lp="Order Change Event" n="OrderChangeEvent"/>
+        <sfModelItem l="Order Feed" lp="Order Feed" n="OrderFeed"/>
+        <sfModelItem l="Order History" lp="Order History" n="OrderHistory"/>
+        <sfModelItem kp="802" l="Order Product" lo="true" lp="Order Products" n="OrderItem"/>
+        <sfModelItem l="Order Product Change Event" lp="Order Product Change Event" n="OrderItemChangeEvent"/>
+        <sfModelItem l="Order Product Feed" lp="Order Product Feed" n="OrderItemFeed"/>
+        <sfModelItem l="Order Product History" lp="Order Product History" n="OrderItemHistory"/>
+        <sfModelItem kp="0Fy" l="Order Share" lp="Order Share" n="OrderShare"/>
+        <sfModelItem l="Order Status Value" lp="Order Status Values" n="OrderStatus"/>
+        <sfModelItem kp="0OL" l="Org Lifecycle Notification" lp="Org Lifecycle Notification" n="OrgLifecycleNotification"/>
+        <sfModelItem kp="0D2" l="Organization-wide From Email Address" lp="Organization-wide From Email Addresses" n="OrgWideEmailAddress"/>
+        <sfModelItem kp="00D" l="Organization" lp="Organizations" n="Organization"/>
+        <sfModelItem kp="0Q1" l="Outgoing Email" lp="Outgoing Emails" n="OutgoingEmail"/>
+        <sfModelItem kp="0Q3" l="Outgoing Email Relation" lp="Outgoing Email Relations" n="OutgoingEmailRelation"/>
+        <sfModelItem l="User Owned File" lp="User Owned File" n="OwnedContentDocument"/>
+        <sfModelItem kp="0Cy" l="Change Owner Option Info" lp="Change Owner Options Info" n="OwnerChangeOptionInfo"/>
+        <sfModelItem kp="050" l="Package License" lp="Package License" n="PackageLicense"/>
+        <sfModelItem kp="00I" l="Partner" lp="Partner" n="Partner"/>
+        <sfModelItem l="Partner Role Value" lp="Partner Role Value" n="PartnerRole"/>
+        <sfModelItem kp="026" l="Period" lp="Period" n="Period"/>
+        <sfModelItem kp="0PS" l="Permission Set" lp="Permission Sets" n="PermissionSet"/>
+        <sfModelItem kp="0Pa" l="Permission Set Assignment" lp="Permission Set Assignments" n="PermissionSetAssignment"/>
+        <sfModelItem kp="0PG" l="Permission Set Group" lp="Permission Set Groups" n="PermissionSetGroup"/>
+        <sfModelItem kp="0PM" l="Permission Set Group Component" lp="Permission Set Group Components" n="PermissionSetGroupComponent"/>
+        <sfModelItem kp="0PL" l="Permission Set License" lp="Permission Set Licenses" n="PermissionSetLicense"/>
+        <sfModelItem kp="2LA" l="Permission Set License Assignment" lp="Permission Set License Assignments" n="PermissionSetLicenseAssign"/>
+        <sfModelItem kp="01P" l="Permission Set Tab Setting" lp="Permission Set Tab Setting" n="PermissionSetTabSetting"/>
+        <sfModelItem kp="4pv" l="Picklist Value Info" lp="Picklist Value Info" n="PicklistValueInfo"/>
+        <sfModelItem kp="0JV" l="Platform Action" lp="Platform Actions" n="PlatformAction"/>
+        <sfModelItem kp="0Er" l="Platform Cache Partition" lp="Platform Cache Partitions" n="PlatformCachePartition"/>
+        <sfModelItem kp="0Ev" l="Platform Cache Partition Type" lp="Platform Cache Partition Types" n="PlatformCachePartitionType"/>
+        <sfModelItem kp="0V2" l="Platform Status Alert Event" lp="Platform Status Alert Events" n="PlatformStatusAlertEvent"/>
+        <sfModelItem kp="01s" l="Price Book" lo="true" lp="Price Books" n="Pricebook2"/>
+        <sfModelItem l="Price Book History" lp="Price Book History" n="Pricebook2History"/>
+        <sfModelItem kp="01u" l="Price Book Entry" lo="true" lp="Price Book Entries" n="PricebookEntry"/>
+        <sfModelItem kp="04a" l="Process Definition" lp="Process Definition" n="ProcessDefinition"/>
+        <sfModelItem kp="04g" l="Process Instance" lp="Process Instance" n="ProcessInstance"/>
+        <sfModelItem l="Process Instance History" lp="Process Instance History" n="ProcessInstanceHistory"/>
+        <sfModelItem kp="0OO" l="Process Instance Node" lp="Process Instance Node" n="ProcessInstanceNode"/>
+        <sfModelItem kp="04h" l="Process Instance Step" lp="Process Instance Step" n="ProcessInstanceStep"/>
+        <sfModelItem kp="04i" l="Approval Request" lp="Approval Requests" n="ProcessInstanceWorkitem"/>
+        <sfModelItem kp="04b" l="Process Node" lp="Process Node" n="ProcessNode"/>
+        <sfModelItem kp="01t" l="Product" lo="true" lp="Products" n="Product2"/>
+        <sfModelItem l="Product Change Event" lp="Product Change Event" n="Product2ChangeEvent"/>
+        <sfModelItem l="Product Feed" lp="Product Feed" n="Product2Feed"/>
+        <sfModelItem l="Product History" lp="Product History" n="Product2History"/>
+        <sfModelItem kp="0E9" l="Product Entitlement Template" lp="Product Entitlement Template" n="ProductEntitlementTemplate"/>
+        <sfModelItem kp="00e" l="Profile" lp="Profile" n="Profile"/>
+        <sfModelItem kp="0bs" l="Prompt" lp="Prompts" n="Prompt"/>
+        <sfModelItem kp="0bu" l="Prompt Action" lp="Prompt Actions" n="PromptAction"/>
+        <sfModelItem l="Prompt Action Share" lp="Prompt Action Share" n="PromptActionShare"/>
+        <sfModelItem kp="0bt" l="Prompt Version" lp="Prompt Versions" n="PromptVersion"/>
+        <sfModelItem kp="4pb" l="Publisher" lp="Publishers" n="Publisher"/>
+        <sfModelItem kp="0IF" l="Push Topic" lp="Push Topics" n="PushTopic"/>
+        <sfModelItem kp="03g" l="Queue Sobject" lp="Queue Sobjects" n="QueueSobject"/>
+        <sfModelItem kp="574" l="Quick Text" lo="true" lp="Quick Text" n="QuickText"/>
+        <sfModelItem l="Quick Text History" lp="Quick Text History" n="QuickTextHistory"/>
+        <sfModelItem l="Quick Text Share" lp="Quick Text Share" n="QuickTextShare"/>
+        <sfModelItem kp="5QL" l="Quick Text Usage" lp="Quick Text Usages" n="QuickTextUsage"/>
+        <sfModelItem l="Quick Text Usage Share" lp="Quick Text Usage Share" n="QuickTextUsageShare"/>
+        <sfModelItem l="Recently Viewed" lp="Recently Viewed" n="RecentlyViewed"/>
+        <sfModelItem kp="0Rw" l="RecordAction" lp="RecordActions" n="RecordAction"/>
+        <sfModelItem kp="0Ub" l="RecordActionHistory" lp="RecordActionHistories" n="RecordActionHistory"/>
+        <sfModelItem kp="012" l="Record Type" lp="Record Types" n="RecordType"/>
+        <sfModelItem kp="0Jv" l="Relationship Domain" lp="Relationship Domains" n="RelationshipDomain"/>
+        <sfModelItem kp="0Ju" l="Relationship" lp="Relationships" n="RelationshipInfo"/>
+        <sfModelItem kp="00O" l="Report" lp="Reports" n="Report"/>
+        <sfModelItem l="Report Feed" lp="Report Feed" n="ReportFeed"/>
+        <sfModelItem kp="0LE" l="SAML Single Sign-On Setting" lp="SAML Single Sign-On Settings" n="SamlSsoConfig"/>
+        <sfModelItem kp="01N" l="Custom S-Control" lp="Custom S-Controls" n="Scontrol"/>
+        <sfModelItem kp="0JO" l="SearchActivity" lp="Knowledge Search Activity" n="SearchActivity"/>
+        <sfModelItem kp="4co" l="Search Layout" lp="Search Layouts" n="SearchLayout"/>
+        <sfModelItem kp="0MD" l="Promoted Search Term" lo="true" lp="Promoted Search Terms" n="SearchPromotionRule"/>
+        <sfModelItem kp="0Qy" l="Secure Agent Cluster" lo="true" lp="Secure Agent Clusters" n="SecureAgentsCluster"/>
+        <sfModelItem kp="09v" l="Security Custom Baseline" lp="Security Custom Baselines" n="SecurityCustomBaseline"/>
+        <sfModelItem kp="810" l="Service Contract" lo="true" lp="Service Contracts" n="ServiceContract"/>
+        <sfModelItem l="Service Contract Change Event" lp="Service Contract Change Event" n="ServiceContractChangeEvent"/>
+        <sfModelItem l="Service Contract Feed" lp="Service Contract Feed" n="ServiceContractFeed"/>
+        <sfModelItem l="Service Contract History" lp="Service Contract History" n="ServiceContractHistory"/>
+        <sfModelItem l="Service Contract Share" lp="Service Contract Share" n="ServiceContractShare"/>
+        <sfModelItem kp="5Pa" l="Session Permission Set Activation" lo="true" lp="Session Permission Set Activations" n="SessionPermSetActivation"/>
+        <sfModelItem kp="0Ym" l="Setup Audit Trail Entry" lp="Setup Audit Trail Entries" n="SetupAuditTrail"/>
+        <sfModelItem kp="0J0" l="Setup Entity Access" lp="Setup Entity Access" n="SetupEntityAccess"/>
+        <sfModelItem kp="0DM" l="Site" lp="Sites" n="Site"/>
+        <sfModelItem kp="0GV" l="Site Detail" lp="Site Details" n="SiteDetail"/>
+        <sfModelItem l="Site" lp="Site" n="SiteFeed"/>
+        <sfModelItem l="Site History" lp="Site History" n="SiteHistory"/>
+        <sfModelItem kp="0Xs" l="Whitelisted Domains for Inline Frames" lp="Whitelisted Domains for Inline Frames" n="SiteIframeWhiteListUrl"/>
+        <sfModelItem kp="552" l="Entitlement Process" lo="true" lp="Entitlement Processes" n="SlaProcess"/>
+        <sfModelItem kp="0SP" l="Social Persona" lo="true" lp="Social Personas" n="SocialPersona"/>
+        <sfModelItem l="Social Persona History" lp="Social Persona History" n="SocialPersonaHistory"/>
+        <sfModelItem kp="0ST" l="Social Post" lo="true" lp="Social Posts" n="SocialPost"/>
+        <sfModelItem l="Social Post Feed" lp="Social Post Feed" n="SocialPostFeed"/>
+        <sfModelItem l="Social Post History" lp="Social Post History" n="SocialPostHistory"/>
+        <sfModelItem l="Social Post Share" lp="Social Post Share" n="SocialPostShare"/>
+        <sfModelItem kp="501" l="Solution" lo="true" lp="Solutions" n="Solution"/>
+        <sfModelItem l="Solution Feed" lp="Solution Feed" n="SolutionFeed"/>
+        <sfModelItem l="Solution History" lp="Solution History" n="SolutionHistory"/>
+        <sfModelItem l="Solution Status Value" lp="Solution Status Value" n="SolutionStatus"/>
+        <sfModelItem kp="1ST" l="Stamp" lp="Stamps" n="Stamp"/>
+        <sfModelItem kp="1SA" l="Stamp Assignment" lp="Stamp Assignments" n="StampAssignment"/>
+        <sfModelItem kp="081" l="Static Resource" lp="Static Resources" n="StaticResource"/>
+        <sfModelItem kp="0M6" l="Streaming Channel" lo="true" lp="Streaming Channels" n="StreamingChannel"/>
+        <sfModelItem l="Streaming Channel Share" lp="Streaming Channel Share" n="StreamingChannelShare"/>
+        <sfModelItem kp="0KD" l="Tab Definition" lp="Tab Definitions" n="TabDefinition"/>
+        <sfModelItem kp="00T" l="Task" lo="true" lp="Tasks" n="Task"/>
+        <sfModelItem l="Task Change Event" lp="Task Change Event" n="TaskChangeEvent"/>
+        <sfModelItem l="Task Feed" lp="Task Feed" n="TaskFeed"/>
+        <sfModelItem l="Task Priority Value" lp="Task Priority Value" n="TaskPriority"/>
+        <sfModelItem l="Task Status Value" lp="Task Status Value" n="TaskStatus"/>
+        <sfModelItem kp="0UT" l="Tenant Usage Entitlement" lp="Tenant Usage Entitlements" n="TenantUsageEntitlement"/>
+        <sfModelItem kp="0Hd" l="Test Suite Membership" lp="Test Suite Memberships" n="TestSuiteMembership"/>
+        <sfModelItem kp="0Jr" l="Third Party Account Link" lp="Third Party Account Links" n="ThirdPartyAccountLink"/>
+        <sfModelItem kp="0Jz" l="Goal" lp="Goals" n="TodayGoal"/>
+        <sfModelItem l="Goal Share" lp="Goal Share" n="TodayGoalShare"/>
+        <sfModelItem kp="0TO" l="Topic" lo="true" lp="Topics" n="Topic"/>
+        <sfModelItem kp="0FT" l="Topic Assignment" lp="Topic Assignments" n="TopicAssignment"/>
+        <sfModelItem l="Topic Feed" lp="Topic Feed" n="TopicFeed"/>
+        <sfModelItem kp="0te" l="Topic User Event" lp="Topic User Events" n="TopicUserEvent"/>
+        <sfModelItem l="Undecided Event Relation" lp="Undecided Event Relations" n="UndecidedEventRelation"/>
+        <sfModelItem kp="005" l="User" lo="true" lp="Users" n="User"/>
+        <sfModelItem kp="0Ds" l="Last Used App" lp="Last Used App" n="UserAppInfo"/>
+        <sfModelItem kp="0Nw" l="UserAppMenuCustomization" lp="UserAppMenuCustomizations" n="UserAppMenuCustomization"/>
+        <sfModelItem l="UserAppMenuCustomization Share" lp="UserAppMenuCustomization Share" n="UserAppMenuCustomizationShare"/>
+        <sfModelItem kp="07p" l="Application" lo="true" lp="Applications" n="UserAppMenuItem"/>
+        <sfModelItem l="User Change Event" lp="User Change Event" n="UserChangeEvent"/>
+        <sfModelItem kp="0UV" l="User Email Preferred Person" lp="User Email Preferred People" n="UserEmailPreferredPerson"/>
+        <sfModelItem l="User Email Preferred Person Share" lp="User Email Preferred Person Share" n="UserEmailPreferredPersonShare"/>
+        <sfModelItem kp="07u" l="User Entity Access" lp="User Entity Access" n="UserEntityAccess"/>
+        <sfModelItem l="User Feed" lp="User Feed" n="UserFeed"/>
+        <sfModelItem kp="4fp" l="User Field Access" lp="User Field Access" n="UserFieldAccess"/>
+        <sfModelItem kp="100" l="User License" lp="User Licenses" n="UserLicense"/>
+        <sfModelItem kp="0Na" l="User List View" lp="User List View" n="UserListView"/>
+        <sfModelItem kp="0JU" l="User List View Criteria" lp="User List View Criteria" n="UserListViewCriterion"/>
+        <sfModelItem kp="0Yw" l="User Login" lp="User Login" n="UserLogin"/>
+        <sfModelItem kp="051" l="User Package License" lp="User Package License" n="UserPackageLicense"/>
+        <sfModelItem kp="0up" l="User Permission Access" lp="User Permission Access" n="UserPermissionAccess"/>
+        <sfModelItem kp="03u" l="User Preference" lp="User Preferences" n="UserPreference"/>
+        <sfModelItem kp="0Ni" l="User Provisioning Account" lp="User Provisioning Accounts" n="UserProvAccount"/>
+        <sfModelItem kp="0HY" l="User Provisioning Account Staging" lp="User Provisioning Account Stagings" n="UserProvAccountStaging"/>
+        <sfModelItem kp="0HX" l="User Provisioning Mock Target" lp="User Provisioning Mock Targets" n="UserProvMockTarget"/>
+        <sfModelItem kp="0Je" l="User Provisioning Config" lp="User Provisioning Configs" n="UserProvisioningConfig"/>
+        <sfModelItem kp="0Hs" l="User Provisioning Log" lp="User Provisioning Logs" n="UserProvisioningLog"/>
+        <sfModelItem kp="0HP" l="User Provisioning Request" lo="true" lp="User Provisioning Requests" n="UserProvisioningRequest"/>
+        <sfModelItem l="User Provisioning Request Share" lp="User Provisioning Request Share" n="UserProvisioningRequestShare"/>
+        <sfModelItem l="User Record Access" lp="User Record Access" n="UserRecordAccess"/>
+        <sfModelItem kp="00E" l="Role" lp="Role" n="UserRole"/>
+        <sfModelItem kp="0N2" l="User Share" lp="User Share" n="UserShare"/>
+        <sfModelItem kp="0Qt" l="Identity Verification History" lp="Identity Verification History" n="VerificationHistory"/>
+        <sfModelItem kp="0OP" l="Visualforce Access Metric" lp="Visualforce Access Metrics" n="VisualforceAccessMetrics"/>
+        <sfModelItem kp="083" l="Vote" lp="Votes" n="Vote"/>
+        <sfModelItem kp="00b" l="Custom Button or Link" lp="Custom Buttons or Links" n="WebLink"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfListView</key>
+      <value valueClass="list">
+        <sfModelItem id="00B4P000006KWMnUAO" l="Today's Agenda" n="Event.TodaysAgenda" t="Today's Agenda"/>
+        <sfModelItem id="00B4P0000071xw5UAA" l="All Activated Contracts" n="Contract.AllActivatedContracts" t="All Activated Contracts"/>
+        <sfModelItem id="00B4P0000071xwtUAA" l="My Opportunities" n="Opportunity.MyOpportunities" t="My Opportunities"/>
+        <sfModelItem id="00B4P0000071xvqUAA" l="Last 7 Days" n="Idea.Ideas_Last_7_Days" t="Last 7 Days"/>
+        <sfModelItem id="00B4P0000071xwyUAA" l="My Delegated Activities" n="Activity.MyDelegatedActivities" t="My Delegated Activities"/>
+        <sfModelItem id="00B4P0000071xvxUAA" l="All Service Contracts" n="ServiceContract.All_ServiceContracts" t="All Service Contracts"/>
+        <sfModelItem id="00B4P0000071xvKUAQ" l="Overdue Tasks" n="Task.OverdueTasks" t="Overdue Tasks"/>
+        <sfModelItem id="00B4P0000071xvAUAQ" l="All Contacts" n="Contact.AllContacts" t="All Contacts"/>
+        <sfModelItem id="00B4P0000071xwHUAQ" l="My Unread Leads" n="Lead.MyUnreadLeads" t="My Unread Leads"/>
+        <sfModelItem id="00B4P0000071xvwUAA" l="All Entitlements" n="Entitlement.All_Entitlements" t="All Entitlements"/>
+        <sfModelItem id="00B4P000007q63SUAQ" l="All Authorization Forms" n="AuthorizationForm.All_AuthorizationForms" t="All Authorization Forms"/>
+        <sfModelItem id="00B4P0000071xw6UAA" l="All Draft Contracts" n="Contract.AllDraftContracts" t="All Draft Contracts"/>
+        <sfModelItem id="00B4P000007q63eUAA" l="All Data Use Legal Bases" n="DataUseLegalBasis.All_DataUseLegalBases" t="All Data Use Legal Bases"/>
+        <sfModelItem id="00B4P0000071xvzUAA" l="Sample Cases" n="Case.Sample_Cases" t="Sample Cases"/>
+        <sfModelItem id="00B4P0000071xwrUAA" l="All Opportunities" n="Opportunity.AllOpportunities" t="All Opportunities"/>
+        <sfModelItem id="00B4P000007q63VUAQ" l="All Authorization Form Data Uses" n="AuthorizationFormDataUse.All_AuthorizationFormDataUses" t="All Authorization Form Data Uses"/>
+        <sfModelItem id="00B4P0000071xwQUAQ" l="Closing Next Month" n="Opportunity.ClosingNextMonth" t="Closing Next Month"/>
+        <sfModelItem id="00B4P000006KWMpUAO" l="My Team's Upcoming Events" n="Event.MyTeamsUpcomingEvents" t="My Team's Upcoming Events"/>
+        <sfModelItem id="00B4P000006KWMoUAO" l="My Upcoming Events" n="Event.MyUpcomingEvents" t="My Upcoming Events"/>
+        <sfModelItem id="00B4P000007q63bUAA" l="All Contact Point Type Consents" n="ContactPointTypeConsent.All_ContactPointTypeConsents" t="All Contact Point Type Consents"/>
+        <sfModelItem id="00B4P0000071xvEUAQ" l="All Users" n="User.AllUsers" t="All Users"/>
+        <sfModelItem id="00B4P0000071xw9UAA" l="All In Approval Contracts" n="Contract.AllInApprovalContracts" t="All In Approval Contracts"/>
+        <sfModelItem id="00B4P0000071xwMUAQ" l="Active Users" n="User.ActiveUsers" t="Active Users"/>
+        <sfModelItem id="00B4P0000071xw0UAA" l="My Active Campaigns" n="Campaign.MyActiveCampaigns" t="My Active Campaigns"/>
+        <sfModelItem id="00B4P0000071xwCUAQ" l="Birthdays This Month" n="Contact.BirthdaysThisMonth" t="Birthdays This Month"/>
+        <sfModelItem id="00B4P0000071xvJUAQ" l="Today's Tasks" n="Task.TodaysTasks" t="Today's Tasks"/>
+        <sfModelItem id="00B4P0000071xvNUAQ" l="Recurring Tasks" n="Task.RecurringTasks" t="Recurring Tasks"/>
+        <sfModelItem id="00B4P0000071xvLUAQ" l="Delegated Tasks" n="Task.DelegatedTasks" t="Delegated Tasks"/>
+        <sfModelItem id="00B4P000006KWMqUAO" l="My Recent Events" n="Event.MyRecentEvents" t="My Recent Events"/>
+        <sfModelItem id="00B4P0000071xwzUAA" l="My Team's Activities" n="Activity.MyTeamsActivities" t="My Team's Activities"/>
+        <sfModelItem id="00B4P0000071xvMUAQ" l="Recently Completed Tasks" n="Task.CompletedTasks" t="Recently Completed Tasks"/>
+        <sfModelItem id="00B4P0000071xwPUAQ" l="Upcoming Events" n="Activity.UpcomingEvents" t="Upcoming Events"/>
+        <sfModelItem id="00B4P0000071xwFUAQ" l="All Reviewed Solutions" n="Solution.AllReviewedSolutions" t="All Reviewed Solutions"/>
+        <sfModelItem id="00B4P0000071xxfUAA" l="All social posts" n="SocialPost.AllSocialPosts" t="All social posts"/>
+        <sfModelItem id="00B4P000006KWMrUAO" l="My Team's Recent Events" n="Event.MyTeamsRecentEvents" t="My Team's Recent Events"/>
+        <sfModelItem id="00B4P0000071xwDUAQ" l="New This Week" n="Contact.NewThisWeek" t="New This Week"/>
+        <sfModelItem id="00B4P0000071xvQUAQ" l="My Scorecards" n="Scorecard.MyScorecards" t="My Scorecards"/>
+        <sfModelItem id="00B4P0000071xwBUAQ" l="New This Week" n="Account.NewThisWeek" t="New This Week"/>
+        <sfModelItem id="00B4P0000071xvOUAQ" l="Unscheduled Tasks" n="Task.UnscheduledTasks" t="Unscheduled Tasks"/>
+        <sfModelItem id="00B4P000007q63dUAA" l="All Data Use Purposes" n="DataUsePurpose.All_DataUsePurposes" t="All Data Use Purposes"/>
+        <sfModelItem id="00B4P000006JSpKUAW" l="Opportunity Pipeline" n="Opportunity.Default_Opportunity_Pipeline" t="Opportunity Pipeline"/>
+        <sfModelItem id="00B4P000006JRLBUA4" l="All Social Personas" n="SocialPersona.AllSocialPersonas" t="All Social Personas"/>
+        <sfModelItem id="00B4P0000071xwlUAA" l="My Accounts" n="Account.MyAccounts" t="My Accounts"/>
+        <sfModelItem id="00B4P0000071xwGUAQ" l="Today's Leads" n="Lead.TodaysLeads" t="Today's Leads"/>
+        <sfModelItem id="00B4P0000071xwJUAQ" l="Won" n="Opportunity.Won" t="Won"/>
+        <sfModelItem id="00B4P0000071xwYUAQ" l="All Accounts" n="Account.AllAccounts" t="All Accounts"/>
+        <sfModelItem id="00B4P0000071xvBUAQ" l="Closing This Month" n="Opportunity.ClosingThisMonth" t="Closing This Month"/>
+        <sfModelItem id="00B4P0000071xwEUAQ" l="All Unreviewed Solutions" n="Solution.AllUnreviewedSolutions" t="All Unreviewed Solutions"/>
+        <sfModelItem id="00B4P0000071xwLUAQ" l="Admin Users" n="User.AdminUsers" t="Admin Users"/>
+        <sfModelItem id="00B4P0000071xv8UAA" l="All Open Cases" n="Case.AllOpenCases" t="All Open Cases"/>
+        <sfModelItem id="00B4P0000071xweUAA" l="All Orders" n="Order.AllOrders" t="All Orders"/>
+        <sfModelItem id="00B4P0000071xwKUAQ" l="New This Week" n="Opportunity.NewThisWeek" t="New This Week"/>
+        <sfModelItem id="00B4P000007q63TUAQ" l="All Authorization Form Text" n="AuthorizationFormText.All_AuthorizationFormText" t="All Authorization Form Text"/>
+        <sfModelItem id="00B4P0000071xwgUAA" l="All Contracts" n="Contract.AllContracts" t="All Contracts"/>
+        <sfModelItem id="00B4P0000071xw8UAA" l="My Draft Contracts" n="Contract.MyDraftContracts" t="My Draft Contracts"/>
+        <sfModelItem id="00B4P0000071xw1UAA" l="All Draft Orders" n="Order.AllDraftOrders" t="All Draft Orders"/>
+        <sfModelItem id="00B4P0000071xvPUAQ" l="All Scorecards" n="Scorecard.AllScorecards" t="All Scorecards"/>
+        <sfModelItem id="00B4P0000071xvIUAQ" l="Open Tasks" n="Task.OpenTasks" t="Open Tasks"/>
+        <sfModelItem id="00B4P0000071xwfUAA" l="All Products" n="Product2.AllProducts" t="All Products"/>
+        <sfModelItem id="00B4P0000071xw7UAA" l="My In Approval Contracts" n="Contract.MyInApprovalContracts" t="My In Approval Contracts"/>
+        <sfModelItem id="00B4P0000071xvyUAA" l="Trial Activities" n="Case.Trial_Activities" t="Trial Activities"/>
+        <sfModelItem id="00B4P0000071xwZUAQ" l="All Assets" n="Asset.AllAssets" t="All Assets"/>
+        <sfModelItem id="00B4P000007q63UUAQ" l="All Authorization Form Consents" n="AuthorizationFormConsent.All_AuthorizationFormConsents" t="All Authorization Form Consents"/>
+        <sfModelItem id="00B4P0000071xwuUAA" l="My Cases" n="Case.MyCases" t="My Cases"/>
+        <sfModelItem id="00B4P0000071xwIUAQ" l="All Open Leads" n="Lead.AllOpenLeads" t="All Open Leads"/>
+        <sfModelItem id="00B4P0000071xx0UAA" l="My Activities" n="Activity.MyActivities" t="My Activities"/>
+        <sfModelItem id="00B4P000007qkQHUAY" l="All" n="Machine__c.All" t="All"/>
+        <sfModelItem id="00B4P0000071xxUUAQ" l="Active Groups" n="CollaborationGroup.All_ChatterGroups" t="Active Groups"/>
+        <sfModelItem id="00B4P0000071xwNUAQ" l="My Open Cases" n="Case.MyOpenCases" t="My Open Cases"/>
+        <sfModelItem id="00B4P0000071xw4UAA" l="My Activated Contracts" n="Contract.MyActivatedContracts" t="My Activated Contracts"/>
+        <sfModelItem id="00B4P0000071xvoUAA" l="All Account Brands" n="AccountBrand.All_Account_Brands" t="All Account Brands"/>
+        <sfModelItem id="00B4P0000071xv7UAA" l="All Active Campaigns" n="Campaign.AllActiveCampaigns" t="All Active Campaigns"/>
+        <sfModelItem id="00B4P0000071xwOUAQ" l="Today's Tasks" n="Activity.TodaysTasks" t="Today's Tasks"/>
+        <sfModelItem id="00B4P0000071xw2UAA" l="All Activated Orders" n="Order.AllActivatedOrders" t="All Activated Orders"/>
+        <sfModelItem id="00B4P000007q5tcUAA" l="Created by Me" n="Report.CreatedByMe" t="Created by Me"/>
+        <sfModelItem id="00B4P000007q5tdUAA" l="Private Reports" n="Report.PrivateReports" t="Private Reports"/>
+        <sfModelItem id="00B4P000007q5teUAA" l="Public Reports" n="Report.PublicReports" t="Public Reports"/>
+        <sfModelItem id="00B4P000007q5tfUAA" l="All Reports" n="Report.AllReports" t="All Reports"/>
+        <sfModelItem id="00B4P000006JyajUAC" l="All" n="01I4P000000zGcPUAU.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyakUAC" l="All" n="01I4P000000zGcRUAU.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyalUAC" l="All" n="01I4P000000zGcUUAU.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyamUAC" l="All" n="01I4P000000zGceUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyanUAC" l="All" n="01I4P000000zGcfUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyaoUAC" l="All" n="01I4P000000zGcjUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyapUAC" l="All" n="01I4P000000zGcmUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyaqUAC" l="All" n="01I4P000000zGcpUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyarUAC" l="All" n="01I4P000000zGctUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P000006JyasUAC" l="All" n="01I4P000000zGcvUAE.Flosum__All" ns="Flosum" t="All"/>
+        <sfModelItem id="00B4P0000071xvpUAA" l="Recently Viewed Account Brands" n="AccountBrand.Recently_Viewed_Account_Brands" t="Recently Viewed Account Brands"/>
+        <sfModelItem id="00B4P0000071xvXUAQ" l="My Account Relationships" n="AccountRelationship.My_Account_Relationships" t="My Account Relationships"/>
+        <sfModelItem id="00B4P0000071xvYUAQ" l="All Account Relationships" n="AccountRelationship.All_Account_Relationships" t="All Account Relationships"/>
+        <sfModelItem id="00B4P0000071xvZUAQ" l="Recently Viewed Account Relationships" n="AccountRelationship.Recently_Viewed_Account_Relationships" t="Recently Viewed Account Relationships"/>
+        <sfModelItem id="00B4P000006JRL8UAO" l="All Missions" n="BadgeMissionRule.ALL_LIGHTNING_COMMUNITIES_MISSIONS" t="All Missions"/>
+        <sfModelItem id="00B4P0000071xviUAA" l="All Channel Programs" n="ChannelProgram.All_Channel_Programs" t="All Channel Programs"/>
+        <sfModelItem id="00B4P0000071xvjUAA" l="My Channel Programs" n="ChannelProgram.My_Channel_Programs" t="My Channel Programs"/>
+        <sfModelItem id="00B4P0000071xvkUAA" l="Recently Viewed Channel Programs" n="ChannelProgram.Recently_Viewed_Channel_Programs" t="Recently Viewed Channel Programs"/>
+        <sfModelItem id="00B4P0000071xvlUAA" l="Recently Viewed Channel Program Levels" n="ChannelProgramLevel.Recently_Viewed_Channel_Program_Levels" t="Recently Viewed Channel Program Levels"/>
+        <sfModelItem id="00B4P0000071xvmUAA" l="All Channel Program Levels" n="ChannelProgramLevel.All_Channel_Program_Levels" t="All Channel Program Levels"/>
+        <sfModelItem id="00B4P0000071xvnUAA" l="My Channel Program Levels" n="ChannelProgramLevel.My_Channel_Program_Levels" t="My Channel Program Levels"/>
+        <sfModelItem id="00B4P0000071xxVUAQ" l="My Groups" n="CollaborationGroup.My_ChatterGroups" t="My Groups"/>
+        <sfModelItem id="00B4P0000071xxWUAQ" l="My Archived Groups" n="CollaborationGroup.My_ArchivedChatterGroups" t="My Archived Groups"/>
+        <sfModelItem id="00B4P0000071xxXUAQ" l="Recently Viewed Groups" n="CollaborationGroup.My_RecentChatterGroups" t="Recently Viewed Groups"/>
+        <sfModelItem id="00B4P0000071xxcUAA" l="All Clean Rules" n="CleanRule.CleanRule_AllCleanRules" t="All Clean Rules"/>
+        <sfModelItem id="00B4P000007q63cUAA" l="All Contact Point Consents" n="ContactPointConsent.All_ContactPointConsents" t="All Contact Point Consents"/>
+        <sfModelItem id="00B4P0000071xxYUAQ" l="Owned by Me" n="ContentDocument.OwnedContentDocuments" t="Owned by Me"/>
+        <sfModelItem id="00B4P0000071xxZUAQ" l="Recent" n="ContentDocument.RecentlyViewedContentDocuments" t="Recent"/>
+        <sfModelItem id="00B4P0000071xxaUAA" l="Following" n="ContentDocument.FollowedContentDocuments" t="Following"/>
+        <sfModelItem id="00B4P0000071xxbUAA" l="Shared with Me" n="ContentDocument.SharedWithMeContentDocuments" t="Shared with Me"/>
+        <sfModelItem id="00B4P0000071xxdUAA" l="My Notes" n="ContentNote.OwnedContentNote" t="My Notes"/>
+        <sfModelItem id="00B4P0000071xxeUAA" l="Shared with Me" n="ContentNote.SharedWithMeContentNote" t="Shared with Me"/>
+        <sfModelItem id="00B4P0000071xx2UAA" l="All Custom Report Types" n="CustomReportType.All" t="All Custom Report Types"/>
+        <sfModelItem id="00B4P0000071xwcUAA" l="All Conversion Rates" n="DatedConversionRate.AllConversionRates" t="All Conversion Rates"/>
+        <sfModelItem id="00B4P000007q62iUAA" l="Org Recycle Bin" n="DeleteEvent.AllDeleteEvents" t="Org Recycle Bin"/>
+        <sfModelItem id="00B4P000007q62jUAA" l="My Recycle Bin" n="DeleteEvent.MyDeleteEvents" t="My Recycle Bin"/>
+        <sfModelItem id="00B4P0000071xwTUAQ" l="All Approval Return Addresses" n="EmailRoutingAddress.AllApprovalReturnAddresses" t="All Approval Return Addresses"/>
+        <sfModelItem id="00B4P000006KWMsUAO" l="New This Week" n="Event.NewThisWeek" t="New This Week"/>
+        <sfModelItem id="00B4P000007q60nUAA" l="All Flows" n="FlowDefinitionView.All_Flows" t="All Flows"/>
+        <sfModelItem id="00B4P000007q63RUAQ" l="All Paused Flow Interviews" n="FlowInterview.AllFlowInterviewsList" t="All Paused Flow Interviews"/>
+        <sfModelItem id="00B4P0000071xvrUAA" l="All Flows" n="InteractionLayoutDetail.All_Sparks" t="All Flows"/>
+        <sfModelItem id="00B4P0000071xvsUAA" l="Active Flows" n="InteractionLayoutDetail.Active_Sparks" t="Active Flows"/>
+        <sfModelItem id="00B4P0000071xvtUAA" l="Inactive Flows" n="InteractionLayoutDetail.Inactive_Sparks" t="Inactive Flows"/>
+        <sfModelItem id="00B4P0000071xvuUAA" l="Active Flows Using an Older Version" n="InteractionLayoutDetail.Out_Of_Date_Sparks" t="Active Flows Using an Older Version"/>
+        <sfModelItem id="00B4P0000071xxRUAQ" l="All" n="UserRole.AllUserRoles" t="All"/>
+        <sfModelItem id="00B4P0000071xwRUAQ" l="Active Mass Emails" n="MassMail.ActiveMassEmails" t="Active Mass Emails"/>
+        <sfModelItem id="00B4P0000071xx3UAA" l="All Mass Emails" n="MassMail.AllMassEmails" t="All Mass Emails"/>
+        <sfModelItem id="00B4P0000071xvWUAQ" l="Recently Viewed Partner Fund Allocations" n="PartnerFundAllocation.Recently_Viewed_Partner_Fund_Allocations" t="Recently Viewed Partner Fund Allocations"/>
+        <sfModelItem id="00B4P0000071xvaUAA" l="All Partner Fund Allocations" n="PartnerFundAllocation.All_Partner_Fund_Allocations" t="All Partner Fund Allocations"/>
+        <sfModelItem id="00B4P0000071xvbUAA" l="My Partner Fund Allocations" n="PartnerFundAllocation.My_Partner_Fund_Allocations" t="My Partner Fund Allocations"/>
+        <sfModelItem id="00B4P0000071xvfUAA" l="All Partner Fund Claims" n="PartnerFundClaim.All_Partner_Fund_Claims" t="All Partner Fund Claims"/>
+        <sfModelItem id="00B4P0000071xvgUAA" l="My Partner Fund Claims" n="PartnerFundClaim.My_Partner_Fund_Claims" t="My Partner Fund Claims"/>
+        <sfModelItem id="00B4P0000071xvhUAA" l="Recently Viewed Partner Fund Claims" n="PartnerFundClaim.Recently_Viewed_Partner_Fund_Claims" t="Recently Viewed Partner Fund Claims"/>
+        <sfModelItem id="00B4P0000071xvcUAA" l="My Partner Fund Requests" n="PartnerFundRequest.My_Partner_Fund_Requests" t="My Partner Fund Requests"/>
+        <sfModelItem id="00B4P0000071xvdUAA" l="All Partner Fund Requests" n="PartnerFundRequest.All_Partner_Fund_Requests" t="All Partner Fund Requests"/>
+        <sfModelItem id="00B4P0000071xveUAA" l="Recently Viewed Partner Fund Requests" n="PartnerFundRequest.Recently_Viewed_Partner_Fund_Requests" t="Recently Viewed Partner Fund Requests"/>
+        <sfModelItem id="00B4P0000071xvTUAQ" l="My Partner Marketing Budgets" n="PartnerMarketingBudget.My_Partner_Marketing_Budgets" t="My Partner Marketing Budgets"/>
+        <sfModelItem id="00B4P0000071xvUUAQ" l="All Partner Marketing Budgets" n="PartnerMarketingBudget.All_Partner_Marketing_Budgets" t="All Partner Marketing Budgets"/>
+        <sfModelItem id="00B4P0000071xvVUAQ" l="Recently Viewed Partner Marketing Budgets" n="PartnerMarketingBudget.Recently_Viewed_Partner_Marketing_Budgets" t="Recently Viewed Partner Marketing Budgets"/>
+        <sfModelItem id="00B4P0000071xvCUAQ" l="All Permission Sets" n="PermissionSet.All_PermissionSets" t="All Permission Sets"/>
+        <sfModelItem id="00B4P000006JSdHUAW" l="UK Standard" n="PricebookEntry.UK Standard1559893323634" t="UK Standard"/>
+        <sfModelItem id="00B4P0000071xx1UAA" l="Standard Price Book" n="PricebookEntry.StandardPriceBook" t="Standard Price Book"/>
+        <sfModelItem id="00B4P000007q60mUAA" l="All Catalogs" n="ProductCatalog.All_Product_Catalogs__Filter" t="All Catalogs"/>
+        <sfModelItem id="00B4P000006KWF1UAO" l="Recently Viewed Product Categories" n="ProductCategory.Recently_Viewed_Product_Categories" t="Recently Viewed Product Categories"/>
+        <sfModelItem id="00B4P000006KWF2UAO" l="All Product Categories" n="ProductCategory.All_Product_Categories" t="All Product Categories"/>
+        <sfModelItem id="00B4P0000071xvDUAQ" l="All Profiles" n="Profile.All_Profiles" t="All Profiles"/>
+        <sfModelItem id="00B4P0000071xvRUAQ" l="Recently Viewed Scorecards" n="Scorecard.RecentlyViewedScorecards" t="Recently Viewed Scorecards"/>
+        <sfModelItem id="00B4P0000071xxGUAQ" l="All" n="Territory.AllTerritories" t="All"/>
+        <sfModelItem id="00B4P000006JRLAUA4" l="All Content Topics" n="Topic.All_Content_Topic_Filter" t="All Content Topics"/>
+        <sfModelItem id="00B4P0000071xvSUAQ" l="All Topics" n="Topic.All_Topics_Filter" t="All Topics"/>
+        <sfModelItem id="00B4P0000071xvFUAQ" l="All Workflow Rules" n="WorkflowRule.AllWorkflowRules" t="All Workflow Rules"/>
+        <sfModelItem id="00B4P0000071xwVUAQ" l="All Workflow Field Updates" n="ActionFieldUpdate.AllWorkflowFieldUpdates" t="All Workflow Field Updates"/>
+        <sfModelItem id="00B4P000006JRL9UAO" l="Recognition" n="WorkBadgeDefinition.ALL_LIGHTNING_COMMUNITIES_UNEARNED_BADGES" t="Recognition"/>
+        <sfModelItem id="00B4P0000071xwWUAQ" l="Items to Approve" n="ProcessInstanceWorkitem.ItemsToApprove" t="Items to Approve"/>
+        <sfModelItem id="00B4P0000071xwiUAA" l="All Tasks" n="ActionTask.AllWorkflowTasks" t="All Tasks"/>
+        <sfModelItem id="00B4P0000071xwjUAA" l="All Email Alerts" n="ActionEmail.AllWorkflowAlerts" t="All Email Alerts"/>
+        <sfModelItem id="00B4P0000071xwmUAA" l="Recently Viewed Accounts" n="Account.RecentlyViewedAccounts" t="Recently Viewed Accounts"/>
+        <sfModelItem id="00B4P0000071xwnUAA" l="Recently Viewed Contacts" n="Contact.RecentlyViewedContacts" t="Recently Viewed Contacts"/>
+        <sfModelItem id="00B4P0000071xwoUAA" l="Most Commonly Used" n="Solution.MostCommonlyUsed" t="Most Commonly Used"/>
+        <sfModelItem id="00B4P0000071xwpUAA" l="Recently Viewed Solutions" n="Solution.RecentlyViewedSolutions" t="Recently Viewed Solutions"/>
+        <sfModelItem id="00B4P0000071xwqUAA" l="Recently Viewed Leads" n="Lead.RecentlyViewedLeads" t="Recently Viewed Leads"/>
+        <sfModelItem id="00B4P0000071xwsUAA" l="Recently Viewed Opportunities" n="Opportunity.RecentlyViewedOpportunities" t="Recently Viewed Opportunities"/>
+        <sfModelItem id="00B4P0000071xvHUAQ" l="Recently Viewed Cases" n="Case.RecentlyViewedCases" t="Recently Viewed Cases"/>
+        <sfModelItem id="00B4P0000071xwxUAA" l="All Notes" n="Note.AllNotes" t="All Notes"/>
+        <sfModelItem id="00B4P000007q5z2UAA" l="Created by Me" n="Dashboard.CreatedByMe" t="Created by Me"/>
+        <sfModelItem id="00B4P000007q5z3UAA" l="Private Dashboards" n="Dashboard.PrivateDashboards" t="Private Dashboards"/>
+        <sfModelItem id="00B4P000007q5z4UAA" l="All Dashboards" n="Dashboard.AllDashboards" t="All Dashboards"/>
+        <sfModelItem id="00B4P000007p0euUAA" l="View_0054P000009OFACQA4" n="Report.View_0054P000009OFACQA4" t="View_0054P000009OFACQA4"/>
+        <sfModelItem id="00l4P000001hJVdQAM" l="Shared Documents" n="Document.00l4P000001hJVd" t="Shared Documents"/>
+        <sfModelItem id="00l4P000001hJVeQAM" l="Trial Documents" n="Document.00l4P000001hJVe" t="Trial Documents"/>
+        <sfModelItem id="00l4P000000gLJEQA2" l="Logo" n="Document.00l4P000000gLJE" t="Logo"/>
+        <sfModelItem id="00l4P000001hJVfQAM" l="Sales Tools" n="Document.00l4P000001hJVf" t="Sales Tools"/>
+        <sfModelItem id="0054P000009OFAC" l="My Personal Documents" n="Document.0054P000009OFAC" t="My Personal Documents"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfDataCategoryGroup</key>
+      <value valueClass="list">
+        <sfModelItem n="Topic"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfTab</key>
+      <value valueClass="list">
+        <sfModelItem id="01r4P000000V6LDQA0" l="Settings" n="Flosum__Settings" ns="Flosum"/>
+        <sfModelItem id="01r4P000000V6LCQA0" l="Search Metadata" n="Flosum__Search_Metadata" ns="Flosum"/>
+        <sfModelItem id="01r4P000000OyDQQA0" l="Machines" n="Machine__c"/>
+        <sfModelItem id="01r4P000000v0xaQAA" l="Getting Started" n="Getting_Started"/>
+        <sfModelItem id="01r4P000000V6LBQA0" l="Repository" n="Flosum__Repository" ns="Flosum"/>
+        <sfModelItem id="01r4P000000V6LEQA0" l="Comparison" n="Flosum__Snapshot_Comparison" ns="Flosum"/>
+        <sfModelItem l="Accounts" n="standard-Account"/>
+        <sfModelItem l="App Launcher" n="AppLauncher"/>
+        <sfModelItem l="Campaigns" n="standard-Campaign"/>
+        <sfModelItem l="Cases" n="standard-Case"/>
+        <sfModelItem l="Chatter" n="standard-Chatter"/>
+        <sfModelItem l="Contacts" n="standard-Contact"/>
+        <sfModelItem l="Content" n="Content"/>
+        <sfModelItem l="Contracts" n="standard-Contract"/>
+        <sfModelItem l="Dashboards" n="standard-Dashboard"/>
+        <sfModelItem l="Data.com" n="Data"/>
+        <sfModelItem l="Documents" n="standard-Document"/>
+        <sfModelItem l="Duplicate Record Sets" n="standard-DuplicateRecordSet"/>
+        <sfModelItem l="Files" n="Files"/>
+        <sfModelItem l="Forecasts" n="Forecasts"/>
+        <sfModelItem l="Groups" n="Groups"/>
+        <sfModelItem l="Home" n="standard-home"/>
+        <sfModelItem l="Ideas" n="Ideas"/>
+        <sfModelItem l="Article Management" n="standard-KnowledgePublishing"/>
+        <sfModelItem l="Knowledge" n="standard-Knowledge"/>
+        <sfModelItem l="Leads" n="standard-Lead"/>
+        <sfModelItem l="Libraries" n="Libraries"/>
+        <sfModelItem l="Macros" n="standard-Macro"/>
+        <sfModelItem l="Opportunities" n="standard-Opportunity"/>
+        <sfModelItem l="Orders" n="standard-Order"/>
+        <sfModelItem l="People" n="People"/>
+        <sfModelItem l="Price Books" n="standard-Pricebook2"/>
+        <sfModelItem l="Products" n="standard-Product2"/>
+        <sfModelItem l="Profile" n="Profile"/>
+        <sfModelItem l="Profile Feed" n="ProfileFeed"/>
+        <sfModelItem l="Profile Overview" n="ProfileOverview"/>
+        <sfModelItem l="Recognition" n="Recognition"/>
+        <sfModelItem l="Reports" n="standard-Report"/>
+        <sfModelItem l="Site.com" n="Site"/>
+        <sfModelItem l="Solutions" n="standard-Solution"/>
+        <sfModelItem l="Streaming Channels" n="standard-StreamingChannel"/>
+        <sfModelItem l="Subscriptions" n="Subscriptions"/>
+        <sfModelItem l="Live Agent Supervisor" n="standard-LiveAgentSupervisor"/>
+        <sfModelItem l="Omni Supervisor" n="standard-OmniSupervisor"/>
+        <sfModelItem l="Tasks" n="standard-Task"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfLightningComponent</key>
+      <value valueClass="list">
+        <sfModelItem n="ComponentHistoryComparision" ns="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfQuickAction</key>
+      <value valueClass="list">
+        <sfModelItem id="09D4P000002zLhoUAE" l="Log a Call" n="LogACall"/>
+        <sfModelItem id="09D4P000002zLmCUAU" l="Change Date" n="Task.Defer_0"/>
+        <sfModelItem id="09D4P000002zLhsUAE" l="Change Status" n="Task.UpdateStatus"/>
+        <sfModelItem id="09D4P000002zLi6UAE" l="New Group Member" n="CollaborationGroup.NewGroupMember"/>
+        <sfModelItem id="09D4P000002zLhnUAE" l="New Event" n="NewEvent"/>
+        <sfModelItem id="09D4P000002zLhzUAE" l="New Lead" n="NewLead"/>
+        <sfModelItem id="09D4P000002zLi3UAE" l="New Child Case" n="Case.NewChildCase"/>
+        <sfModelItem id="09D4P000002zLmBUAU" l="Edit Comments" n="Task.EditDescription_0"/>
+        <sfModelItem id="09D4P000002zLmDUAU" l="Change Status" n="Task.UpdateStatus_0"/>
+        <sfModelItem id="09D4P000002zLi5UAE" l="New Group" n="NewGroup"/>
+        <sfModelItem id="09D4P000002zLhvUAE" l="Create New Task" n="FeedItem.NewTaskFromFeedItem"/>
+        <sfModelItem id="09D4P000002zLhxUAE" l="New Account" n="NewAccount"/>
+        <sfModelItem id="09D4P000002zLhyUAE" l="New Contact" n="NewContact"/>
+        <sfModelItem id="09D4P000002zLhqUAE" l="Edit Comments" n="Task.EditDescription"/>
+        <sfModelItem id="09D4P000002zLi0UAE" l="New Opportunity" n="NewOpportunity"/>
+        <sfModelItem id="09D4P000002zLhtUAE" l="Change Priority" n="Task.UpdatePriority"/>
+        <sfModelItem id="09D4P000002zLi2UAE" l="New Case" n="NewCase"/>
+        <sfModelItem id="09D4P000002zLhwUAE" l="Email" n="Case.SendEmail"/>
+        <sfModelItem id="09D4P000002zLhuUAE" l="Email" n="SendEmail"/>
+        <sfModelItem id="09D4P000002zLi4UAE" l="Add Record" n="CollaborationGroup.NewGroupRecord"/>
+        <sfModelItem id="09D4P000002zLhrUAE" l="Change Date" n="Task.Defer"/>
+        <sfModelItem id="09D4P000002zLmEUAU" l="Change Priority" n="Task.UpdatePriority_0"/>
+        <sfModelItem id="09D4P000002zLhpUAE" l="New Task" n="NewTask"/>
+        <sfModelItem id="09D4P000002zLi1UAE" l="NewNote" n="NewNote"/>
+        <sfModelItem l="Post" n="FeedItem.TextPost"/>
+        <sfModelItem l="File" n="FeedItem.ContentPost"/>
+        <sfModelItem l="Link" n="FeedItem.LinkPost"/>
+        <sfModelItem l="Poll" n="FeedItem.PollPost"/>
+        <sfModelItem l="Question" n="FeedItem.QuestionPost"/>
+        <sfModelItem l="Thanks" n="FeedItem.RypplePost"/>
+        <sfModelItem l="New Note" n="FeedItem.ContentNote"/>
+        <sfModelItem l="Email" n="Case.Email"/>
+        <sfModelItem l="Change Status" n="Case.ChangeStatus"/>
+        <sfModelItem l="Log a Call" n="Case.LogACall"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfPage</key>
+      <value valueClass="list">
+        <sfModelItem n="OrgComponentToBranchCommit" ns="Flosum"/>
+        <sfModelItem n="UpdateOrganization" ns="Flosum"/>
+        <sfModelItem n="AddPatchManifest" ns="Flosum"/>
+        <sfModelItem n="ca_tour_style"/>
+        <sfModelItem n="EditMetadataItem" ns="Flosum"/>
+        <sfModelItem n="SnapshotToPatches" ns="Flosum"/>
+        <sfModelItem n="PatchRollback" ns="Flosum"/>
+        <sfModelItem n="JSSnapshotRetrieval" ns="Flosum"/>
+        <sfModelItem n="SnapshotToGitCommit" ns="Flosum"/>
+        <sfModelItem n="SyncJobs" ns="Flosum"/>
+        <sfModelItem n="ProfileSnapshot" ns="Flosum"/>
+        <sfModelItem n="RetrievalType" ns="Flosum"/>
+        <sfModelItem n="RegisterOrganizations" ns="Flosum"/>
+        <sfModelItem n="TrackStandardChanges" ns="Flosum"/>
+        <sfModelItem n="scc_tour_style"/>
+        <sfModelItem n="ComponentDeploy" ns="Flosum"/>
+        <sfModelItem n="scc_tour_main"/>
+        <sfModelItem n="ComputeComparison" ns="Flosum"/>
+        <sfModelItem n="EditBuild" ns="Flosum"/>
+        <sfModelItem n="SnapshotToBranchCommit" ns="Flosum"/>
+        <sfModelItem n="SchedulePatchDeployment" ns="Flosum"/>
+        <sfModelItem n="CreateMultiMetaPatch" ns="Flosum"/>
+        <sfModelItem n="SnapshotDelete" ns="Flosum"/>
+        <sfModelItem n="EditMetadataLog" ns="Flosum"/>
+        <sfModelItem n="SearchMetadata" ns="Flosum"/>
+        <sfModelItem n="EditCommitManifest" ns="Flosum"/>
+        <sfModelItem n="EditCommit" ns="Flosum"/>
+        <sfModelItem n="ComponentComparisonDetail" ns="Flosum"/>
+        <sfModelItem n="EditMetaData" ns="Flosum"/>
+        <sfModelItem n="ViewMetadata" ns="Flosum"/>
+        <sfModelItem n="InsertPullRequest" ns="Flosum"/>
+        <sfModelItem n="ReplaceSuffix" ns="Flosum"/>
+        <sfModelItem n="RetrieveChanges" ns="Flosum"/>
+        <sfModelItem n="CreateGitSnapshot" ns="Flosum"/>
+        <sfModelItem n="CreateMultiMetaSnapshot" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersHelp"/>
+        <sfModelItem n="AddToPatch" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersChangePassword"/>
+        <sfModelItem n="ReCreateMultiMetaSnapshot" ns="Flosum"/>
+        <sfModelItem n="EditPatchManifest" ns="Flosum"/>
+        <sfModelItem n="PatchImpactAnalysis" ns="Flosum"/>
+        <sfModelItem n="EditComponent" ns="Flosum"/>
+        <sfModelItem n="PatchToBranch" ns="Flosum"/>
+        <sfModelItem n="AppSetting" ns="Flosum"/>
+        <sfModelItem n="EditBuildManifest" ns="Flosum"/>
+        <sfModelItem n="SnapRepoComparison" ns="Flosum"/>
+        <sfModelItem n="CreateSnapshotLocalFlosum" ns="Flosum"/>
+        <sfModelItem n="MassDeletePatchItems" ns="Flosum"/>
+        <sfModelItem n="ScheduleTestExecution" ns="Flosum"/>
+        <sfModelItem n="EditComponentHistory" ns="Flosum"/>
+        <sfModelItem n="OrgComponentToPatches" ns="Flosum"/>
+        <sfModelItem n="ObjectReport" ns="Flosum"/>
+        <sfModelItem n="ScheduleSnapshot" ns="Flosum"/>
+        <sfModelItem n="DynamicLookup" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersRegistration"/>
+        <sfModelItem n="Trial_Tour"/>
+        <sfModelItem n="ComponentComparison" ns="Flosum"/>
+        <sfModelItem n="ca_tour_main"/>
+        <sfModelItem n="HistoryComparison" ns="Flosum"/>
+        <sfModelItem n="PatchRedirect" ns="Flosum"/>
+        <sfModelItem n="AddDestructiveChanges" ns="Flosum"/>
+        <sfModelItem n="MergeCommit" ns="Flosum"/>
+        <sfModelItem n="MetaQuickDeploy" ns="Flosum"/>
+        <sfModelItem n="TrialCustomerPortalHomePage"/>
+        <sfModelItem n="EditPatchApplication" ns="Flosum"/>
+        <sfModelItem n="Repository" ns="Flosum"/>
+        <sfModelItem n="DownloadComponents" ns="Flosum"/>
+        <sfModelItem n="PostInstallScript" ns="Flosum"/>
+        <sfModelItem n="CreateScratchOrg" ns="Flosum"/>
+        <sfModelItem n="PullRequest" ns="Flosum"/>
+        <sfModelItem n="MergeBranches" ns="Flosum"/>
+        <sfModelItem n="Redirect" ns="Flosum"/>
+        <sfModelItem n="RetrieveLogs" ns="Flosum"/>
+        <sfModelItem n="MergePatches" ns="Flosum"/>
+        <sfModelItem n="EditSnapshot" ns="Flosum"/>
+        <sfModelItem n="MassDeleteSnapshot" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersLogin"/>
+        <sfModelItem n="ChatterAnswersAgentView"/>
+        <sfModelItem n="CommitRollback" ns="Flosum"/>
+        <sfModelItem n="ComponentPatchDeploy" ns="Flosum"/>
+        <sfModelItem n="SnapToRepoCommit" ns="Flosum"/>
+        <sfModelItem n="Release2017Feb" ns="Flosum"/>
+        <sfModelItem n="EditOrgComponent" ns="Flosum"/>
+        <sfModelItem n="ComponentComparisonPanel" ns="Flosum"/>
+        <sfModelItem n="ManifestRedirect" ns="Flosum"/>
+        <sfModelItem n="SecuritySettings" ns="Flosum"/>
+        <sfModelItem n="MetadataComparison" ns="Flosum"/>
+        <sfModelItem n="EditDestructiveManifest" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersForgotPasswordConfirm"/>
+        <sfModelItem n="MultiMetaAddManifest" ns="Flosum"/>
+        <sfModelItem n="CustomLookup" ns="Flosum"/>
+        <sfModelItem n="EditRepositorySettings" ns="Flosum"/>
+        <sfModelItem n="MassDeleteComponents" ns="Flosum"/>
+        <sfModelItem n="SyncWithBranch" ns="Flosum"/>
+        <sfModelItem n="ChatterAnswersForgotPassword"/>
+        <sfModelItem n="ProfileComparison" ns="Flosum"/>
+        <sfModelItem n="BranchToPatch" ns="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfFlexiPage</key>
+      <value valueClass="list">
+        <sfModelItem n="Flosum__Commit_Record_Page"/>
+        <sfModelItem n="Flosum__Branch_Record_Page"/>
+        <sfModelItem n="Flosum__Component_Record_Page"/>
+        <sfModelItem n="Flosum__Patch_Record_Page"/>
+        <sfModelItem n="Flosum__Build_Record_Page"/>
+        <sfModelItem n="Flosum__Org_Record_Page"/>
+        <sfModelItem n="Flosum__Pull_Request_Record_Page"/>
+        <sfModelItem n="Flosum__Snapshot_Record_Page"/>
+        <sfModelItem n="support__Case_rec_L_3col"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SfApp</key>
+      <value valueClass="list">
+        <sfModelItem id="02u4P0000010F0nQAE" l="Sales" n="Sales" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0sQAE" l="Service" n="Service" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0tQAE" l="Marketing" n="Marketing" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0uQAE" l="Salesforce Chatter" n="Chatter" ns="standard"/>
+        <sfModelItem con="true" id="02u4P0000010F0lQAE" l="Service Cloud Console" n="Service_Cloud_Console" ns=""/>
+        <sfModelItem con="true" id="02u4P0000010F0pQAE" l="Chatter Answers Moderator" n="Chatter_Answers_Moderator" ns=""/>
+        <sfModelItem id="02u4P000000ROBFQA4" l="App Launcher" n="AppLauncher" ns="standard"/>
+        <sfModelItem id="02u4P000000ROOeQAO" l="Sales" lightningApp="true" n="LightningSales" ns="standard"/>
+        <sfModelItem id="02u4P000000ROBEQA4" l="LightningBolt" lightningApp="true" n="LightningBolt" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0rQAE" l="appexchange default" n="Platform" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0qQAE" l="LightningInstrumentation" lightningApp="true" n="LightningInstrumentation" ns="standard"/>
+        <sfModelItem id="02u4P000000RVJ7QAO" l="Flosum" n="Flosum" ns="Flosum"/>
+        <sfModelItem con="true" id="02u4P0000010F0oQAE" l="ServiceCloudConsole" n="ServiceConsole" ns="standard"/>
+        <sfModelItem id="02u4P0000010F0vQAE" l="Community" n="Community" ns="standard"/>
+      </value>
+    </entry>
+  </modelItemTypes>
+  <fieldPermissions>
+    <entry>
+      <key valueClass="string">DataUsePurpose</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="DataUsePurpose"/>
+        <sfFieldPermission field="IsMaintainablePerContactPoint" sfObjectName="DataUsePurpose"/>
+        <sfFieldPermission field="IsMaintainablePerParty" sfObjectName="DataUsePurpose"/>
+        <sfFieldPermission field="IsMaintainablePerType" sfObjectName="DataUsePurpose"/>
+        <sfFieldPermission field="LegalBasis" sfObjectName="DataUsePurpose"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Account</key>
+      <value valueClass="list">
+        <sfFieldPermission field="AccountSource" sfObjectName="Account"/>
+        <sfFieldPermission field="AnnualRevenue" sfObjectName="Account"/>
+        <sfFieldPermission field="BillingAddress" sfObjectName="Account"/>
+        <sfFieldPermission field="Description" sfObjectName="Account"/>
+        <sfFieldPermission field="Fax" sfObjectName="Account"/>
+        <sfFieldPermission field="Industry" sfObjectName="Account"/>
+        <sfFieldPermission field="Jigsaw" sfObjectName="Account"/>
+        <sfFieldPermission field="NumberOfEmployees" sfObjectName="Account"/>
+        <sfFieldPermission field="Parent" sfObjectName="Account"/>
+        <sfFieldPermission field="Phone" sfObjectName="Account"/>
+        <sfFieldPermission field="ShippingAddress" sfObjectName="Account"/>
+        <sfFieldPermission field="SicDesc" sfObjectName="Account"/>
+        <sfFieldPermission field="Type" sfObjectName="Account"/>
+        <sfFieldPermission field="Website" sfObjectName="Account"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Task</key>
+      <value valueClass="list">
+        <sfFieldPermission field="ActivityDate" sfObjectName="Task"/>
+        <sfFieldPermission field="Description" sfObjectName="Task"/>
+        <sfFieldPermission field="What" sfObjectName="Task"/>
+        <sfFieldPermission field="Who" sfObjectName="Task"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationFormConsent</key>
+      <value valueClass="list">
+        <sfFieldPermission field="DocumentVersion" sfObjectName="AuthorizationFormConsent"/>
+        <sfFieldPermission field="Status" sfObjectName="AuthorizationFormConsent"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">OpportunityLineItem</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="OpportunityLineItem"/>
+        <sfFieldPermission edit="false" field="ListPrice" sfObjectName="OpportunityLineItem"/>
+        <sfFieldPermission edit="false" field="ProductCode" sfObjectName="OpportunityLineItem"/>
+        <sfFieldPermission field="ServiceDate" sfObjectName="OpportunityLineItem"/>
+        <sfFieldPermission edit="false" field="TotalPrice" sfObjectName="OpportunityLineItem"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Product2</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="Product2"/>
+        <sfFieldPermission field="DisplayUrl" sfObjectName="Product2"/>
+        <sfFieldPermission field="ExternalDataSource" sfObjectName="Product2"/>
+        <sfFieldPermission field="ExternalId" sfObjectName="Product2"/>
+        <sfFieldPermission field="Family" sfObjectName="Product2"/>
+        <sfFieldPermission field="ProductCode" sfObjectName="Product2"/>
+        <sfFieldPermission field="QuantityUnitOfMeasure" sfObjectName="Product2"/>
+        <sfFieldPermission field="StockKeepingUnit" sfObjectName="Product2"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Case</key>
+      <value valueClass="list">
+        <sfFieldPermission edit="false" field="Account" sfObjectName="Case"/>
+        <sfFieldPermission field="Asset" sfObjectName="Case"/>
+        <sfFieldPermission field="BusinessHours" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="ClosedDate" sfObjectName="Case"/>
+        <sfFieldPermission field="Contact" sfObjectName="Case"/>
+        <sfFieldPermission field="Description" sfObjectName="Case"/>
+        <sfFieldPermission field="Entitlement" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="IsClosedOnCreate" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="IsEscalated" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="IsSelfServiceClosed" sfObjectName="Case"/>
+        <sfFieldPermission field="IsStopped" sfObjectName="Case"/>
+        <sfFieldPermission field="IsVisibleInSelfService" sfObjectName="Case"/>
+        <sfFieldPermission field="MilestoneStatus" sfObjectName="Case"/>
+        <sfFieldPermission field="MilestoneStatusIcon" sfObjectName="Case"/>
+        <sfFieldPermission field="Origin" sfObjectName="Case"/>
+        <sfFieldPermission field="Parent" sfObjectName="Case"/>
+        <sfFieldPermission field="Priority" sfObjectName="Case"/>
+        <sfFieldPermission field="Product" sfObjectName="Case"/>
+        <sfFieldPermission field="Reason" sfObjectName="Case"/>
+        <sfFieldPermission field="SlaExitDate" sfObjectName="Case"/>
+        <sfFieldPermission field="SlaStartDate" sfObjectName="Case"/>
+        <sfFieldPermission field="Source" sfObjectName="Case"/>
+        <sfFieldPermission field="StopStartDate" sfObjectName="Case"/>
+        <sfFieldPermission field="Subject" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="SuppliedCompany" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="SuppliedEmail" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="SuppliedName" sfObjectName="Case"/>
+        <sfFieldPermission edit="false" field="SuppliedPhone" sfObjectName="Case"/>
+        <sfFieldPermission field="Type" sfObjectName="Case"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SocialPost</key>
+      <value valueClass="list">
+        <sfFieldPermission field="AnalyzerScore" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="AssignedTo" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="AttachmentType" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="AttachmentUrl" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Classification" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="CommentCount" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Content" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="DeletedBy" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="EngagementLevel" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ExternalPostId" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="HarvestDate" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="HiddenBy" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="InboundLinkCount" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="IsOutbound" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="KeywordGroupName" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Language" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="LikesAndVotes" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="MediaProvider" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="MediaType" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="MessageType" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Notes" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="OutboundSocialAccount" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Parent" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Persona" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="PostPriority" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="PostTags" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="PostUrl" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="R6PostId" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="R6SourceId" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="R6TopicId" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Recipient" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="RecipientType" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ReplyTo" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ResponseContextExternalId" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ReviewScale" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ReviewScore" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ReviewedStatus" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Sentiment" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Shares" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="SourceTags" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="SpamRating" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Status" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="StatusMessage" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ThreadSize" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="TopicProfileName" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="TopicType" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="UniqueCommentors" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="ViewCount" sfObjectName="SocialPost"/>
+        <sfFieldPermission field="Who" sfObjectName="SocialPost"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationFormText</key>
+      <value valueClass="list">
+        <sfFieldPermission field="ContentDocument" sfObjectName="AuthorizationFormText"/>
+        <sfFieldPermission field="FullAuthorizationFormUrl" sfObjectName="AuthorizationFormText"/>
+        <sfFieldPermission field="Locale" sfObjectName="AuthorizationFormText"/>
+        <sfFieldPermission field="SummaryAuthFormText" sfObjectName="AuthorizationFormText"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Opportunity</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Additional_Description__c" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Extra_Comments__c" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Account" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Amount" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Campaign" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Description" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="LeadSource" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="NextStep" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Probability" sfObjectName="Opportunity"/>
+        <sfFieldPermission field="Type" sfObjectName="Opportunity"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Lead</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Address" sfObjectName="Lead"/>
+        <sfFieldPermission field="AnnualRevenue" sfObjectName="Lead"/>
+        <sfFieldPermission field="Description" sfObjectName="Lead"/>
+        <sfFieldPermission field="Email" sfObjectName="Lead"/>
+        <sfFieldPermission field="Industry" sfObjectName="Lead"/>
+        <sfFieldPermission field="Jigsaw" sfObjectName="Lead"/>
+        <sfFieldPermission field="LeadSource" sfObjectName="Lead"/>
+        <sfFieldPermission field="NumberOfEmployees" sfObjectName="Lead"/>
+        <sfFieldPermission field="Phone" sfObjectName="Lead"/>
+        <sfFieldPermission field="Rating" sfObjectName="Lead"/>
+        <sfFieldPermission field="Title" sfObjectName="Lead"/>
+        <sfFieldPermission field="Website" sfObjectName="Lead"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SocialPersona</key>
+      <value valueClass="list">
+        <sfFieldPermission field="AreWeFollowing" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="AuthorLabels" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="Bio" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="Followers" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="Following" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="InfluencerScore" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="IsBlacklisted" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="IsFollowingUs" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="IsVerified" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="Klout" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="ListedCount" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="MediaProvider" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="MediaType" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="NumberOfFriends" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="NumberOfTweets" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="ProfileType" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="R6SourceId" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="RealName" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="SourceApp" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="TopicType" sfObjectName="SocialPersona"/>
+        <sfFieldPermission field="UserId" sfObjectName="SocialPersona"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Asset</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Account" sfObjectName="Asset"/>
+        <sfFieldPermission field="AssetLevel" sfObjectName="Asset"/>
+        <sfFieldPermission field="AssetProvidedBy" sfObjectName="Asset"/>
+        <sfFieldPermission field="AssetServicedBy" sfObjectName="Asset"/>
+        <sfFieldPermission field="Contact" sfObjectName="Asset"/>
+        <sfFieldPermission field="Description" sfObjectName="Asset"/>
+        <sfFieldPermission field="InstallDate" sfObjectName="Asset"/>
+        <sfFieldPermission field="IsCompetitorProduct" sfObjectName="Asset"/>
+        <sfFieldPermission field="IsInternal" sfObjectName="Asset"/>
+        <sfFieldPermission field="Price" sfObjectName="Asset"/>
+        <sfFieldPermission field="Product2" sfObjectName="Asset"/>
+        <sfFieldPermission field="ProductCode" sfObjectName="Asset"/>
+        <sfFieldPermission field="PurchaseDate" sfObjectName="Asset"/>
+        <sfFieldPermission field="Quantity" sfObjectName="Asset"/>
+        <sfFieldPermission field="SerialNumber" sfObjectName="Asset"/>
+        <sfFieldPermission field="Status" sfObjectName="Asset"/>
+        <sfFieldPermission field="StockKeepingUnit" sfObjectName="Asset"/>
+        <sfFieldPermission field="UsageEndDate" sfObjectName="Asset"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ContactPointTypeConsent</key>
+      <value valueClass="list">
+        <sfFieldPermission field="DataUsePurpose" sfObjectName="ContactPointTypeConsent"/>
+        <sfFieldPermission field="DoubleConsentCaptureDate" sfObjectName="ContactPointTypeConsent"/>
+        <sfFieldPermission field="EffectiveFrom" sfObjectName="ContactPointTypeConsent"/>
+        <sfFieldPermission field="EffectiveTo" sfObjectName="ContactPointTypeConsent"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Solution</key>
+      <value valueClass="list">
+        <sfFieldPermission field="IsPublished" sfObjectName="Solution"/>
+        <sfFieldPermission field="IsPublishedInPublicKb" sfObjectName="Solution"/>
+        <sfFieldPermission field="SolutionNote" sfObjectName="Solution"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AssetRelationship</key>
+      <value valueClass="list">
+        <sfFieldPermission field="RelationshipType" sfObjectName="AssetRelationship"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Order</key>
+      <value valueClass="list">
+        <sfFieldPermission edit="false" field="ActivatedBy" sfObjectName="Order"/>
+        <sfFieldPermission edit="false" field="ActivatedDate" sfObjectName="Order"/>
+        <sfFieldPermission field="BillingAddress" sfObjectName="Order"/>
+        <sfFieldPermission field="CompanyAuthorizedBy" sfObjectName="Order"/>
+        <sfFieldPermission field="ContractEndDate" sfObjectName="Order"/>
+        <sfFieldPermission field="CustomerAuthorizedBy" sfObjectName="Order"/>
+        <sfFieldPermission field="Description" sfObjectName="Order"/>
+        <sfFieldPermission field="ShippingAddress" sfObjectName="Order"/>
+        <sfFieldPermission edit="false" field="TotalAmount" sfObjectName="Order"/>
+        <sfFieldPermission field="Type" sfObjectName="Order"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">DataUseLegalBasis</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="DataUseLegalBasis"/>
+        <sfFieldPermission field="Source" sfObjectName="DataUseLegalBasis"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ServiceContract</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Account" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="ActivationDate" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="ApprovalStatus" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="BillingAddress" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Contact" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Description" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Discount" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="EndDate" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="GrandTotal" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="ParentServiceContract" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="RootServiceContract" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="ShippingAddress" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="ShippingHandling" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="SpecialTerms" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="StartDate" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Status" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="StatusIndicator" sfObjectName="ServiceContract"/>
+        <sfFieldPermission edit="false" field="Subtotal" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Tax" sfObjectName="ServiceContract"/>
+        <sfFieldPermission field="Term" sfObjectName="ServiceContract"/>
+        <sfFieldPermission edit="false" field="TotalPrice" sfObjectName="ServiceContract"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">FAQ__kav</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Question__c" sfObjectName="FAQ__kav"/>
+        <sfFieldPermission field="Answer__c" sfObjectName="FAQ__kav"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ContractLineItem</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Asset" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="Description" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="Discount" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="EndDate" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="ListPrice" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="ParentContractLineItem" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="RootContractLineItem" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="StartDate" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="Status" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="StatusIndicator" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="Subtotal" sfObjectName="ContractLineItem"/>
+        <sfFieldPermission field="TotalPrice" sfObjectName="ContractLineItem"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Contact</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Account" sfObjectName="Contact"/>
+        <sfFieldPermission field="AssistantName" sfObjectName="Contact"/>
+        <sfFieldPermission field="AssistantPhone" sfObjectName="Contact"/>
+        <sfFieldPermission field="Birthdate" sfObjectName="Contact"/>
+        <sfFieldPermission field="CanAllowPortalSelfReg" sfObjectName="Contact"/>
+        <sfFieldPermission field="Department" sfObjectName="Contact"/>
+        <sfFieldPermission field="Description" sfObjectName="Contact"/>
+        <sfFieldPermission field="DoNotCall" sfObjectName="Contact"/>
+        <sfFieldPermission field="Email" sfObjectName="Contact"/>
+        <sfFieldPermission field="Fax" sfObjectName="Contact"/>
+        <sfFieldPermission field="HasOptedOutOfEmail" sfObjectName="Contact"/>
+        <sfFieldPermission field="HasOptedOutOfFax" sfObjectName="Contact"/>
+        <sfFieldPermission field="HomePhone" sfObjectName="Contact"/>
+        <sfFieldPermission field="Jigsaw" sfObjectName="Contact"/>
+        <sfFieldPermission field="LeadSource" sfObjectName="Contact"/>
+        <sfFieldPermission field="MailingAddress" sfObjectName="Contact"/>
+        <sfFieldPermission field="MobilePhone" sfObjectName="Contact"/>
+        <sfFieldPermission field="OtherAddress" sfObjectName="Contact"/>
+        <sfFieldPermission field="OtherPhone" sfObjectName="Contact"/>
+        <sfFieldPermission field="Phone" sfObjectName="Contact"/>
+        <sfFieldPermission field="ReportsTo" sfObjectName="Contact"/>
+        <sfFieldPermission field="Title" sfObjectName="Contact"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Campaign</key>
+      <value valueClass="list">
+        <sfFieldPermission field="ActualCost" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="AmountAllOpportunities" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="AmountWonOpportunities" sfObjectName="Campaign"/>
+        <sfFieldPermission field="BudgetedCost" sfObjectName="Campaign"/>
+        <sfFieldPermission field="Description" sfObjectName="Campaign"/>
+        <sfFieldPermission field="EndDate" sfObjectName="Campaign"/>
+        <sfFieldPermission field="ExpectedResponse" sfObjectName="Campaign"/>
+        <sfFieldPermission field="ExpectedRevenue" sfObjectName="Campaign"/>
+        <sfFieldPermission field="IsActive" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfContacts" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfConvertedLeads" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfLeads" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfOpportunities" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfResponses" sfObjectName="Campaign"/>
+        <sfFieldPermission edit="false" field="NumberOfWonOpportunities" sfObjectName="Campaign"/>
+        <sfFieldPermission field="NumberSent" sfObjectName="Campaign"/>
+        <sfFieldPermission field="Parent" sfObjectName="Campaign"/>
+        <sfFieldPermission field="StartDate" sfObjectName="Campaign"/>
+        <sfFieldPermission field="Status" sfObjectName="Campaign"/>
+        <sfFieldPermission field="Type" sfObjectName="Campaign"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationForm</key>
+      <value valueClass="list">
+        <sfFieldPermission field="DefaultAuthFormText" sfObjectName="AuthorizationForm"/>
+        <sfFieldPermission field="EffectiveFromDate" sfObjectName="AuthorizationForm"/>
+        <sfFieldPermission field="EffectiveToDate" sfObjectName="AuthorizationForm"/>
+        <sfFieldPermission field="IsSignatureRequired" sfObjectName="AuthorizationForm"/>
+        <sfFieldPermission field="RevisionNumber" sfObjectName="AuthorizationForm"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Idea</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Status" sfObjectName="Idea"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Individual</key>
+      <value valueClass="list">
+        <sfFieldPermission field="BirthDate" sfObjectName="Individual"/>
+        <sfFieldPermission field="CanStorePiiElsewhere" sfObjectName="Individual"/>
+        <sfFieldPermission field="ChildrenCount" sfObjectName="Individual"/>
+        <sfFieldPermission field="ConsumerCreditScore" sfObjectName="Individual"/>
+        <sfFieldPermission field="ConsumerCreditScoreProviderName" sfObjectName="Individual"/>
+        <sfFieldPermission field="ConvictionsCount" sfObjectName="Individual"/>
+        <sfFieldPermission field="DeathDate" sfObjectName="Individual"/>
+        <sfFieldPermission field="HasOptedOutGeoTracking" sfObjectName="Individual"/>
+        <sfFieldPermission field="HasOptedOutProcessing" sfObjectName="Individual"/>
+        <sfFieldPermission field="HasOptedOutProfiling" sfObjectName="Individual"/>
+        <sfFieldPermission field="HasOptedOutSolicit" sfObjectName="Individual"/>
+        <sfFieldPermission field="HasOptedOutTracking" sfObjectName="Individual"/>
+        <sfFieldPermission field="IndividualsAge" sfObjectName="Individual"/>
+        <sfFieldPermission field="InfluencerRating" sfObjectName="Individual"/>
+        <sfFieldPermission field="IsHomeOwner" sfObjectName="Individual"/>
+        <sfFieldPermission edit="false" field="MasterRecord" sfObjectName="Individual"/>
+        <sfFieldPermission field="MilitaryService" sfObjectName="Individual"/>
+        <sfFieldPermission field="Occupation" sfObjectName="Individual"/>
+        <sfFieldPermission field="SendIndividualData" sfObjectName="Individual"/>
+        <sfFieldPermission field="ShouldForget" sfObjectName="Individual"/>
+        <sfFieldPermission field="Website" sfObjectName="Individual"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Machine__c</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Contact__c" sfObjectName="Machine__c"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">OrderItem</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="OrderItem"/>
+        <sfFieldPermission field="EndDate" sfObjectName="OrderItem"/>
+        <sfFieldPermission edit="false" field="ListPrice" sfObjectName="OrderItem"/>
+        <sfFieldPermission edit="false" field="ProductCode" sfObjectName="OrderItem"/>
+        <sfFieldPermission field="ServiceDate" sfObjectName="OrderItem"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Event</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Description" sfObjectName="Event"/>
+        <sfFieldPermission field="IsAllDayEvent" sfObjectName="Event"/>
+        <sfFieldPermission field="Location" sfObjectName="Event"/>
+        <sfFieldPermission field="What" sfObjectName="Event"/>
+        <sfFieldPermission field="Who" sfObjectName="Event"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Entitlement</key>
+      <value valueClass="list">
+        <sfFieldPermission field="Asset" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="BusinessHours" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="CasesPerEntitlement" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="ContractLineItem" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="EndDate" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="IsPerIncident" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="RemainingCases" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="ServiceContract" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="SlaProcess" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="StartDate" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="Status" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="StatusIndicator" sfObjectName="Entitlement"/>
+        <sfFieldPermission field="Type" sfObjectName="Entitlement"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Contract</key>
+      <value valueClass="list">
+        <sfFieldPermission edit="false" field="ActivatedBy" sfObjectName="Contract"/>
+        <sfFieldPermission edit="false" field="ActivatedDate" sfObjectName="Contract"/>
+        <sfFieldPermission field="BillingAddress" sfObjectName="Contract"/>
+        <sfFieldPermission field="CompanySigned" sfObjectName="Contract"/>
+        <sfFieldPermission field="CompanySignedDate" sfObjectName="Contract"/>
+        <sfFieldPermission field="ContractTerm" sfObjectName="Contract"/>
+        <sfFieldPermission field="CustomerSigned" sfObjectName="Contract"/>
+        <sfFieldPermission field="CustomerSignedDate" sfObjectName="Contract"/>
+        <sfFieldPermission field="CustomerSignedTitle" sfObjectName="Contract"/>
+        <sfFieldPermission field="Description" sfObjectName="Contract"/>
+        <sfFieldPermission edit="false" field="EndDate" sfObjectName="Contract"/>
+        <sfFieldPermission field="OwnerExpirationNotice" sfObjectName="Contract"/>
+        <sfFieldPermission field="ShippingAddress" sfObjectName="Contract"/>
+        <sfFieldPermission field="SpecialTerms" sfObjectName="Contract"/>
+        <sfFieldPermission field="StartDate" sfObjectName="Contract"/>
+      </value>
+    </entry>
+  </fieldPermissions>
+  <objectPermissions>
+    <entry>
+      <key valueClass="string">DataUsePurpose</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="DataUsePurpose" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DataUsePurpose" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DataUsePurpose" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Account</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Account" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Account" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Account" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationFormConsent</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AuthorizationFormConsent" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AccountBrand</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AccountBrand" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="AccountBrand" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="AccountBrand" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Product2</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Product2" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Product2" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Product2" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Macro</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Macro" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Macro" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Macro" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Document</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Document" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Document" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Document" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Image</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Image" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Image" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Image" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Case</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Case" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Case" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Case" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">PushTopic</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="PushTopic" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="PushTopic" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="PushTopic" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ScorecardMetric</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="ScorecardMetric" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ScorecardMetric" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ScorecardMetric" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">SocialPost</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="SocialPost" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="SocialPost" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="SocialPost" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationFormText</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AuthorizationFormText" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Opportunity</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Opportunity" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Opportunity" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Opportunity" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Lead</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Lead" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Lead" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Lead" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Asset</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Asset" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Asset" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Asset" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">DuplicateRecordSet</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="DuplicateRecordSet" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DuplicateRecordSet" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DuplicateRecordSet" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ContactPointTypeConsent</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="ContactPointTypeConsent" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ContactPointTypeConsent" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ContactPointTypeConsent" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Scorecard</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Scorecard" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Scorecard" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Scorecard" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Solution</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Solution" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Solution" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Solution" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Order</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Order" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Order" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Order" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">QuickText</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="QuickText" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="QuickText" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="QuickText" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">StreamingChannel</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="StreamingChannel" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="StreamingChannel" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="StreamingChannel" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">DataUseLegalBasis</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="DataUseLegalBasis" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DataUseLegalBasis" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="DataUseLegalBasis" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Pricebook2</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Pricebook2" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Pricebook2" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Pricebook2" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ServiceContract</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="ServiceContract" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ServiceContract" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ServiceContract" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationFormDataUse</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AuthorizationFormDataUse" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">FAQ__kav</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="FAQ__kav" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="FAQ__kav" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ContractLineItem</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="ContractLineItem" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ContractLineItem" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ContractLineItem" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Contact</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Contact" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Contact" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Contact" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">EntitlementContact</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="EntitlementContact" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="EntitlementContact" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="EntitlementContact" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Campaign</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Campaign" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Campaign" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Campaign" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Idea</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Idea" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Idea" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Idea" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuthorizationForm</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AuthorizationForm" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Individual</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Individual" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Individual" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Individual" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AppAnalyticsQueryRequest</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="AppAnalyticsQueryRequest" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Machine__c</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Machine__c" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Machine__c" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Entitlement</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Entitlement" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Entitlement" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Entitlement" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Contract</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="Contract" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Contract" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="Contract" viewAllRecords="false"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ScorecardAssociation</key>
+      <value valueClass="list">
+        <sfObjectPermission sfObjectName="ScorecardAssociation" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ScorecardAssociation" viewAllRecords="false"/>
+        <sfObjectPermission sfObjectName="ScorecardAssociation" viewAllRecords="false"/>
+      </value>
+    </entry>
+  </objectPermissions>
+  <systemPermissions>
+    <sfSystemPermission id="0PS4P000000dXAPWA2"/>
+    <sfSystemPermission id="0PS4P000001K59KWAS" permissionsManageEntitlements="true"/>
+  </systemPermissions>
+</sfConnectionModelIndex>

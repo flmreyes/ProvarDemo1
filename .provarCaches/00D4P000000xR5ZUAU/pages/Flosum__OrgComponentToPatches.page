@@ -1,0 +1,112 @@
+<apex:page standardController="Flosum__Org_Component__c" recordSetVar="orgComp" extensions="Flosum.OrgComponentToPatchesExtension" sidebar="false" doctype="html-5.0">
+  	<c:TrackPanel />
+	<c:Wait />
+	<c:CommitToPatch />
+	<c:DynamicLookupScript />
+	<apex:slds />
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message span {
+			color: white !important;
+		}
+		.infoMessage {
+			margin: 4px 20px !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+		}
+	</style>
+	
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+		<apex:form id="myForm1" styleClass="slds-form--stacked" rendered="{!isRecord}">
+			<apex:pagemessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Org Component To Deployment">Org Component To Deployment</h1>
+				</div>
+			</apex:outputPanel>
+			<apex:actionFunction name="listDuplicate" action="{!listDuplicate}" reRender="snapblock,msg" oncomplete="hide(); overridePageMessages();" />
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block" id="snapblock" rendered="{!OrgId != null}">
+				 	<div class="slds-float--right" role="group">
+				    	<apex:commandButton styleClass="slds-button slds-button_neutral disableitem" value="Transfer To Deployment" onClick="show();" rendered="{!If(IsExist,false,true)}" action="{!addToPatches}" reRender="msg,myForm1" oncomplete="overridePageMessages(); hide(); CTP_orgComponentToPatch('{!JSENCODE(metaIdJSON)}','{!JSENCODE(patchId)}');"/>
+					</div>  
+					<apex:outputPanel layout="block">
+						<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organisation Name" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!OrganisationName}"/>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="No. of Org Component" />
+							<div class="slds-form-element__control">
+								<apex:outputText styleClass="slds-input slds-text-heading_regular" style="background-color: #eef1f6" value="{!noOFOrgComponent}"/>
+							</div>
+            			</apex:outputPanel>
+					</apex:outputPanel>
+			   <apex:outputPanel layout="block" styleClass="slds-m-top--medium">
+					    <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Deployment" />
+							<div class="slds-form-element__control slds-grid">
+								<apex:inputHidden id="patchTargetId" value="{!selectedPatch}"/>
+					            <div class="slds-size--1-of-2">
+					            	<apex:inputText styleClass="slds-input slds-text-heading_regular" size="25" id="patchTargetName" onFocus="this.blur()" disabled="false" html-callitafterchange="listDuplicate" />
+					            </div>
+					            <div class="slds-size--1-of-2">
+					            	<img style="height: 45%;margin-left: 2%;margin-top: 3px;" 
+					            	src="/apexpages/slds/latest/assets/icons/utility/search_60.png" 
+					            	onclick="dlm_openLookupPopup('{!$Component.patchTargetName}','{!$Component.patchTargetId}','{!$ObjectType.Patch__c.Name}',''); return false" /> 
+						        </div>
+							</div>
+            			</apex:outputPanel>
+            			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!If(selectedPatch == null || selectedPatch == '',true,false)}">
+							<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Deployment Name" />
+							<div class="slds-form-element__control">
+								<apex:inputText styleClass="slds-input slds-text-heading_regular" value="{!patchName}"/>
+							</div>
+            			</apex:outputPanel>
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</fieldset>
+		</apex:form>
+		<apex:relatedList list="Org_Components__r" />
+	</apex:outputPanel>
+	<script>
+		$(document).ready(function(){
+	       overridePageMessages();
+	       try{
+						console.log('before ');
+			       		document.getElementsByName('commit_to_branch')[0].style.display 	= 'none';
+						document.getElementsByName('transfer_to_patch')[0].style.display 	= 'none';
+						document.getElementsByName('track_changes')[0].style.display 		= 'none';
+			       }
+			       catch(e){
+			       	console.log(e);
+			       }
+	    });
+		
+		function overridePageMessages(){    
+			var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage infoMessage '+textureEffect);    
+	                         
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>
+</apex:page>

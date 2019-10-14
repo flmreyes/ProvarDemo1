@@ -1,0 +1,90 @@
+<apex:page controller="Flosum.SecuritySettingsController" sidebar="false">
+	<apex:slds />
+	
+	<apex:includeScript value="{!URLFOR($Resource.Flosum__Merge, 'Merge/jquery-2.1.4.min.js')}"/>
+	
+	<style>
+		.message {
+		    list-style-type: none;
+		}
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+	</style>
+	<div class="slds-scope">
+		<apex:form styleClass="slds-form--stacked">
+			<apex:pageMessages id="msg"/>
+			<apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media">
+					<div class="slds-media__body">
+						<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Security Settings">Security Settings</h1>
+						<p>Used to setup restriction for specific files from getting uploaded</p>
+					</div>
+				</div>
+			</apex:outputPanel>
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block" title="Whitelist" id="inputArea1">
+					<div class="slds-float--right" role="group">
+						<apex:commandButton styleClass="slds-button slds-button_neutral" value="Save" action="{!save}" oncomplete="overridePageMessages();" rerender="msg,inputArea1"/>
+						<apex:commandbutton styleClass="slds-button slds-button_neutral" value="Cancel" action="{!cancel}" immediate="true" />
+					</div>
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<div class="slds-form-element__control">
+						    <span class="slds-checkbox">
+						    	<input type="checkbox" value="{!isFilter}" id="checkboxId"/>
+						        <label class="slds-checkbox__label " for="checkboxId">
+						        	<span class="slds-checkbox_faux"></span>
+						        	<span class="slds-form-element__label lbcls">&nbsp;Restrict allowed files to specified list</span>
+						      	</label>
+						    </span>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Specify the extensions for files allowed to upload as a comma-separated list (for example: doc,pdf,txt)" />
+						<div class="slds-form-element__control">
+							<apex:inputTextarea value="{!extList}" id="extList" rows="5" cols="80" styleClass="disableitem slds-input slds-text-heading_regular"/>
+						</div>
+					</apex:outputPanel>
+            	</apex:outputPanel>
+            </fieldset>
+		</apex:form>
+	</div>
+	
+	<script>
+		$(document).ready(function(){
+	       overridePageMessages();    
+	    });
+	    
+		function overridePageMessages()
+        {    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>
+</apex:page>

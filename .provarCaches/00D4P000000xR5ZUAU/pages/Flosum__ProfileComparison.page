@@ -1,0 +1,1898 @@
+<apex:page controller="Flosum.ProfileComparisonController" sidebar="false" showHeader="true" doctype="html-5.0">
+    <c:TrackPanel />
+    <apex:slds />
+    <c:Wait />
+    <c:DynamicLookupScript />
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__zipp,'res/js/zip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__Utility, 'JS/angular.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__jszipmaster, 'jszip-master/dist/jszip.js')}"/>
+    <apex:includeScript value="{!$Resource.Flosum__xmltojson}"/>
+    <apex:includeScript value="{!$Resource.Flosum__X2JS}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__uisetup, '/js/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Flosum__uisetup, '/css/jquery-ui.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Flosum__ContentEditor, 'beauty/forMatXML.js')}"/>
+    <style>
+
+    	/* Style the tab */
+		.ftab {
+		  overflow: hidden;
+		  border: 1px solid #ccc;
+		  background-color: #f1f1f1;
+		}
+
+		/* Style the buttons inside the tab */
+		.ftab button {
+		  background-color: inherit;
+		  float: left;
+		  border: none;
+		  outline: none;
+		  cursor: pointer;
+		  padding: 14px 16px;
+		  transition: 0.3s;
+		  font-size: 17px;
+		}
+
+		/* Change background color of buttons on hover */
+		.ftab button:hover {
+		  background-color: #ddd;
+		}
+
+		/* Create an active/current tablink class */
+		.ftab button.active {
+		  background-color: #ccc;
+		}
+
+		/* Style the tab content */
+		.tabcontent {
+		  display: none;
+		  padding: 6px 12px;
+		  border: 1px solid #ccc;
+		  border-top: none;
+		}
+
+		button.tablinks {
+		    background: none;
+		    border-radius: 4%;
+		}
+
+        div .pagination {
+            text-align: center;
+        }
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+        }
+        .red {
+            background-color:rgba(255, 158, 158, 0.65);
+        }
+        .yellow {
+            background-color:rgba(252, 252, 164, 1);
+        }
+        a.redirectLinkForSnapComparison {
+            float: right;
+        }
+        input.addToPatchButton {
+            margin-left: 5px;
+        }
+        
+        /*.dynacollapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding-left: 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            height: 30px;
+        }
+        
+        .dynacollapsibleinner {
+            background-color: #423738;
+            color: white;
+            cursor: pointer;
+            padding-left: 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            height: 30px;
+        }
+        
+        .dynaactive, .dynacollapsible:hover,.dynacollapsibleinner:hover {
+            background-color: #555;
+        }
+        
+        .dynacollapsible:after,.dynacollapsibleinner:after {
+            content: '+';
+            color: white;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+        
+        .dynaactive:after {
+            content: "-";
+        }
+        input.dynacollapsible {
+    		color: white;
+		}
+        
+        .dynacontent {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: auto;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .dynacontentinner {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-top: 5px;
+        }*/
+        
+        table.dynaTable {
+            width: 100% !important;
+            height: 100% !important;
+            margin-bottom: 5px !important;
+            font-family: 'Salesforce Sans',Arial,sans-serif;
+            border-collapse: collapse;
+        }
+        
+        td.redClass {
+            background-color: rgba(255, 158, 158, 0.65);
+        }
+        
+        td.yellowClass {
+            background-color: rgba(252, 252, 164, 1);
+        }
+        
+        .dynaTable td, .dynaTable th {
+            border: 1px solid #dddddd !important;
+            text-align: center !important;
+            padding: 8px !important;
+        }
+        
+        
+        .dynaTable tr:nth-child(even) {
+            background-color: #dddddd !important;
+        }
+        
+        #isDifference {
+                margin-left: 20px;
+                margin-bottom: 10px;
+        }
+        
+        th.Headers {
+            font-family: 'Salesforce Sans',Arial,sans-serif;
+            font-size: 12px;
+            color: #fff;
+            line-height: 1.4;
+            background-color: #55576d;
+        }
+        #InfoNote{
+        
+        }
+        .message {
+		    list-style-type: none;
+		}
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message span {
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		span.customcloseflosum {
+		    background-color: #ef6e64;
+		    /*margin-left: 50%;*/
+		}
+        span.customapprovalflosum {
+		    background-color: #00c6b7;
+		    /*margin-left: 50%;*/
+		}
+		span.customcloseflosum> svg {
+		    width: 24px!important;
+		    height: 24px!important;
+		    
+		}
+		span.customapprovalflosum> svg {
+		    width: 24px!important;
+		    height: 24px!important;
+		    
+		}
+		.simplePropertyTable td, .simplePropertyTable th {
+            text-align: center !important;
+        }
+    </style>
+    <div class="slds-scope">
+	    <div class="slds-page-header">
+	    	<div class="slds-media__body">
+	            <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Profile_Comparison">Profile Comparison</h1>
+	        </div>
+        </div>
+	    <apex:form id="form" styleClass="slds-form--stacked">
+	        <apex:actionFunction name="sourceProfileListAF" action="{!sourceProfileList}" reRender="allCompareBlock,msg" onComplete="hide();" />
+	        <apex:actionFunction name="targetProfileListAF" action="{!targetProfileList}" reRender="allCompareBlock,msg" onComplete="hide();" />
+	        <apex:pagemessages id="msg"/>
+	        <fieldset class="slds-box slds-theme--default">
+		        <div ng-app="SnapRepoCompare">
+	        	    <div ng-controller ="RepositoryComparisonController" id="angularControllerId">
+	        	        <div class="ng-cloak">
+	        	        	<apex:outputPanel id="allCompareBlock">
+			                    <apex:outputPanel layout="block" styleClass="slds-form--stacked">  
+	                        		<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+		                               <apex:outputPanel styleClass=" slds-size_4-of-12" >
+		                                   <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Source :" />
+		                                   <div class="slds-form-element__control">
+		                                       <div class="slds-select_container">
+		                                       		<apex:selectList value="{!selectedSourceOption}" multiselect="false" size="1" id="selectedSourceOption" styleClass="slds-select slds-text-heading_regular">
+		                                            	<apex:selectOptions value="{!sourceOptions}"/>
+		                                            	<apex:actionSupport event="onchange" action="{!onSelectSourceOption}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+		                                           	</apex:selectList>
+		                                       </div>
+		                                   </div>
+		                               </apex:outputPanel>
+		                               <apex:outputPanel styleClass=" slds-size_3-of-12 slds-p-right_small"/>
+		                               <apex:outputPanel styleClass=" slds-size_4-of-12" >
+		                                   <apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Target :" />
+		                                   <div class="slds-form-element__control">
+		                                       <div class="slds-select_container">
+		                                       	<apex:selectList value="{!selectedTargetOption}" multiselect="false" size="1" id="selectedTargetOption" styleClass="slds-select slds-text-heading_regular">
+		                                               <apex:selectOptions value="{!targetOptions}"/>
+		                                               <apex:actionSupport event="onchange" action="{!onSelectTargetOption}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+		                                        </apex:selectList>
+		                                       </div>
+		                                   </div>
+		                               </apex:outputPanel>
+		                         	</apex:outputPanel>
+			                         <apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+			                         	<apex:outputPanel styleClass=" slds-size_4-of-12" rendered="{!selectedSourceOption == 'Repository' && sourceRepositoryOptions.size > 0}" >
+			                            	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Repository :" />
+		                                	<div class="slds-form-element__control">
+		                                    	<div class="slds-select_container">
+			                                       	<apex:selectList value="{!selectedSourceRepository}" multiselect="false" size="1" id="selectedSourceRepository" styleClass="slds-select slds-text-heading_regular">
+			                                        	<apex:selectOptions value="{!sourceRepositoryOptions}"/>
+			                                            <apex:actionSupport event="onchange" action="{!sourceProfileList}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+			                                        </apex:selectList>
+		                                       	</div>
+		                                   	</div>
+		                               	</apex:outputPanel>
+		                               	<apex:outputPanel styleClass=" slds-size_4-of-12" rendered="{!selectedSourceOption == 'Snapshot' && sourceOrgOptions.size > 0}">
+		                               		<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Organization :" />
+		                                   	<div class="slds-form-element__control">
+		                                       	<div class="slds-select_container">
+		                                       		<apex:selectList value="{!selectedSourceOrg}" multiselect="false" size="1" id="selectedSourceOrg" styleClass="slds-select slds-text-heading_regular">
+		                                            	<apex:selectOptions value="{!sourceOrgOptions}"/>
+		                                            	<apex:actionSupport event="onchange" action="{!listSourceSnapshot}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+		                                        	</apex:selectList>
+		                                       	</div>
+		                                   	</div>
+		                           		</apex:outputPanel>
+		                               	<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedSourceOption == 'Branch',true,false)}">
+											<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Branch :" />
+											<div class="slds-form-element__control slds-grid">
+												<apex:inputHidden id="branchSourceId" value="{!selectedSourceBranch}"/>
+								            	<div class="slds-size--1-of-2">
+								            		<apex:inputText styleClass="slds-input slds-text-heading_regular" size="25" value="{!selectedSourceBranchLabel}" id="branchSourceName" onFocus="this.blur()" disabled="false" html-callitafterchange="hidePaginationData"/>
+								            	</div>
+								            	<div class="slds-size--1-of-2">
+								            		<img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="/apexpages/slds/latest/assets/icons/utility/search_60.png" 
+								            			onclick="dlm_openLookupPopup('{!$Component.branchSourceName}', '{!$Component.branchSourceId}','{!$ObjectType.Branch__c.Name}',''); return false"
+								            		alt="Snapshot Name Lookup (New Window)" />
+								            	</div>
+											</div>
+				           				</apex:outputPanel>
+				           				<apex:outputPanel styleClass=" slds-size_3-of-12 slds-p-right_small"/>
+				           					<apex:outputPanel styleClass=" slds-size_4-of-12" rendered="{!selectedTargetOption == 'Repository' && targetRepositoryOptions.size > 0}">
+		                                   	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Repository :" />
+		                                   	<div class="slds-form-element__control">
+		                                       	<div class="slds-select_container">
+		                                       		<apex:selectList value="{!selectedTargetRepository}" multiselect="false" size="1" id="selectedTargetRepository" styleClass="slds-select slds-text-heading_regular">
+		                                           		<apex:selectOptions value="{!targetRepositoryOptions}"/>
+		                                           		<apex:actionSupport event="onchange" action="{!targetProfileList}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+		                                       		</apex:selectList>
+		                                       	</div>
+		                                   	</div>
+		                               	</apex:outputPanel>
+		                               	<apex:outputPanel styleClass=" slds-size_4-of-12" rendered="{!selectedTargetOption == 'Snapshot' && targetOrgOptions.size > 0}">
+		                                   	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Organization :" />
+		                                   	<div class="slds-form-element__control">
+		                                       	<div class="slds-select_container">
+		                                       		<apex:selectList value="{!selectedTargetOrg}" multiselect="false" size="1" id="selectedTargetOrg" styleClass="slds-select slds-text-heading_regular">
+		                                           		<apex:selectOptions value="{!targetOrgOptions}"/>
+		                                           		<apex:actionSupport event="onchange" action="{!listTargetSnapshot}" onSubmit="show();" reRender="allCompareBlock" onComplete="hide();" />
+		                                        	</apex:selectList>
+		                                       	</div>
+		                                   	</div>
+		                               	</apex:outputPanel>
+		                               	<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block" rendered="{!IF(selectedTargetOption == 'Branch',true,false)}">
+											<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Branch :" />
+											<div class="slds-form-element__control slds-grid">
+											 	<apex:inputHidden id="branchTargetId" value="{!selectedTargetBranch}"/>
+								            	<div class="slds-size--1-of-2">
+							            			<apex:inputText styleClass="slds-input slds-text-heading_regular" size="25" value="{!selectedTargetBranchLabel}" id="branchTargetName" onFocus="this.blur()" disabled="false" html-callitafterchange="hidePaginationDataTarget"/>
+						            			</div>
+								            	<div class="slds-size--1-of-2">
+								            		<img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="/apexpages/slds/latest/assets/icons/utility/search_60.png" 
+								            			onclick="dlm_openLookupPopup('{!$Component.branchTargetName}', '{!$Component.branchTargetId}','{!$ObjectType.Branch__c.Name}',''); return false" 
+		                                        		alt="Snapshot Name Lookup (New Window)"/> 
+		                                    	</div>
+											</div>
+				           				</apex:outputPanel>
+		                            </apex:outputPanel>
+		                            <apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block" id="snapLookUpSource" rendered="{!(selectedSourceOption == 'Snapshot' && selectedSourceOrg != '') || selectedTargetOption == 'Snapshot' && selectedTargetOrg != ''}">
+		                            	<apex:outputPanel styleClass="slds-size_4-of-12"  rendered="{!selectedSourceOption == 'Snapshot' && selectedSourceOrg != ''}">
+		                                	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Snapshot :" />
+		                                   	<div class="slds-form-element__control slds-grid">
+		                                       	<apex:inputHidden id="selectedSourceSnapshot" value="{!selectedSourceSnapshot}"/>
+		                                       	<div class="slds-size--1-of-2">
+		                                           	<apex:inputText size="25" value="{!selectedSourceSnapshotLabel}" id="sourceSnapshotName" onFocus="this.blur()" disabled="false" html-callitafterchange="hidePaginationData" styleClass="slds-input slds-text-heading_regular"/> 
+		                                       	</div>
+		                                       	<div class="slds-size--1-of-2">
+		                                           <img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="/apexpages/slds/latest/assets/icons/utility/search_60.png" 
+		                                               onclick="dlm_openLookupPopup('{!$Component.sourceSnapshotName}','{!$Component.selectedSourceSnapshot}','{!$ObjectType.Snapshot__c.Name}',
+		                                       			'{!$ObjectType.Snapshot__c.fields.Organisation__c.Name} =\'{!selectedSourceOrg}\''); return false"  
+		                                               alt="Patch Name Lookup (New Window)"/>
+		                                       </div>
+		                                   	</div>
+		                               	</apex:outputPanel>
+	                                	<apex:outputPanel styleClass=" slds-size_3-of-12 ">
+		                                    <span></span>
+		                                </apex:outputPanel>
+									<apex:outputPanel styleClass="slds-size_4-of-12"  rendered="{!selectedTargetOption == 'Snapshot' && selectedTargetOrg != '' && selectedSourceOrg == ''}"/>
+	                              	<apex:outputPanel styleClass="slds-size_4-of-12 slds-float--right"  rendered="{!selectedTargetOption == 'Snapshot' && selectedTargetOrg != ''}">
+	                               		<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Snapshot :" />
+	                           			<div class="slds-form-element__control slds-grid">
+	                               			<apex:inputHidden id="selectedTargetSnapshot" value="{!selectedTargetSnapshot}"/>
+	                               			<div class="slds-size--1-of-2">
+	                                   			<apex:inputText size="25" value="{!selectedTargetSnapshotLabel}" id="targetSnapshotName" onFocus="this.blur()" disabled="false" html-callitafterchange="hidePaginationDataTarget" styleClass="slds-input slds-text-heading_regular"/> 
+	                               			</div>
+	                               			<div class="slds-size--1-of-2">
+	                                   			<img style="height: 45%;margin-left: 2%;margin-top: 3px;" src="/apexpages/slds/latest/assets/icons/utility/search_60.png"
+	                                				onclick="dlm_openLookupPopup('{!$Component.targetSnapshotName}','{!$Component.selectedTargetSnapshot}','{!$ObjectType.Snapshot__c.Name}',
+	                                 				'{!$ObjectType.Snapshot__c.fields.Organisation__c.Name} =\'{!selectedTargetOrg}\''); return false" 
+	                           						alt="Patch Name Lookup (New Window)"/>
+	                              			</div>
+	                              		</div>
+	                           		</apex:outputPanel>
+	                           		</apex:outputPanel>
+	                      		</apex:outputPanel>
+	                            <apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+	                             	<apex:outputPanel styleClass=" slds-size_4-of-12" >
+	                                  	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Profile :" />
+	                                  	<div class="slds-form-element__control">
+	                                      	<div class="slds-select_container">
+	                                      		<apex:selectList value="{!selectedSourceProfile}" multiselect="false" size="1" id="selectedSourceProfile" styleClass="slds-select slds-text-heading_regular">
+	                                           		<apex:selectOptions value="{!sourceProfileOptions}"/>
+	                                           		<apex:actionSupport event="onchange" rerender="commandButtonPanel" oncomplete="compareOnDiff();"/>
+	                                          	</apex:selectList>
+	                                      	</div>
+	                                  	</div>
+	                              	</apex:outputPanel>
+	                            	<apex:outputPanel styleClass=" slds-size_3-of-12 slds-p-right_small"/>
+	                              	<apex:outputPanel styleClass=" slds-size_4-of-12" >
+	                                 	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Profile :" />
+	                                 	<div class="slds-form-element__control">
+	                                     	<div class="slds-select_container">
+	                                     		<apex:selectList value="{!selectedTargetProfile}" multiselect="false" size="1" id="selectedTargetProfile" styleClass="slds-select slds-text-heading_regular">
+	                                            	<apex:selectOptions value="{!targetProfileOptions}"/>
+	                                            	<apex:actionSupport event="onchange" rerender="commandButtonPanel" oncomplete="compareOnDiff();"/>
+	                                      		</apex:selectList>
+	                                     	</div>
+	                                 	</div>
+	                              	</apex:outputPanel>
+	                          	</apex:outputPanel>
+		                        <!--<apex:outputPanel id="commandButtonPanel">
+	                           		<apex:commandButton value="Compare Profile" onclick="show();" action="{!compProfile}" id="compareButton" style="margin-left: 43%;" styleClass="btn slds-button slds-button_neutral" oncomplete="hide();startComp();overridePageMessages();return false;" rendered="{!selectedSourceProfile != null && selectedSourceProfile != '' && selectedTargetProfile != null && selectedTargetProfile != ''}" rerender="msg,allCompareBlock,firstMessage"/>
+	                       		</apex:outputPanel>--><br/>
+		                        <div class="slds-form-element">
+					  				<div class="slds-form-element__control">
+					    				<span class="slds-checkbox">
+					      					<input type="checkbox" id="isDifference" onClick= "compareOnDiff();"/>
+				      						<label class="slds-checkbox__label" for="isDifference">
+					        					<span class="slds-checkbox_faux"></span>
+					        					<span class="slds-form-element__label">Show only different settings :</span>
+			      							</label>
+					    				</span>
+					  				</div>
+								</div>
+							</apex:outputPanel>  
+	                	</div>
+		            </div>
+		        </div>
+		        <div id="MainParentDiv" class="slds-m-top_small"/>
+	        </fieldset>
+		</apex:form>
+    </div>
+    	<script>
+    
+        //document.getElementById("isDifference").disabled = true;
+        
+        function callCollapsibleScript() {
+        	var defaultTabName = 'simpleProfileNodes';
+        	var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				if(tablinks[i].value != defaultTabName){
+					tablinks[i].className = tablinks[i].className.replace(" active", "");
+				}
+				else{
+					tablinks[i].className += " active";
+				}
+			}
+			document.getElementById(defaultTabName).style.display = "block";
+
+			var elements = document.getElementsByClassName('tablinks');
+			for (var i = 0; i < elements.length; i++) {
+            	elements[i].addEventListener("click", function() {
+                	console.log(this.value);
+                	var defaultTabName = this.value;
+                	var i, tabcontent, tablinks;
+					tabcontent = document.getElementsByClassName("tabcontent");
+					for (i = 0; i < tabcontent.length; i++) {
+						tabcontent[i].style.display = "none";
+					}
+					tablinks = document.getElementsByClassName("tablinks");
+					for (i = 0; i < tablinks.length; i++) {
+						if(tablinks[i].value != defaultTabName){
+							tablinks[i].className = tablinks[i].className.replace(" active", "");
+						}
+						else{
+							tablinks[i].className += " active";
+						}
+					}
+					document.getElementById(defaultTabName).style.display = "block";
+                	return false;
+              	});
+            }
+
+            /*var coll = document.getElementsByClassName("dynacollapsible");
+            //var element = document.getElementsByClassName('dynacontent');
+            for (var i = 0; i < coll.length; i++) {
+              coll[i].addEventListener("click", function() {
+                
+                this.classList.toggle("dynaactive");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                  content.style.maxHeight = null;
+                } else {
+                  content.style.maxHeight = content.scrollHeight < 450 ? content.scrollHeight + "px" : 450 + "px";
+                } 
+                return false;
+              });
+            }*/
+            
+            /*var collinner = document.getElementsByClassName("dynacollapsibleinner");
+            //var element = document.getElementsByClassName('dynacontent');
+            for (var i = 0; i < collinner.length; i++) {
+              collinner[i].addEventListener("click", function() {
+                
+                this.classList.toggle("dynaactive");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                  content.style.maxHeight = null;
+                } else {
+                  content.style.maxHeight = content.scrollHeight + "px";
+                } 
+                return false;
+              });
+            }*/
+            
+        }
+        
+        function compareOnDiff(){
+        	var sprofile = $("select[id$='selectedSourceProfile']").val();
+			var tprofile = $("select[id$='selectedTargetProfile']").val();
+			if(sprofile != undefined && tprofile != undefined && sprofile != '' && tprofile != ''){
+				console.log('selected');
+				show();
+				angular.element(document.getElementById('angularControllerId')).scope().startComparison();
+			}
+            else{
+            	console.log('not selected');
+            }
+        }
+
+        Visualforce.remoting.timeout = 120000;
+        
+        zip.workerScriptsPath = "{!URLFOR($Resource.zipp,'res/js/workers')}/";
+        var selectedSourceProfile;
+        var selectedComponentType;
+
+        var targetDetail = {};
+
+        var isDiff = false;
+        
+        var attachmentIdMap = {};
+                
+        var myApp = angular.module("SnapRepoCompare", []);
+        myApp.controller("RepositoryComparisonController", ['$scope', function($scope) {
+
+            $scope.profileDataMap = {};
+            
+            $scope.attachmentIdMap = {};
+
+            $scope.sourceTargetDetail = {};
+            
+            $scope.profileDataMap = {};
+            
+            $scope.clearPagination = function() {
+                $scope.$apply(function() {
+                    $scope.paginationList = [];
+                    $scope.isAllSelected = false;
+                    $scope.isAllChecked = false;
+                });
+            };
+            
+            $scope.startComparison = function() {
+
+                selectedComponentType = 'Profile';
+                
+                
+                if(selectedComponentType != null && selectedComponentType != undefined && selectedComponentType != '') {
+                    disableFlosumUI();
+                    
+                    selectedSourceProfile = $("[id$='selectedSourceProfile']").val();
+                    selectedTargetProfile = $("[id$='selectedTargetProfile']").val();
+                    
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.ProfileComparisonController.getSourceTargetContent}',
+                        selectedSourceProfile,
+                        selectedTargetProfile,
+                        function(r,e){
+                            $scope.$apply(function() {
+                                if(e.status && r) 
+                                {
+                                    $scope.sourceTargetDetail = r;
+                                    if(r.source != undefined && r.source.attachmentId != undefined)
+                                    {
+                                        $scope.attachmentIdMap[r.source.attachmentId] = r.source.attachmentId;
+                                    }
+                                    if(r.target != undefined && r.target.attachmentId != undefined)
+                                    {
+                                        $scope.attachmentIdMap[r.target.attachmentId] = r.target.attachmentId;
+                                    }
+                                    $scope.getAttachmentsDetail();
+                                }
+                                else{
+                                    showMessage(e.message,'ERROR');
+                                }
+                            });
+                        }
+                    );
+                }
+                else{
+                	hide();
+                }
+            };
+            
+            $scope.getAttachmentsDetail = function(){
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ProfileComparisonController.getAttachmentDetail}',
+                    JSON.stringify($scope.attachmentIdMap),
+                    function(r,e){
+                        $scope.$apply(function() {
+                            var attReadIndex = 0;
+                            var readFullAtt = function(){
+                                if(attReadIndex < r.length)
+                                {
+                                    var att = r[attReadIndex];
+                                    var parentId = att.parentId;
+                                    var metaType = att.compType;
+                                    var base64str = att.base64;
+                                    var attId = att.attId;
+                                    
+                                    // use a Data64URIReader to read the zip from a base64 string
+                                    zip.createReader(new zip.Data64URIReader(base64str), function(reader) {
+                                        var EntryIndex = 0;
+                                        // get all entries from the zip
+                                        reader.getEntries(function(entries) {
+                                            if(entries.length)
+                                            {
+                                                var readSingleFile = function() {
+                                                        if(EntryIndex < entries.length) 
+                                                        {
+                                                            var singleEntry = entries[EntryIndex];
+                                                            var fileName = singleEntry.filename;
+                                                            
+                                                                entries[EntryIndex].getData(new zip.TextWriter(), function(text) {
+                                                                    if(fileName != undefined && fileName != 'package.xml' && text != '')
+                                                                    {
+                                                                        var x2js = new X2JS({useDoubleQuotes : true, stripWhitespaces : false});
+                                                                        var parentObj = x2js.xml_str2json(text);
+                                                                        $scope.profileDataMap[attId+'#'+fileName] = parentObj;
+                                                                    }
+                                                                    EntryIndex++;
+                                                                    readSingleFile();
+                                                                });
+                                                        }
+                                                        else
+                                                        {
+                                                            // close the zip reader
+                                                            reader.close(function() {
+                                                              // onclose callback
+                                                                attReadIndex++;
+                                                                readFullAtt();
+                                                            });
+                                                        }
+                                                    }
+                                                    readSingleFile();
+                                            }
+                                            else
+                                            {
+                                                attReadIndex++;
+                                                readFullAtt();
+                                            }
+                                        });
+                                    }, function(error) {
+                                          // onerror callback
+                                          console.log(error);
+                                          console.log(JSON.stringify(error));
+                                    });
+                                }
+                                else
+                                {
+                                    //attachment found.
+                                    console.log('File Found.');
+                                    //console.log($scope.profileDataMap);
+                                    $scope.fillProfile();
+                                }
+                            }
+                            readFullAtt();
+                    });
+                });
+            };
+
+            $scope.getDynamicElementUI = function(oValue){
+            	var checkedCheckboxXMl = '<span class="slds-icon_container slds-icon-doctype-csv customapprovalflosum">'+
+										        '<svg aria-hidden="true" class="slds-icon ">'+
+										            '<use xmlns:xlink="as" xlink:href="/apexpages/slds/latest/assets/icons/action-sprite/svg/symbols.svg#approval">'+
+										            '</use>'+
+										        '</svg>'+
+										        '<span class="slds-assistive-text">CSV</span>'+
+										    '</span>';
+                var uncheckedCheckboxXML = '<span class="slds-icon_container slds-icon-doctype-csv customcloseflosum">'+
+										        '<svg aria-hidden="true" class="slds-icon ">'+
+										            '<use xmlns:xlink="as" xlink:href="/apexpages/slds/latest/assets/icons/action-sprite/svg/symbols.svg#close">'+
+										            '</use>'+
+										        '</svg>'+
+										        '<span class="slds-assistive-text">CSV</span>'+
+										    '</span>';
+
+            	if(oValue == true || oValue == 'true' ){
+            		return checkedCheckboxXMl;
+            	}
+            	else if(oValue == false || oValue == 'false' ){
+            		return uncheckedCheckboxXML;
+            	}
+            	else{
+            		return oValue;
+            	}
+            }
+            
+            $scope.fillProfile = function(){
+                if($scope.profileDataMap[$scope.sourceTargetDetail.source.attachmentId+'#'+$scope.sourceTargetDetail.source.fileName] != undefined
+                && $scope.profileDataMap[$scope.sourceTargetDetail.target.attachmentId+'#'+$scope.sourceTargetDetail.target.fileName] != undefined
+                ) {
+                    
+                    $scope.sourceTargetDetail.source.profileData = $scope.profileDataMap[$scope.sourceTargetDetail.source.attachmentId+'#'+$scope.sourceTargetDetail.source.fileName];
+                    $scope.sourceTargetDetail.target.profileData = $scope.profileDataMap[$scope.sourceTargetDetail.target.attachmentId+'#'+$scope.sourceTargetDetail.target.fileName];
+                    
+                    //Fill map for source
+                    var sourceApplicationVisibilitiesMap = {};
+                    var sourceClassAccessesMap = {};
+                    var sourceExternalDataSourceAccessesMap = {};
+                    var sourceFieldPermissionsMap = {};
+                    var sourceLayoutAssignmentsMap = {};
+                    var sourceObjectPermissionsMap = {};
+                    var sourcePageAccessesMap = {};
+                    var sourceRecordTypeVisibilitiesMap = {};
+                    var sourceTabVisibilitiesMap = {};
+                    var sourceUserPermissionsMap = {};
+                    var sourceloginIpRangesMap = {};
+                    var sourceSimpleMap = {};//Done
+                    var sourceLogInHoursMap ={};
+                    angular.forEach($scope.sourceTargetDetail.source.profileData.Profile, function (objectAttributeVal, objectAttributeKey) {
+                        var tempLi = [];
+                        if(angular.isArray(objectAttributeVal)) {
+                            tempLi.push.apply(tempLi, objectAttributeVal);
+                        }
+                        else if(angular.isObject(objectAttributeVal)) {
+                            if(objectAttributeKey == 'loginHours') {
+                                angular.forEach(objectAttributeVal, function (obVal, obKey) {
+                                    sourceLogInHoursMap[obKey] = obVal;
+                                });
+                            }
+                            else
+                                tempLi.push(objectAttributeVal);
+                        }
+                        else if(objectAttributeKey != '_xmlns') {
+                            sourceSimpleMap[objectAttributeKey] = objectAttributeVal;
+                        }
+                        if(tempLi.length > 0) {
+                            angular.forEach(tempLi, function (obVal, obKey) {
+                                if(objectAttributeKey == 'applicationVisibilities')
+                                    sourceApplicationVisibilitiesMap[obVal.application] = obVal;
+                                else if(objectAttributeKey == 'classAccesses')
+                                    sourceClassAccessesMap[obVal.apexClass] = obVal;
+                                else if(objectAttributeKey == 'externalDataSourceAccesses')
+                                    sourceExternalDataSourceAccessesMap[obVal.externalDataSource] = obVal;
+                                else if(objectAttributeKey == 'fieldPermissions')
+                                    sourceFieldPermissionsMap[obVal.field] = obVal;
+                                else if(objectAttributeKey == 'layoutAssignments'){
+                                    if(obVal.recordType != undefined)
+                                        sourceLayoutAssignmentsMap[obVal.recordType] = obVal;
+                                    else{
+                                        sourceLayoutAssignmentsMap[obVal.layout.split("-")[0]+'(Master)'] = obVal;
+                                    }
+                                }
+                                else if(objectAttributeKey == 'objectPermissions')
+                                    sourceObjectPermissionsMap[obVal.object] = obVal;
+                                else if(objectAttributeKey == 'pageAccesses')
+                                    sourcePageAccessesMap[obVal.apexPage] = obVal;
+                                else if(objectAttributeKey == 'recordTypeVisibilities')
+                                    sourceRecordTypeVisibilitiesMap[obVal.recordType] = obVal;
+                                else if(objectAttributeKey == 'tabVisibilities')
+                                    sourceTabVisibilitiesMap[obVal.tab] = obVal;
+                                else if(objectAttributeKey == 'userPermissions')
+                                    sourceUserPermissionsMap[obVal.name] = obVal;
+                                else if(objectAttributeKey == 'loginIpRanges')
+                                    sourceloginIpRangesMap[obVal.startAddress+'-'+obVal.endAddress] = obVal;
+                            });
+                        }
+                    });
+                    
+                    //Fill map for target
+                    var targetApplicationVisibilitiesMap = {};
+                    var targetClassAccessesMap = {};
+                    var targetExternalDataSourceAccessesMap = {};
+                    var targetFieldPermissionsMap = {};
+                    var targetLayoutAssignmentsMap = {};
+                    var targetObjectPermissionsMap = {};
+                    var targetPageAccessesMap = {};
+                    var targetRecordTypeVisibilitiesMap = {};
+                    var targetTabVisibilitiesMap = {};
+                    var targetUserPermissionsMap = {};
+                    var targetloginIpRangesMap = {};
+                    var targetSimpleMap = {};//Done
+                    var targetLogInHoursMap = {};
+                    angular.forEach($scope.sourceTargetDetail.target.profileData.Profile, function (objectAttributeVal, objectAttributeKey) {
+                        var tempLi = [];
+                        if(angular.isArray(objectAttributeVal)) {
+                            tempLi.push.apply(tempLi, objectAttributeVal);
+                        }
+                        else if(angular.isObject(objectAttributeVal)) {
+                            if(objectAttributeKey == 'loginHours') {
+                                angular.forEach(objectAttributeVal, function (obVal, obKey) {
+                                    targetLogInHoursMap[obKey] = obVal;
+                                });
+                            }
+                            else
+                                tempLi.push(objectAttributeVal);
+                        }
+                        else if(objectAttributeKey != '_xmlns') {
+                            targetSimpleMap[objectAttributeKey] = objectAttributeVal;
+                        }
+                        if(tempLi.length > 0) {
+                            angular.forEach(tempLi, function (obVal, obKey) {
+                                if(objectAttributeKey == 'applicationVisibilities')
+                                    targetApplicationVisibilitiesMap[obVal.application] = obVal;
+                                else if(objectAttributeKey == 'classAccesses')
+                                    targetClassAccessesMap[obVal.apexClass] = obVal;
+                                else if(objectAttributeKey == 'externalDataSourceAccesses')
+                                    targetExternalDataSourceAccessesMap[obVal.externalDataSource] = obVal;
+                                else if(objectAttributeKey == 'fieldPermissions')
+                                    targetFieldPermissionsMap[obVal.field] = obVal;
+                                else if(objectAttributeKey == 'layoutAssignments'){
+                                    if(obVal.recordType != undefined)
+                                        targetLayoutAssignmentsMap[obVal.recordType] = obVal;
+                                    else{
+                                        targetLayoutAssignmentsMap[obVal.layout.split("-")[0]+'(Master)'] = obVal;
+                                    }
+                                }
+                                else if(objectAttributeKey == 'objectPermissions')
+                                    targetObjectPermissionsMap[obVal.object] = obVal;
+                                else if(objectAttributeKey == 'pageAccesses')
+                                    targetPageAccessesMap[obVal.apexPage] = obVal;
+                                else if(objectAttributeKey == 'recordTypeVisibilities')
+                                    targetRecordTypeVisibilitiesMap[obVal.recordType] = obVal;
+                                else if(objectAttributeKey == 'tabVisibilities')
+                                    targetTabVisibilitiesMap[obVal.tab] = obVal;
+                                else if(objectAttributeKey == 'userPermissions')
+                                    targetUserPermissionsMap[obVal.name] = obVal;
+                                else if(objectAttributeKey == 'loginIpRanges')
+                                    targetloginIpRangesMap[obVal.startAddress+'-'+obVal.endAddress] = obVal;
+                            });
+                        }
+                    });
+                    
+                    isDiff = document.getElementById("isDifference").checked;
+                     //sourceSimpleMap
+                     var simplehtmlStr =	'<div class="tabcontent" id="simpleProfileNodes"><div>'+
+                     						'<table class="slds-table slds-table_cell-buffer slds-table_bordered simplePropertyTable">'+
+                                            '<tr class="slds-line-height_reset">'+
+                                                '<th id="tableHeader" colspan="3" scope="col"><div class="slds-truncate">Profile Properties</div></th>'+
+                                            '</tr>'+
+                                            '<tr>'+
+                                                '<th scope="col"><div class="slds-truncate">Property</div></th>'+
+                                                '<th scope="col"><div class="slds-truncate">Source</div></th>'+
+                                                '<th scope="col"><div class="slds-truncate">Target</div></th>'+
+                                            '</tr>';
+                    sourceFilterMap = {};
+                    angular.forEach(sourceSimpleMap, function (cVal, cKey) {
+                        if(cKey != 'loginHours'){
+                            sourceFilterMap[cKey] = cKey;
+                            if(targetSimpleMap[cKey] != undefined) {
+                                //If same permission exist in target profile.   
+                                var targetcVal = targetSimpleMap[cKey];
+                                if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                    simplehtmlStr += '<tr><td class="yellowClass"><b>'+cKey+'</b></td><td class="yellowClass">'+$scope.getDynamicElementUI(cVal)+'</td><td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal)+'</td></tr>';
+                                }
+                                else if(!isDiff) {
+                                    simplehtmlStr += '<tr><td><b>'+cKey+'</b></td><td>'+$scope.getDynamicElementUI(cVal)+'</td><td>'+$scope.getDynamicElementUI(targetcVal)+'</td></tr>';
+                                }
+                            }
+                            else {
+                                //Doesn't exist.
+                                simplehtmlStr += '<tr><td class="redClass"><b>'+cKey+'</b></td><td class="redClass">'+$scope.getDynamicElementUI(cVal)+'</td><td class="redClass">'+'-'+'</td></tr>';
+                            }
+                        }
+                    });
+                    angular.forEach(targetSimpleMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            if(cKey != 'loginHours')
+                            simplehtmlStr += '<tr><td class="redClass"><b>'+cKey+'</b></td><td class="redClass">'+'-'+'</td><td class="redClass">'+$scope.getDynamicElementUI(cVal)+'</td></tr>';
+                        }
+                        
+                    });
+                    simplehtmlStr +=            '</table></div></div>';
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    //sourceApplicationVisibilitiesMap
+                    //var isDiff = false;
+                    var fullHTMLStr = '';
+                    var applicationhtmlStr = '<div class="tabcontent" id="applicationVisibilities"><div>';
+                    applicationhtmlStr +=   '<table class="dynaTable">'+
+                                                '<tr>'+
+                                                    '<th class="Headers">Application Name</th>'+
+                                                    '<th colspan="2" class="Headers">Source</th>'+
+                                                    '<th colspan="2" class="Headers">Target</th>'+
+                                                '</tr>'+
+                                                '<tr>'+
+                                                    '<th class="Headers"></th>'+
+                                                    '<th class="Headers">default</th>'+
+                                                    '<th class="Headers">visible</th>'+
+                                                    '<th class="Headers">default</th>'+
+                                                    '<th class="Headers">visible</th>'+
+                                                '</tr>';
+                    var sourceFilterMap = {};
+                    angular.forEach(sourceApplicationVisibilitiesMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetApplicationVisibilitiesMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetApplicationVisibilitiesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                applicationhtmlStr +=   '<tr>'+
+                                                            '<td class="yellowClass">'+cVal['application']+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['default'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['visible'])+'</td>'+
+                                                        '</tr>';
+                            }
+                            else if(!isDiff) {
+                                applicationhtmlStr +=   '<tr>'+
+                                                            '<td>'+cVal['application']+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['default'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['visible'])+'</td>'+
+                                                        '</tr>';
+                            }
+                        }
+                        else {
+
+                            //Doesn't exist.
+                            applicationhtmlStr +=   '<tr>'+
+                                                            '<td class="redClass">'+cVal['application']+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                        '</tr>';
+                        }
+                    });
+                    angular.forEach(targetApplicationVisibilitiesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            applicationhtmlStr +=   '<tr>'+
+                                                            '<td class="redClass">'+cVal['application']+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                        '</tr>';
+                        }
+                        
+                    });
+                    applicationhtmlStr +=       '</table>';
+                    applicationhtmlStr += '</div></div>';
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                    
+                    //sourceClassAccessesMap
+                    var apexClassHTMLStr = '<div class="tabcontent" id="classAccesses"><div>';
+                    apexClassHTMLStr +=     '<table class="dynaTable">'+
+                                                '<tr>'+
+                                                    '<th class="Headers">Class Name</th>'+
+                                                    '<th class="Headers">Source</th>'+
+                                                    '<th class="Headers">Target</th>'+
+                                                '</tr>'+
+                                                '<tr>'+
+                                                    '<th class="Headers"></th>'+
+                                                    '<th class="Headers">enabled</th>'+
+                                                    '<th class="Headers">enabled</th>'+
+                                                '</tr>';
+                    var sourceFilterMap = {};
+                    angular.forEach(sourceClassAccessesMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetClassAccessesMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetClassAccessesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                apexClassHTMLStr +=     '<tr>'+
+                                                            '<td class="yellowClass">'+cVal['apexClass']+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                        '</tr>';
+                            }
+                            else if(!isDiff) {
+                                apexClassHTMLStr +=     '<tr>'+
+                                                            '<td>'+cVal['apexClass']+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                        '</tr>';
+                            }
+                        }
+                        else {
+                            //Doesn't exist.
+                            apexClassHTMLStr +=     '<tr>'+
+                                                            '<td class="redClass">'+cVal['apexClass']+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                        '</tr>';
+                        }
+                    });
+                    angular.forEach(targetClassAccessesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            apexClassHTMLStr +=     '<tr>'+
+                                                        '<td class="redClass">'+cVal['apexClass']+'</td>'+
+                                                        '<td class="redClass">-</td>'+
+                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                    '</tr>';
+                        }
+                        
+                    });
+                    apexClassHTMLStr +=     '</table>';
+                    apexClassHTMLStr += '</div></div>';
+                        
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                    
+                    //sourceExternalDataSourceAccessesMap
+                    
+                    externalDataSourceAccessesHTMLStr = '<div class="tabcontent" id="externalDataSourceAccesses"><div>';
+                                                                
+                    externalDataSourceAccessesHTMLStr +=            '<table class="dynaTable">'+
+                                                                        '<tr>'+
+                                                                            '<th class="Headers">External Data Source</th>'+
+                                                                            '<th class="Headers">Source</th>'+
+                                                                            '<th class="Headers">Target</th>'+
+                                                                        '</tr>'+
+                                                                        '<tr>'+
+                                                                            '<th class="Headers"></th>'+
+                                                                            '<th class="Headers">enabled</th>'+
+                                                                            '<th class="Headers">enabled</th>'+
+                                                                        '</tr>';
+                    
+                    sourceFilterMap = {};
+                    angular.forEach(sourceExternalDataSourceAccessesMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        
+                        if(targetExternalDataSourceAccessesMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetExternalDataSourceAccessesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                externalDataSourceAccessesHTMLStr +=    '<tr>'+
+                                                                            '<td class="yellowClass">'+cVal['externalDataSource']+'</td>'+
+                                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                        '</tr>';
+                            }
+                            else if(!isDiff) {
+                                externalDataSourceAccessesHTMLStr +=    '<tr>'+
+                                                                            '<td>'+cVal['externalDataSource']+'</td>'+
+                                                                            '<td>'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                        '</tr>';
+                            }
+                        }
+                        else {
+                                //Doesn't exist.
+                                externalDataSourceAccessesHTMLStr +=    '<tr>'+
+                                                                            '<td class="redClass">'+cVal['externalDataSource']+'</td>'+
+                                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                        '</tr>';
+                            }
+                    });
+                    angular.forEach(targetExternalDataSourceAccessesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            externalDataSourceAccessesHTMLStr +=        '<tr>'+
+                                                                            '<td class="redClass">'+cVal['externalDataSource']+'</td>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                        '</tr>';
+                        }
+                        
+                    });
+                    externalDataSourceAccessesHTMLStr +=            '</table>';
+                    externalDataSourceAccessesHTMLStr +=    '</div></div>';
+                        
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                    
+                    //sourceFieldPermissionsMap
+                    
+                    fieldPermissionsHTMLStr = '<div class="tabcontent" id="fieldPermissions"><div>';
+                                                    
+                    fieldPermissionsHTMLStr +=          '<table class="dynaTable">'+
+                                                            '<tr>'+
+                                                                '<th class="Headers">Field</th>'+
+                                                                '<th colspan="2" class="Headers">Source</th>'+
+                                                                '<th colspan="2" class="Headers">Target</th>'+
+                                                            '</tr>'+
+                                                            '<tr>'+
+                                                                '<th class="Headers"></th>'+
+                                                                '<th class="Headers">editable</th>'+
+                                                                '<th class="Headers">readable</th>'+
+                                                                '<th class="Headers">editable</th>'+
+                                                                '<th class="Headers">readable</th>'+
+                                                            '</tr>';
+                    
+                    sourceFilterMap = {};
+                    angular.forEach(sourceFieldPermissionsMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetFieldPermissionsMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetFieldPermissionsMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                fieldPermissionsHTMLStr +=  '<tr>'+
+                                                            '<td class="yellowClass">'+cVal['field']+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['editable'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['readable'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['editable'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['readable'])+'</td>'+
+                                                        '</tr>';
+                            }
+                            else if(!isDiff) {
+                                fieldPermissionsHTMLStr +=  '<tr>'+
+                                                            '<td>'+cVal['field']+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['editable'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['readable'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['editable'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['readable'])+'</td>'+
+                                                        '</tr>';
+                            }
+                        }
+                        else {
+                            //Doesn't exist.
+                            fieldPermissionsHTMLStr +=  '<tr>'+
+                                                            '<td class="redClass">'+cVal['field']+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['editable'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['readable'])+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                        '</tr>';
+                        }
+                    });
+                    angular.forEach(targetFieldPermissionsMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            fieldPermissionsHTMLStr +=  '<tr>'+
+                                                            '<td class="redClass">'+cVal['field']+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['editable'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['readable'])+'</td>'+
+                                                        '</tr>';
+                        }
+                        
+                    });
+                    fieldPermissionsHTMLStr +=      '</table>';
+                    fieldPermissionsHTMLStr += '</div></div>';
+                    
+                        
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                    
+                    //sourceLayoutAssignmentsMap
+                    var layoutAssignmentHTMLStr = '<div class="tabcontent" id="layoutAssignments"><div>';
+                                                            
+                    layoutAssignmentHTMLStr +=                  '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers">Record Type</th>'+
+                                                                        '<th class="Headers">Source</th>'+
+                                                                        '<th class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers"></th>'+
+                                                                        '<th class="Headers">layout</th>'+
+                                                                        '<th class="Headers">layout</th>'+
+                                                                    '</tr>';
+                    sourceFilterMap = {};
+                    angular.forEach(sourceLayoutAssignmentsMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetLayoutAssignmentsMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            
+                            var targetcVal = targetLayoutAssignmentsMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {//layout
+                                layoutAssignmentHTMLStr +=          '<tr>'+
+                                                                        '<td class="yellowClass">'+cKey+'</td>'+
+                                                                        '<td class="yellowClass">'+cVal['layout']+'</td>'+
+                                                                        '<td class="yellowClass">'+targetcVal['layout']+'</td>'+
+                                                                    '</tr>';
+                            }
+                            else if(!isDiff) {
+                                layoutAssignmentHTMLStr +=          '<tr>'+
+                                                                        '<td>'+cKey+'</td>'+
+                                                                        '<td>'+cVal['layout']+'</td>'+
+                                                                        '<td>'+targetcVal['layout']+'</td>'+
+                                                                    '</tr>';
+                            }
+                        }
+                        else {
+                                //Doesn't exist.
+                                layoutAssignmentHTMLStr +=          '<tr>'+
+                                                                        '<td class="redClass">'+cKey+'</td>'+
+                                                                        '<td class="redClass">'+cVal['layout']+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                    '</tr>';
+                            }
+                    });
+                    angular.forEach(targetLayoutAssignmentsMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            layoutAssignmentHTMLStr +=              '<tr>'+
+                                                                        '<td class="redClass">'+cKey+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">'+cVal['layout']+'</td>'+
+                                                                    '</tr>';
+                        }
+                        
+                    });
+                    layoutAssignmentHTMLStr +=                  '</table>';
+                    layoutAssignmentHTMLStr +=  '</div></div>';
+                    
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                    
+                    //sourceObjectPermissionsMap
+                    var objectPermissionHTMLStr = '<div class="tabcontent" id="objectPermissions"><div>'; 
+                    objectPermissionHTMLStr +=                  '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers">Field</th>'+
+                                                                        '<th colspan="6" class="Headers">Source</th>'+
+                                                                        '<th colspan="6" class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers"></th>'+
+                                                                        '<th class="Headers">allowCreate</th>'+
+                                                                        '<th class="Headers">allowDelete</th>'+
+                                                                        '<th class="Headers">allowEdit</th>'+
+                                                                        '<th class="Headers">allowRead</th>'+
+                                                                        '<th class="Headers">modifyAllRecords</th>'+
+                                                                        '<th class="Headers">viewAllRecords</th>'+
+                                                                        '<th class="Headers">allowCreate</th>'+
+                                                                        '<th class="Headers">allowDelete</th>'+
+                                                                        '<th class="Headers">allowEdit</th>'+
+                                                                        '<th class="Headers">allowRead</th>'+
+                                                                        '<th class="Headers">modifyAllRecords</th>'+
+                                                                        '<th class="Headers">viewAllRecords</th>'+
+                                                                    '</tr>';        
+                    sourceFilterMap = {};
+                    angular.forEach(sourceObjectPermissionsMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        //If same permission exist in target profile.
+                        if(targetObjectPermissionsMap[cKey] != undefined) {
+                            var targetcVal = targetObjectPermissionsMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                objectPermissionHTMLStr +=  '<tr>'+
+                                                            '<td class="yellowClass">'+cVal['object']+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['allowCreate'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['allowDelete'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['allowEdit'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['allowRead'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['modifyAllRecords'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['viewAllRecords'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['allowCreate'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['allowDelete'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['allowEdit'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['allowRead'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['modifyAllRecords'])+'</td>'+
+                                                            '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['viewAllRecords'])+'</td>'+
+                                                        '</tr>';
+                            }
+                            else if(!isDiff) {
+                                objectPermissionHTMLStr +=  '<tr>'+
+                                                            '<td>'+cVal['object']+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['allowCreate'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['allowDelete'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['allowEdit'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['allowRead'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['modifyAllRecords'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(cVal['viewAllRecords'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['allowCreate'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['allowDelete'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['allowEdit'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['allowRead'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['modifyAllRecords'])+'</td>'+
+                                                            '<td>'+$scope.getDynamicElementUI(targetcVal['viewAllRecords'])+'</td>'+
+                                                        '</tr>';
+                            }
+                        }
+                        else {
+                            //Doesn't exist.
+                            objectPermissionHTMLStr +=  '<tr>'+
+                                                            '<td class="redClass">'+cVal['object']+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowCreate'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowDelete'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowEdit'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowRead'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['modifyAllRecords'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['viewAllRecords'])+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                        '</tr>';
+                        }
+                  
+                    });
+                    angular.forEach(targetObjectPermissionsMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            objectPermissionHTMLStr +=  '<tr>'+
+                                                            '<td class="redClass">'+cVal['object']+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowCreate'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowDelete'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowEdit'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['allowRead'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['modifyAllRecords'])+'</td>'+
+                                                            '<td class="redClass">'+$scope.getDynamicElementUI(cVal['viewAllRecords'])+'</td>'+
+                                                        '</tr>';
+                        }
+                        
+                    });
+                    objectPermissionHTMLStr +=      '</table>';
+                    objectPermissionHTMLStr += '</div></div>';
+                 
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    //sourcePageAccessesMap
+                    var pageAccessesHTMLStr = '<div class="tabcontent" id="pageAccesses"><div>';
+                    pageAccessesHTMLStr +=                      '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                    '<th class="Headers">apexPage</th>'+
+                                                                    '<th class="Headers">Source</th>'+
+                                                                    '<th class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                '<tr>'+
+                                                                    '<th class="Headers"></th>'+
+                                                                    '<th class="Headers">enabled</th>'+
+                                                                    '<th class="Headers">enabled</th>'+
+                                                                '</tr>';
+                    sourceFilterMap = {};
+                    angular.forEach(sourcePageAccessesMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetPageAccessesMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetPageAccessesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                pageAccessesHTMLStr +=          '<tr>'+
+                                                                    '<td class="yellowClass">'+cVal['apexPage']+'</td>'+
+                                                                    '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                    '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                '</tr>';
+                            }
+                            else if(!isDiff) {
+                                pageAccessesHTMLStr +=          '<tr>'+
+                                                                    '<td>'+cVal['apexPage']+'</td>'+
+                                                                    '<td>'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                    '<td>'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                '</tr>';
+                            }
+                        }
+                        else {
+                                //Doesn't exist.
+                                pageAccessesHTMLStr +=          '<tr>'+
+                                                                    '<td class="redClass">'+cVal['apexPage']+'</td>'+
+                                                                    '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                    '<td class="redClass">-</td>'+
+                                                                '</tr>';
+                            }
+                    });
+                    angular.forEach(targetPageAccessesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            pageAccessesHTMLStr +=              '<tr>'+
+                                                                    '<td class="redClass">'+cVal['apexPage']+'</td>'+
+                                                                    '<td class="redClass">-</td>'+
+                                                                    '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                '</tr>';
+                        }
+                        
+                    });
+                    pageAccessesHTMLStr +=                  '</table>';
+                    pageAccessesHTMLStr +=  '</div></div>';
+                    
+                        
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    //sourceRecordTypeVisibilitiesMap
+                    var recordTypeVisibilitiesHTMLStr = '<div class="tabcontent" id="recordTypeVisibilities"><div>';
+                    recordTypeVisibilitiesHTMLStr +=            '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers">Field</th>'+
+                                                                        '<th colspan="2" class="Headers">Source</th>'+
+                                                                        '<th colspan="2" class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers"></th>'+
+                                                                        '<th class="Headers">default</th>'+
+                                                                        '<th class="Headers">visible</th>'+
+                                                                        '<th class="Headers">default</th>'+
+                                                                        '<th class="Headers">visible</th>'+
+                                                                    '</tr>';                    
+                    sourceFilterMap = {};
+                    angular.forEach(sourceRecordTypeVisibilitiesMap, function (cVal, cKey) {
+                        
+                        sourceFilterMap[cKey] = cKey;
+                        
+                        if(targetRecordTypeVisibilitiesMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetRecordTypeVisibilitiesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                recordTypeVisibilitiesHTMLStr +=    '<tr>'+
+                                                                        '<td class="yellowClass">'+cVal['recordType']+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['default'])+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['visible'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                            else if(!isDiff) {
+                                recordTypeVisibilitiesHTMLStr +=    '<tr>'+
+                                                                        '<td>'+cVal['recordType']+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(targetcVal['default'])+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(targetcVal['visible'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                        }
+                        else {
+                            //Doesn't exist.
+                                recordTypeVisibilitiesHTMLStr +=    '<tr>'+
+                                                                        '<td class="redClass">'+cVal['recordType']+'</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                    '</tr>';
+                        }
+                    });
+                    angular.forEach(targetRecordTypeVisibilitiesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            recordTypeVisibilitiesHTMLStr +=        '<tr>'+
+                                                                        '<td class="redClass">'+cVal['recordType']+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['default'])+'</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visible'])+'</td>'+
+                                                                    '</tr>';
+                        }
+                        
+                    });
+                    recordTypeVisibilitiesHTMLStr +=            '</table>';
+                    recordTypeVisibilitiesHTMLStr += '</div></div>';
+                        
+                        
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   
+                    //sourceTabVisibilitiesMap
+                    var tabVisibilitiesHTMLStr = '<div class="tabcontent" id="tabVisibilities"><div>';
+                tabVisibilitiesHTMLStr +=                       '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers">tab</th>'+
+                                                                        '<th class="Headers">Source</th>'+
+                                                                        '<th class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers"></th>'+
+                                                                        '<th class="Headers">visibility</th>'+
+                                                                        '<th class="Headers">visibility</th>'+
+                                                                    '</tr>';
+                    sourceFilterMap = {};
+                    angular.forEach(sourceTabVisibilitiesMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+                        if(targetTabVisibilitiesMap[cKey] != undefined) {
+                            var targetcVal = targetTabVisibilitiesMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                tabVisibilitiesHTMLStr +=           '<tr>'+
+                                                                        '<td class="yellowClass">'+cVal['tab']+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['visibility'])+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['visibility'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                            else if(!isDiff) {
+                                tabVisibilitiesHTMLStr +=           '<tr>'+
+                                                                        '<td>'+cVal['tab']+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(cVal['visibility'])+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(targetcVal['visibility'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                        }
+                        else {
+                                //Doesn't exist.
+                                tabVisibilitiesHTMLStr +=           '<tr>'+
+                                                                        '<td class="redClass">'+cVal['tab']+'</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visibility'])+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                    '</tr>';
+                            }
+                    });
+                    angular.forEach(targetTabVisibilitiesMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            tabVisibilitiesHTMLStr +=               '<tr>'+
+                                                                        '<td class="redClass">'+cVal['tab']+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['visibility'])+'</td>'+
+                                                                    '</tr>';
+                        }
+                        
+                    });
+                    tabVisibilitiesHTMLStr +=                   '</table>';
+                    tabVisibilitiesHTMLStr +=   '</div></div>';
+                   
+                        
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   
+                    //sourceUserPermissionsMap
+                     var userPermissionsHTMLStr = '<div class="tabcontent" id="userPermissions"><div>';
+                    userPermissionsHTMLStr +=                   '<table class="dynaTable">'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers">name</th>'+
+                                                                        '<th class="Headers">Source</th>'+
+                                                                        '<th class="Headers">Target</th>'+
+                                                                    '</tr>'+
+                                                                    '<tr>'+
+                                                                        '<th class="Headers"></th>'+
+                                                                        '<th class="Headers">enabled</th>'+
+                                                                        '<th class="Headers">enabled</th>'+
+                                                                    '</tr>';
+                    sourceFilterMap = {};
+                    angular.forEach(sourceUserPermissionsMap, function (cVal, cKey) {
+                        sourceFilterMap[cKey] = cKey;
+
+                        if(targetUserPermissionsMap[cKey] != undefined) {
+                            //If same permission exist in target profile.
+                            var targetcVal = targetUserPermissionsMap[cKey];
+                            if(JSON.stringify(cVal) != JSON.stringify(targetcVal)) {
+                                userPermissionsHTMLStr +=           '<tr>'+
+                                                                        '<td class="yellowClass">'+cVal['name']+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                        '<td class="yellowClass">'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                            else if(!isDiff) {
+                                userPermissionsHTMLStr +=           '<tr>'+
+                                                                        '<td>'+cVal['name']+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                        '<td>'+$scope.getDynamicElementUI(targetcVal['enabled'])+'</td>'+
+                                                                    '</tr>';
+                            }
+                        }
+                        else {
+                                //Doesn't exist.
+                                userPermissionsHTMLStr +=           '<tr>'+
+                                                                        '<td class="redClass">'+cVal['name']+'</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                    '</tr>';
+                            }
+                    });
+                    angular.forEach(targetUserPermissionsMap, function (cVal, cKey) {
+                        if(sourceFilterMap[cKey] == undefined) {
+                            //If permission doesn't exist in source profile but exist in target profile.
+                            userPermissionsHTMLStr +=               '<tr>'+
+                                                                        '<td class="redClass">'+cVal['name']+'</td>'+
+                                                                        '<td class="redClass">-</td>'+
+                                                                        '<td class="redClass">'+$scope.getDynamicElementUI(cVal['enabled'])+'</td>'+
+                                                                    '</tr>';
+                        }
+                        
+                    });
+                    userPermissionsHTMLStr +=                   '</table>';
+                    userPermissionsHTMLStr +=   '</div></div>'
+                    
+                        
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   
+                    //sourceloginIpRangesMap
+                    var loginIpRangesHTMLStr = '';
+                    if(sourceloginIpRangesMap != {} || targetloginIpRangesMap != {}) {
+                        loginIpRangesHTMLStr = '<div class="tabcontent" id="loginIpRanges"><div>';
+                        loginIpRangesHTMLStr +=                     '<table class="dynaTable">'+
+                                                                        '<tr>'+
+                                                                            '<th colspan="2" class="Headers">Source</th>'+
+                                                                            '<th colspan="2" class="Headers">Target</th>'+
+                                                                        '</tr>'+
+                                                                        '<tr>'+
+                                                                            '<th class="Headers">startAddress</th>'+
+                                                                            '<th class="Headers">endAddress</th>'+
+                                                                            '<th class="Headers">startAddress</th>'+
+                                                                            '<th class="Headers">endAddress</th>'+
+                                                                        '</tr>';
+                        sourceFilterMap = {};
+                        angular.forEach(sourceloginIpRangesMap, function (cVal, cKey) {
+                            sourceFilterMap[cKey] = cKey;
+                            if(targetloginIpRangesMap[cKey] != undefined) {
+                                //If same permission exist in target profile.
+                                var targetcVal = targetloginIpRangesMap[cKey];
+                                if(!isDiff) {
+                                    loginIpRangesHTMLStr +=             '<tr>'+
+                                                                            '<td>'+cVal['startAddress']+'</td>'+
+                                                                            '<td>'+cVal['endAddress']+'</td>'+
+                                                                            '<td>'+targetcVal['startAddress']+'</td>'+
+                                                                            '<td>'+targetcVal['endAddress']+'</td>'+
+                                                                        '</tr>';
+                                }
+                            }
+                            else {
+                                //Doesn't exist.
+                                loginIpRangesHTMLStr +=                 '<tr>'+
+                                                                            '<td class="redClass">'+cVal['startAddress']+'</td>'+
+                                                                            '<td class="redClass">'+cVal['endAddress']+'</td>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                        '</tr>';
+                            }
+                        });
+                        angular.forEach(targetloginIpRangesMap, function (cVal, cKey) {
+                            if(sourceFilterMap[cKey] == undefined) {
+                                //If permission doesn't exist in source profile but exist in target profile.
+                                loginIpRangesHTMLStr +=                 '<tr>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                            '<td class="redClass">-</td>'+
+                                                                            '<td class="redClass">'+cVal['startAddress']+'</td>'+
+                                                                            '<td class="redClass">'+cVal['endAddress']+'</td>'+
+                                                                        '</tr>';
+                            }
+                            
+                        });
+                        loginIpRangesHTMLStr +=                 '</table>';
+                        loginIpRangesHTMLStr +=     '</div></div>'; 
+                    } 
+                    
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                   
+                    //sourceLogInHoursMap
+                    var logInHoursHTMLStr = '';
+                    if(sourceLogInHoursMap != {} || targetLogInHoursMap != {}) {
+                        
+                        logInHoursHTMLStr = '<div class="tabcontent" id="loginHours"><div>';
+                        logInHoursHTMLStr +=                        '<table class="dynaTable">'+
+                                                                        '<tr>'+
+                                                                            '<th class="Headers"></th>'+
+                                                                            '<th class="Headers">Source</th>'+
+                                                                            '<th class="Headers">Target</th>'+
+                                                                        '</tr>'+
+                                                                        '<tr>'+
+                                                                            '<th class="Headers">property</th>'+
+                                                                            '<th class="Headers">value</th>'+
+                                                                            '<th class="Headers">value</th>'+
+                                                                        '</tr>';
+                        sourceFilterMap = {};
+                        angular.forEach(sourceLogInHoursMap, function (cVal, cKey) {    
+                            sourceFilterMap[cKey] = cKey;
+                            if(targetLogInHoursMap[cKey] != undefined) {
+                                if(JSON.stringify(cVal) != JSON.stringify(targetLogInHoursMap[cKey])){
+                                    logInHoursHTMLStr += '<tr>'+
+                                                            '<td class="yellowClass">'+cKey+'</td>'+
+                                                            '<td class="yellowClass">'+cVal+'</td>'+
+                                                            '<td class="yellowClass">'+targetLogInHoursMap[cKey]+'</td>'+
+                                                        '</tr>';
+                                }
+                                else if(!isDiff) {
+                                    logInHoursHTMLStr += '<tr>'+
+                                                            '<td>'+cKey+'</td>'+
+                                                            '<td>'+cVal+'</td>'+
+                                                            '<td>'+targetLogInHoursMap[cKey]+'</td>'+
+                                                        '</tr>';
+                                }
+                            }
+                            else {
+                                logInHoursHTMLStr += '<tr>'+
+                                                            '<td class="redClass">'+cKey+'</td>'+
+                                                            '<td class="redClass">'+cVal+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                        '</tr>';
+                            }
+                        });
+                        angular.forEach(targetLogInHoursMap, function (cVal, cKey) {
+                            if(sourceFilterMap[cKey] == undefined) {
+                                logInHoursHTMLStr += '<tr>'+
+                                                            '<td class="redClass">'+cKey+'</td>'+
+                                                            '<td class="redClass">-</td>'+
+                                                            '<td class="redClass">'+cVal+'</td>'+
+                                                        '</tr>';
+                            }
+                        });        
+                        logInHoursHTMLStr +=                        '</table>';
+                        logInHoursHTMLStr +=            '</div></div>';
+                    }
+
+                    //tab bar
+                    fullHTMLStr += '<div class="ftab">';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="simpleProfileNodes">Profile Properties</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="applicationVisibilities">applicationVisibilities</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="classAccesses">classAccesses</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="externalDataSourceAccesses">externalDataSourceAccesses</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="fieldPermissions">fieldPermissions</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="layoutAssignments">layoutAssignments</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="objectPermissions">objectPermissions</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="pageAccesses">pageAccesses</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="recordTypeVisibilities">recordTypeVisibilities</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="tabVisibilities">tabVisibilities</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="userPermissions">userPermissions</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="loginIpRanges">loginIpRanges</button>';
+                    //Permission tab button
+                    fullHTMLStr += '<button class="tablinks" type="button" value="loginHours">loginHours</button>';
+                    fullHTMLStr += '</div>'
+
+                    //callCollapsibleScript 
+                    fullHTMLStr +=simplehtmlStr;
+                    fullHTMLStr += applicationhtmlStr;
+                    fullHTMLStr +=apexClassHTMLStr;
+                    fullHTMLStr +=externalDataSourceAccessesHTMLStr;
+                    fullHTMLStr +=fieldPermissionsHTMLStr;
+                    fullHTMLStr +=layoutAssignmentHTMLStr;
+                    fullHTMLStr +=objectPermissionHTMLStr;
+                    fullHTMLStr +=pageAccessesHTMLStr;
+                    fullHTMLStr +=recordTypeVisibilitiesHTMLStr;
+                    fullHTMLStr +=tabVisibilitiesHTMLStr;
+                    fullHTMLStr +=userPermissionsHTMLStr;
+                    fullHTMLStr +=loginIpRangesHTMLStr;
+                    fullHTMLStr +=logInHoursHTMLStr;
+
+                    /*
+					 if(objectAttributeKey == 'applicationVisibilities')
+                                    targetApplicationVisibilitiesMap[obVal.application] = obVal;
+                                else if(objectAttributeKey == 'classAccesses')
+                                    targetClassAccessesMap[obVal.apexClass] = obVal;
+                                else if(objectAttributeKey == 'externalDataSourceAccesses')
+                                    targetExternalDataSourceAccessesMap[obVal.externalDataSource] = obVal;
+                                else if(objectAttributeKey == 'fieldPermissions')
+                                    targetFieldPermissionsMap[obVal.field] = obVal;
+                                else if(objectAttributeKey == 'layoutAssignments'){
+                                    if(obVal.recordType != undefined)
+                                        targetLayoutAssignmentsMap[obVal.recordType] = obVal;
+                                    else{
+                                        targetLayoutAssignmentsMap[obVal.layout.split("-")[0]+'(Master)'] = obVal;
+                                    }
+                                }
+                                else if(objectAttributeKey == 'objectPermissions')
+                                    targetObjectPermissionsMap[obVal.object] = obVal;
+                                else if(objectAttributeKey == 'pageAccesses')
+                                    targetPageAccessesMap[obVal.apexPage] = obVal;
+                                else if(objectAttributeKey == 'recordTypeVisibilities')
+                                    targetRecordTypeVisibilitiesMap[obVal.recordType] = obVal;
+                                else if(objectAttributeKey == 'tabVisibilities')
+                                    targetTabVisibilitiesMap[obVal.tab] = obVal;
+                                else if(objectAttributeKey == 'userPermissions')
+                                    targetUserPermissionsMap[obVal.name] = obVal;
+                                else if(objectAttributeKey == 'loginIpRanges')
+                                    targetloginIpRangesMap[obVal.startAddress+'-'+obVal.endAddress] = obVal;
+                    */
+
+                    document.getElementById("MainParentDiv").innerHTML = fullHTMLStr;
+                    callCollapsibleScript();
+                    //document.getElementById("isDifference").removeAttribute("disabled"); 
+                    //document.getElementById("isDifference").disabled = false;
+                    hide();
+                }
+            };
+        }]);
+        
+        function collapse(){
+            var innerDiv = document.getElementsByClassName("AppVisClass");
+            var i = 0;
+            for(i ; i < innerDiv.length; i++){
+
+                if(innerDiv[i].style.display == "none"){
+                    innerDiv[i].style.display = "block"
+                }
+                else{
+                    innerDiv[i].style.display = "none"
+                }
+            }
+            
+        };
+                
+        function startComp(){
+            show();
+            angular.element(document.getElementById('angularControllerId')).scope().startComparison();
+        }
+        
+        
+        function hidePaginationData()
+        {
+            show();
+            sourceProfileListAF();
+        }
+        
+        function hidePaginationDataTarget()
+        {
+            show();
+            targetProfileListAF();
+        }
+        
+        function setMessageOnPage(msg)
+        {
+            var parentVal = $("[id$='msg']");
+            if(parentVal != undefined)
+            {
+                parentVal.html('');
+                if(msg != '')
+                {
+                    var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+                                        '<div class="message errorM3" role="alert">'+
+                                            '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                '<tbody>'+
+                                                    '<tr valign="top">'+
+                                                        '<td><img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"></td>'+
+                                                        '<td class="messageCell">'+
+                                                            '<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+                                                                '<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25" style="color:#cc0000">'+
+                                                                    '<h4>Error:</h4>'+
+                                                                '</span>'+msg+'<br>'+
+                                                            '</div>'+
+                                                        '</td>'+
+                                                    '</tr>'+
+                                                    '<tr>'+
+                                                        '<td></td>'+
+                                                        '<td></td>'+
+                                                    '</tr>'+
+                                                '</tbody>'+
+                                            '</table>'+
+                                        '</div>'+
+                                    '</span>';
+                    parentVal.append(childVal); 
+                }        
+            }
+            overridePageMessages();
+        }
+        $(document).ready(function(){
+	       overridePageMessages();    
+	    });        
+        
+        
+       function showMessage(message)
+        {
+            setMessageOnPage(message);
+            overridePageMessages();
+            enableFlosumUI();
+            hide();
+        }
+        
+        function disableFlosumUI()
+        {
+            var toDisableItems = document.getElementsByClassName('disableitem');
+            for (var i = 0; i < toDisableItems.length; i++) 
+            {
+                if(toDisableItems[i].type == 'button' || toDisableItems[i].type =='submit' || 
+                    toDisableItems[i].type == 'select-one' || toDisableItems[i].type == 'text' || 
+                    toDisableItems[i].type == 'checkbox' || toDisableItems[i].tagName == 'IMG')
+                {
+                    toDisableItems[i].disabled = true;
+                    if(toDisableItems[i].tagName == 'IMG')
+                    {
+                        toDisableItems[i].style.pointerEvents = 'none';
+                    }
+                    else if(toDisableItems[i].type == 'button' || toDisableItems[i].type =='submit')
+                        toDisableItems[i].className += ' btnDisabled';
+                }
+            }
+        }
+        
+        function enableFlosumUI()
+        {
+            var toDisableItems = document.getElementsByClassName('disableitem');
+            for (var i = 0; i < toDisableItems.length; i++) 
+            {
+                if(toDisableItems[i].type == 'button' || toDisableItems[i].type =='submit' || 
+                    toDisableItems[i].type == 'select-one' || toDisableItems[i].type == 'text' || 
+                    toDisableItems[i].type == 'checkbox' || toDisableItems[i].tagName == 'IMG')
+                {
+                    toDisableItems[i].disabled = false;
+                    if(toDisableItems[i].tagName == 'IMG')
+                    {
+                        toDisableItems[i].style.pointerEvents = '';
+                    }
+                    else if(toDisableItems[i].type == 'button' || toDisableItems[i].type =='submit')
+                        toDisableItems[i].className = toDisableItems[i].className.replace(' btnDisabled','');
+                }
+            }
+        }
+        function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+        
+        
+        
+    </script>
+</apex:page>

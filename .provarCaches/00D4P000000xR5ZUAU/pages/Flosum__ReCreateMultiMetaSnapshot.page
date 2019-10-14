@@ -1,0 +1,5 @@
+<apex:page standardController="Flosum__Snapshot__c" extensions="Flosum.ReCreateMultiMetaSnapshotController" sidebar="false" doctype="html-5.0" action="{!reCreateSnapshot}">
+	<c:TrackPanel />
+    <apex:slds />
+    <c:Wait />
+</apex:page>

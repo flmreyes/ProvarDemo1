@@ -1,0 +1,214 @@
+<apex:page controller="Flosum.MassDeleteSnapshotController" tabStyle="Settings__tab" docType="html-5.0" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+	
+	<style>
+		.message .messageText {
+		    color: white !important;
+		}
+		.message .messageText h4{
+		    color: white !important;
+		}
+		.message table ul li{
+		    color: white !important;
+		}
+		.lbcls {
+		    font-weight: 700 !important;
+		}
+		table thead tr th {
+		    font-weight: 700 !important;
+		}
+		div .pagination {
+			text-align: center;
+		}
+		.pagination input {
+			margin-left: 4px;
+		}
+		.customMessage * {
+            color: #fff!important
+        }
+        .customMessage {
+   			margin: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+	</style>
+		
+	<div class="slds-scope">
+		<apex:form styleClass="slds-form--stacked" id="massDeleteForm">
+			<apex:pageMessage severity="info" escape="false" summary="Snapshots consume the most storage space in the Flosum application. On the Snapshot details page, you can view the list of components retrieved. These records are stored in Metadata Items object. The records in this objects consume the bulk of storage used by Flosum.<br/>
+					This utility will find the Metadata items records that are not referenced elsewhere in the application. These records can be easily removed from older snapshots to reclaim storage space.<br/>
+					In the field below, please enter the criteria for selecting the snapshots.<br/>
+					Please note that the records will be removed from the Metadata Items object for the selected snapshots."/>
+			<apex:pagemessages id="msg"/>
+			<fieldset class="slds-box slds-theme--default">
+				<apex:outputPanel layout="block" id="snapBlock">
+					<div class="slds-float--right" role="group">
+						<apex:commandButton styleClass="slds-button slds-button_neutral" value="List" onClick="show();" action="{!defaultPagination}" reRender="msg,snapBlock,dataBlock" onComplete="hide();"/>
+						<apex:commandButton styleClass="slds-button slds-button_neutral" value="Delete" action="{!executeDelteBatch}" onClick="show();" reRender="msg,snapBlock,dataBlock" rendered="{!if(snapList.size > 0,true,false)}" onComplete="overridePageMessages(); hide();"/>
+					</div>
+					<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Start Date" />
+						<div class="slds-form-element__control">
+							<apex:inputField styleClass="slds-input slds-text-heading_regular" value="{!startDate.Flosum__Schedule_Time__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="End Date" />
+						<div class="slds-form-element__control">
+							<apex:inputField styleClass="slds-input slds-text-heading_regular" value="{!endDate.Flosum__Schedule_Time__c}"/>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Created By" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!selectedCreatedBy}" >
+					                <apex:selectOptions value="{!createdByOptions}" />
+					            </apex:selectList>
+							</div>
+						</div>
+           			</apex:outputPanel>
+           			<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12" layout="block">
+						<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Organisation" />
+						<div class="slds-form-element__control">
+							<div class="slds-select_container">
+								<apex:selectList styleClass="slds-select slds-text-heading_regular" size="1" value="{!selectedOrg}" >
+					                <apex:selectOptions value="{!orgListOptions}"/>
+					            </apex:selectList>
+							</div>
+						</div>
+           			</apex:outputPanel>
+				</apex:outputPanel>
+				<apex:outputPanel id="dataBlock" layout="block" styleClass="slds-m-top--medium">
+					<apex:dataTable rendered="{!if(snapList.size > 0,true,false)}" value="{!snapList}" var="item" rowClasses="odd,even" columnClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_cell-buffer">
+	            		<apex:column headervalue="Select">
+							<apex:facet name="header">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control">
+								    	<span class="slds-checkbox">
+								      		<input type="checkbox" class="psli" name="options" id="checkbox-2" onclick="checkItemAll(this);" />
+								      		<label class="slds-checkbox__label" for="checkbox-2">
+										        <span class="slds-checkbox_faux"></span>
+										        <span class="slds-form-element__label"></span>
+								      		</label>
+								    	</span>
+								  	</div>
+								</div>
+							</apex:facet>
+							<div class="slds-form-element">
+							    <div class="slds-form-element__control">
+							        <span class="slds-checkbox">
+							            <apex:inputCheckbox onClick="checkUnCheck();" id="divsup" styleclass="sli slds-input" value="{!item.checked}"></apex:inputCheckbox>
+							            <apex:outputLabel for="divsup" styleClass="slds-checkbox__label">
+							                <span class="slds-checkbox--faux"></span>
+							                <span class="slds-form-element__label"></span>
+							            </apex:outputLabel>
+							        </span>
+							    </div>
+							</div>
+						</apex:column>
+						<apex:column headervalue="Snapshot Name" value="{!item.snap.Name}" />
+						<apex:column headervalue="Org Name" value="{!item.snap.Organisation__r.Name}" /> 
+						<apex:column headervalue="Created By" value="{!item.snap.CreatedBy.Name}" />
+						<apex:column headervalue="Created Date" value="{!item.snap.CreatedDate}" />
+						<apex:column headervalue="No of Metadata Items" value="{!item.snap.Flosum__No_of_Metadata_Items__c}" />
+					</apex:dataTable>
+					<apex:outputPanel rendered="{!if(snapList.size > 0,true,false)}" layout="block" styleClass="pagination slds-m-top--medium slds-grid slds-wrap slds-grid--pull-padded">
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="Previous" action="{!previous}" reRender="dataBlock,snapBlock,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_right" value="First" action="{!FirstPage}" reRender="dataBlock,snapBlock,msg" disabled="{!prev}" onClick="show();" onComplete="hide();"/>
+						</div>
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+							<apex:outputText value="{!paginationStr}"/>
+						</div>
+						<div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Next" action="{!next}" reRender="dataBlock,snapBlock,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+							<apex:commandbutton styleClass="btn slds-button slds-button_neutral  slds-float_left" value="Last" action="{!LastPage}" reRender="dataBlock,snapBlock,msg" disabled="{!nxt}" onClick="show();" onComplete="hide();"/>
+						</div>
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</fieldset>
+		</apex:form>
+	</div>
+	
+	<script>
+		function checkItemAll(ele) {
+			var checkboxes = document.getElementsByClassName('sli');
+		     if (ele.checked) {
+		         for (var i = 0; i < checkboxes.length; i++) {
+		             if (checkboxes[i].type == 'checkbox') {
+		                 checkboxes[i].checked = true;
+		             }
+		         }
+		     } else {
+		         for (var i = 0; i < checkboxes.length; i++) {
+		             if (checkboxes[i].type == 'checkbox') {
+		                 checkboxes[i].checked = false;
+		             }
+		         }
+		     }
+		}
+		
+		function checkUnCheck()
+		{	
+			var checkboxes = document.getElementsByClassName('sli');
+			if(checkboxes != undefined && checkboxes.length > 0)
+			{
+				var allUnChecked = true;
+				var allChecked = true;
+				for(var i = 0; i < checkboxes.length; i++) 
+		        {
+					if(checkboxes[i].type == 'checkbox' && checkboxes[i].checked) 
+		            {
+			        	allUnChecked = false;
+			        }
+		            else if(checkboxes[i].type == 'checkbox' && !checkboxes[i].checked)
+		            {
+		            	allChecked = false;
+		            }
+		        }
+		        if(allChecked)
+		        {
+		        	var parentCheckboxes = document.getElementsByClassName('psli');
+		        	if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+		        	{
+		        		parentCheckboxes[0].checked = true;
+		        	}
+		        }
+		        else if(allUnChecked || (!allUnChecked && !allChecked))
+		        {
+		        	var parentCheckboxes = document.getElementsByClassName('psli');
+		        	if(parentCheckboxes != undefined && parentCheckboxes.length > 0)
+		        	{
+		        		parentCheckboxes[0].checked = false;
+		        	}
+		        }
+		    }
+		}
+		
+		$(document).ready(function() {
+		    checkUnCheck();
+		    overridePageMessages();
+		});
+		
+		function overridePageMessages(){    
+			var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';             
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.infoM4').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.infoM4').removeClass('infoM4'); 
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	</script>
+</apex:page>

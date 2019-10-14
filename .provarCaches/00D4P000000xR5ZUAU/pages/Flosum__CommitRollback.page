@@ -1,0 +1,198 @@
+<apex:page standardController="Flosum__Commit__c" extensions="Flosum.CommitRollbackController" sidebar="false" doctype="html-5.0">
+    <c:TrackPanel />
+    <c:Wait />
+	<apex:slds />
+	<style>
+	.lbcls {
+	    font-weight: 700 !important;
+	}
+	.message {
+	    list-style-type: none;
+	}
+	.message .messageText {
+	    color: white !important;
+	}
+	.message .messageText h4{
+	    color: white !important;
+	}
+	.customMessage * {
+    	color: #fff!important
+    }
+    .customMessage {
+		margin: 0px !important;
+		opacity: 1!important;
+		width: 100%;
+		font-size: 13px;
+		border: 0px;
+		padding-left: 10px;
+	}
+	</style>
+	<apex:outputPanel layout="block" styleClass="slds-scope">
+	    <apex:form styleClass="slds-form--stacked">
+	        <apex:pagemessages id="msg"/>
+	        <apex:actionFunction name="redirectToCommitRecordAF" action="{!redirectToCommitRecord}" />
+	        <apex:outputPanel layout="block" styleClass="slds-page-header">
+				<div class="slds-media__body">
+					<h1 class="slds-page-header__title slds-truncate slds-align-middle" >Commit Manifest</h1>
+				</div>
+			</apex:outputPanel>
+			<div class="slds-float--right slds-m-top_small slds-m-right_small slds-m-bottom_small" role="group">
+				<!-- Commit Role Back button -->
+	                <apex:commandButton value="Rollback" styleClass="slds-button slds-button_neutral" action="{!commitRollback}" oncomplete="hide();commitRollbackJS('{!commitId}','{!isSuccess}');overridePageMessages();" rerender="msg" onclick="show();"/>
+			</div>
+			
+			<apex:outputPanel layout="block" id="pbSectionBlock">
+	            <apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-bottom_small slds-m-top_small slds-m-left_xx-large" layout="block">
+					<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Commit Name :" />
+					<div class="slds-form-element__control">
+						<apex:outputText styleClass="slds-input slds-text-heading_regular" value="{!commitName}"/>
+					</div>
+          		</apex:outputPanel>
+          		<apex:outputPanel styleClass="slds-form-element slds-size--4-of-12 slds-m-bottom_small slds-m-top_small slds-m-left_xx-large" layout="block">
+					<apex:outputLabel styleClass="slds-form-element__label slds-text-heading_regular lbcls" value="Repository Name :" />
+					<div class="slds-form-element__control">
+						<apex:outputText styleClass="slds-input slds-text-heading_regular" value="{!repositoryName}"/>
+					</div>
+          		</apex:outputPanel>
+       		</apex:outputPanel>
+		</apex:form>
+	    <apex:relatedList subject="{!Flosum__Commit__c}" list="Commit_Manifest__r" id="relatedList"/>
+    </apex:outputPanel>
+    <script>
+        var commitLi = [];
+        var commitIndex = 0;
+        
+        $( document ).ready(function() {
+		    overridePageMessages();
+		});
+        
+        function commitRollbackJS(commitId,isSuccess){
+            console.log('commitId--'+commitId);
+            if(isSuccess == 'true'){
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.CommitRollbackController.commitRollbackVF}',
+                            commitId,
+                            function(r,e){
+                                if(e.status && r) {
+                                    console.log('--------gggffgffgfgf-------'+r);
+                                    commitIndex = 0;
+                                    commitLi = r;
+                                    rollBackOneByOneJS();
+                                    showMessage('Please Wait','INFO');
+                                }
+                                else{
+                                    showMessage(e.message,'ERROR');
+                                }
+                                overridePageMessages();
+                });
+            }   
+        }
+        
+        function rollBackOneByOneJS(){
+        //showMessage('Please Wait');
+        console.log('-----commitLi.length---'+commitLi.length);
+        console.log('-----commitIndex---'+commitIndex);
+            if(commitIndex < commitLi.length){
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.CommitRollbackController.rollBackOneByOneVF}',
+                            JSON.stringify(commitLi[commitIndex]),
+                            function(r,e){
+                                console.log('0result',e);
+                                console.log('1status',e.status);
+                                console.log('2r',r);
+                                console.log('3e.status && r',e.status && r);
+                                if(e.status && r) {
+                                console.log(r);
+                                commitIndex++;
+                                rollBackOneByOneJS();
+                            }
+                            else{
+                                showMessage(e.message,'ERROR');
+                            }
+                            overridePageMessages();
+                    });
+            }
+            else{
+                console.log('gdjasgadgasjd');
+                redirectToCommitRecordAF();
+            }
+        }
+        
+        function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	                     
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);                    
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');
+	    }
+        
+        var showMessage = function(Message_Str,Message_Type) {
+                var parentVal = $("[id$='msg']");
+                if(parentVal != undefined)
+                {
+                    parentVal.html('');
+                    if(Message_Str != '')
+                    {
+                        if(Message_Type == 'ERROR')
+                        {
+                            var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+                                            '<div class="message errorM3" role="alert">'+
+                                                '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                    '<tbody>'+
+                                                        '<tr valign="top">'+
+                                                            '<td><img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"></td>'+
+                                                            '<td class="messageCell">'+
+                                                                '<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+                                                                    '<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25" style="color:#cc0000">'+
+                                                                        '<h4>Error:</h4>'+
+                                                                    '</span>'+Message_Str+'<br>'+
+                                                                '</div>'+
+                                                            '</td>'+
+                                                        '</tr>'+
+                                                        '<tr>'+
+                                                            '<td></td>'+
+                                                            '<td></td>'+
+                                                        '</tr>'+
+                                                    '</tbody>'+
+                                                '</table>'+
+                                            '</div>'+
+                                        '</span>';
+                            parentVal.append(childVal);
+                        }
+                        else if(Message_Type == 'INFO')
+                        {
+                            var childVal = '<span id="j_id0:msg:j_id19:j_id20:0:j_id21">'+
+                                                '<div class="message infoM3" role="alert">'+
+                                                    '<table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">'+
+                                                        '<tbody>'+
+                                                            '<tr valign="top">'+
+                                                                '<td><img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"></td>'+
+                                                                '<td class="messageCell">'+
+                                                                    '<div id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id24" class="messageText">'+
+                                                                        '<span id="j_id0:msg:j_id19:j_id20:0:j_id21:j_id22:j_id25">'+
+                                                                            '<h4></h4>'+
+                                                                        '</span>'+Message_Str+'<br>'+
+                                                                    '</div>'+
+                                                                '</td>'+
+                                                            '</tr>'+
+                                                            '<tr>'+
+                                                                '<td></td>'+
+                                                                '<td></td>'+
+                                                            '</tr>'+
+                                                        '</tbody>'+
+                                                    '</table>'+
+                                                '</div>'+
+                                            '</span>';
+                            parentVal.append(childVal);
+                        }
+                    }
+                }
+            };
+    </script>
+</apex:page>

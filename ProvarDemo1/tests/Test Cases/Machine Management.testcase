@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testCase registryId="5adbf7f2-adf7-4d39-b5bf-b28fcaaf2c1d" visibility="Internal">
+  <summary/>
+  <steps>
+    <caseCall testCaseId="3a8434fc-fd8b-4cf3-8227-a5498086a48b" testCasePath="tests/Modules/Standard/Login to Salesforce.testcase" testItemId="1"/>
+    <caseCall testCaseId="88af42d6-fed1-48dd-93a4-cafa151be2df" testCasePath="tests/Modules/Machine/Create Machine.testcase" testItemId="3">
+      <arguments>
+        <argument argId="16ad05c0-f543-488a-b3c1-76db04031e61" id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument argId="fac92aad-3d7b-45b7-a592-8871df8bfc27" id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument argId="97c13987-fc17-418a-b2b5-8337e3c4be35" id="MachineName">
+          <value class="variable">
+            <path element="MachineName"/>
+          </value>
+        </argument>
+        <argument argId="20e9f611-c4ea-4673-8e9b-e90fedd05cb1" id="SerialNumber">
+          <value class="variable">
+            <path element="SerialNumber"/>
+          </value>
+        </argument>
+      </arguments>
+      <outputArguments>
+        <outputArgument id="machine__cId">
+          <name class="value" valueClass="string">machine__cId</name>
+        </outputArgument>
+      </outputArguments>
+    </caseCall>
+    <caseCall testCaseId="43fd0546-d7b0-4a5b-905b-5a9b5b0f0472" testCasePath="tests/Modules/Machine/Display Machine.testcase" testItemId="4">
+      <arguments>
+        <argument id="MachineName">
+          <value class="variable">
+            <path element="MachineName"/>
+          </value>
+        </argument>
+        <argument id="SerialNumber">
+          <value class="variable">
+            <path element="SerialNumber"/>
+          </value>
+        </argument>
+      </arguments>
+    </caseCall>
+  </steps>
+  <params>
+    <param linkedToUrl="provar:hasvalue:16ad05c0-f543-488a-b3c1-76db04031e61" name="FirstName" title="FirstName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:fac92aad-3d7b-45b7-a592-8871df8bfc27" name="LastName" title="LastName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:97c13987-fc17-418a-b2b5-8337e3c4be35" name="MachineName" title="MachineName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:20e9f611-c4ea-4673-8e9b-e90fedd05cb1" name="SerialNumber" title="SerialNumber">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+  </params>
+  <args>
+    <argument id="FirstName">
+      <value class="value" valueClass="string">Lloyd</value>
+    </argument>
+    <argument id="LastName">
+      <value class="value" valueClass="string">Reyes</value>
+    </argument>
+    <argument id="MachineName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Machine </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="SerialNumber">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">SN </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+  </args>
+</testCase>

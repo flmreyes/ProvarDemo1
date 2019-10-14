@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testCase id="91" registryId="e5587bf6-aace-4d96-9f9b-b2858bcd7c92" visibility="Internal">
+  <summary/>
+  <steps>
+    <caseCall testCaseId="3a8434fc-fd8b-4cf3-8227-a5498086a48b" testCasePath="tests/Modules/Standard/Login to Salesforce.testcase" testItemId="14">
+      <tags/>
+      <outputArguments>
+        <outputArgument id="contactId">
+          <name class="value" valueClass="string">contactId</name>
+        </outputArgument>
+      </outputArguments>
+    </caseCall>
+    <caseCall testCaseId="c24d10c7-0cd0-4ab8-85e5-32185c78d34d" testCasePath="tests/Modules/Contact/Create Contact.testcase" testItemId="58">
+      <arguments>
+        <argument argId="a4585b65-2560-4c5a-a063-bf4bc617bfaf" id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument argId="cf94e290-3fcc-41f8-aa75-5514f5afe02e" id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument argId="4afcd561-40d8-4018-9ef8-30bed89600f3" id="AccountName">
+          <value class="variable">
+            <path element="AccountName"/>
+          </value>
+        </argument>
+      </arguments>
+      <outputArguments>
+        <outputArgument id="contactId">
+          <name class="value" valueClass="string">contactId</name>
+        </outputArgument>
+      </outputArguments>
+    </caseCall>
+    <caseCall testCaseId="f2b2b4b4-f359-4206-9d09-7fe253b7213d" testCasePath="tests/Modules/Contact/Display Contact.testcase" testItemId="55">
+      <arguments>
+        <argument id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument id="ContactName">
+          <value class="add">
+            <lhs class="add">
+              <lhs class="variable">
+                <path element="FirstName"/>
+              </lhs>
+              <rhs class="value" valueClass="string"> </rhs>
+            </lhs>
+            <rhs class="variable">
+              <path element="LastName"/>
+            </rhs>
+          </value>
+        </argument>
+      </arguments>
+    </caseCall>
+  </steps>
+  <params>
+    <param linkedToUrl="provar:hasvalue:a4585b65-2560-4c5a-a063-bf4bc617bfaf" name="FirstName" title="FirstName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:cf94e290-3fcc-41f8-aa75-5514f5afe02e" name="LastName" title="LastName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+    <param linkedToUrl="provar:hasvalue:4afcd561-40d8-4018-9ef8-30bed89600f3" name="AccountName" title="AccountName">
+      <summary/>
+      <type>
+        <textType>
+          <constraints>
+            <valueConstraint name="minLength">0</valueConstraint>
+            <valueConstraint name="maxLength">9999</valueConstraint>
+            <valueConstraint name="regex"/>
+          </constraints>
+        </textType>
+      </type>
+    </param>
+  </params>
+  <args>
+    <argument id="FirstName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">First Name </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="LastName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Last Name </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="AccountName">
+      <value class="value" valueClass="string">Global Media</value>
+    </argument>
+  </args>
+</testCase>

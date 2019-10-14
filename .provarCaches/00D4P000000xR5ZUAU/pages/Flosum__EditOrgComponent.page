@@ -1,0 +1,4 @@
+<apex:page standardController="Flosum__Org_Component__c" sidebar="false">
+<c:TrackPanel />
+<h1>You can't edit a Org Component record.</h1>
+</apex:page>

@@ -1,0 +1,201 @@
+<apex:page standardController="Flosum__Organisation__c" extensions="Flosum.ScheduleTestExecutionController" action="{!orgAction}" sidebar="false">
+	<c:TrackPanel />
+	<c:Wait />
+	<apex:slds />
+ 	<apex:includeScript value="{!URLFOR($Resource.Flosum__jquery)}"/>
+	
+	<style>
+		.lbcls {
+			font-weight: 700 !important;
+		}
+		input[type="checkbox"] {
+			width: 1rem;
+		    height: 1rem;
+		   	border: 1px solid #dddbda;
+		    border-radius: 0.125rem;
+		    background: white!important;
+		    transition: border 0.1s linear, background-color 0.1s linear;
+		}
+		.slds-input {
+	    	font-size: small;
+	    }
+		.slds-page-header__title{
+		    font-weight: 500!important;
+		}
+		.customMessage * {
+			color: #fff!important
+		}
+		.message {
+			opacity: 0;
+		}
+		.customMessage {
+			margin-left: 0px !important;
+   			margin-top: 0px !important;
+			opacity: 1!important;
+			width: 100%;
+			font-size: 13px;
+			border: 0px;
+			padding-left: 10px;
+		}
+		.hourClass {
+			width: 5rem !important;
+		}
+		.minuteClass {
+			width: 55px !important;
+		}
+	</style>
+	
+	<div class="slds-scope">
+       	<apex:pagemessages id="msg"/>
+       	<div class="slds-page-header">
+            <div class="slds-media">
+            	<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Schedule Test Executions">Schedule Test Executions</h1>
+            </div>
+        </div>
+       	<apex:form styleClass="slds-form--stacked" id="form">
+        	<apex:actionFunction name="radioChange" rerender="block,monthlyBlock"  oncomplete="hide();"/>
+            <fieldset class="slds-box slds-theme--default">
+               	<apex:outputPanel layout="block" styleClass="slds-form--stacked" id="pBlock">
+               		<apex:outputPanel rendered="{!IF(authSuccesfull,true,false)}">
+						<div class="slds-col slds-no-flex slds-grid slds-align-top slds-float--right">
+							<div class="slds-button-group" role="group">
+								<apex:commandButton value="Schedule Test Execution" action="{!testExecution}" rendered="{!IF(authSuccesfull,true,false)}" onClick="show();" onComplete="overridePageMessages();hide();" reRender="msg" styleClass="slds-button slds-button_neutral disableitem"/>
+							</div>
+						</div>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+                        <apex:outputPanel styleClass=" slds-size_4-of-12" layout="block">
+                          	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular"  value="Target Org :" />
+	                     	<div class="slds-form-element__control">
+	                     		<apex:outputText style="background-color: #eef1f6" Styleclass="slds-input" value="{!Flosum__Organisation__c.Name}"/>
+	                     	</div>
+                        </apex:outputPanel>
+					</apex:outputPanel>
+				 	<apex:outputPanel id="respoOrg" styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+                    	<apex:outputPanel styleClass=" slds-size_4-of-12">
+                        	<apex:outputLabel styleClass="lbcls slds-form-element__label slds-text-heading_regular" value="Run Test :" />
+                        	<div class="slds-form-element__control">
+                            	<div class="slds-select_container">
+                                 	<apex:selectList size="1" value="{!selectedRunTest}" styleClass="slds-select slds-combobox__input disableitem">
+           								<apex:selectOptions value="{!runTestOption}"/>
+   									</apex:selectList> 
+								</div>
+                         	</div>
+                    	</apex:outputPanel>
+					</apex:outputPanel>
+					<apex:inputHidden value="{!selectedFrequency}" id="rad_opt"/>
+					<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+                    	<apex:outputPanel styleClass=" slds-size_4-of-12">
+                        	<label class="lbcls slds-form-element__label ">Frequency :</label>
+				  			<div class="slds-form-element__control" id="rdo_options">
+			    	  			<apex:repeat value="{!frequencyOptions}" var="selfrequency" >
+		                    		<span class="slds-radio">
+		                     			<input type="radio" id="selectedfrequency-{!selfrequency.value}"  name="selectedFrequency" onclick="document.getElementById(this.htmlFor).checked=true;" value="{!selfrequency.value}" />
+		                      			<label class="slds-radio__label" for="selectedfrequency-{!selfrequency.value}" >
+		                        			<span class="slds-radio--faux"/>
+		                        			<span class="slds-form-element__label">{!selfrequency.label}</span>
+		                      			</label>
+		                    		</span>
+		                		</apex:repeat>
+				   			</div>
+                    	</apex:outputPanel>
+					</apex:outputPanel>
+					<apex:outputPanel id="block">
+						<apex:outputPanel rendered="{!selectedFrequency == 'Weekly'}">
+							<fieldset class="slds-form-element slds-m-top_medium">
+		                		<label class="lbcls slds-form-element__label">Recurs every week on :</label>
+			                	<apex:selectCheckboxes value="{!selecteddayOfWeek}" layout="pageDirection">
+				    				<apex:selectOptions value="{!dayOfWeekOptions}"/>
+				    			</apex:selectCheckboxes>
+		            		</fieldset>
+						</apex:outputPanel>
+					</apex:outputPanel>
+			        <apex:outputPanel id="monthlyBlock">
+						<apex:outputPanel rendered="{!selectedFrequency == 'Monthly'}">
+							<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+                        		<apex:outputPanel styleClass=" slds-size_6-of-12" layout="block">
+	                        		<apex:outputPanel styleClass="slds-size_2-of-6">
+	                          			<label class="lbcls slds-form-element__label" for="onday">On Day :</label>
+	                        		</apex:outputPanel>
+	                        		<apex:outputPanel >
+	                          			<apex:selectList size="1" value="{!selectedMonthlyDate}" styleClass="slds-size_small slds-select slds-combobox__input disableitem minuteClass">
+								    		<apex:selectOptions value="{!monthlyDateOptions}"/>
+										</apex:selectList>
+	                        		</apex:outputPanel>
+	                         		<apex:outputPanel styleClass="slds-size_2-of-6">
+	                           			<label class=" slds-form-element__label slds-p-left_xx-small">of every month</label>
+	                        		</apex:outputPanel>
+                        		</apex:outputPanel>
+							</apex:outputPanel>
+						</apex:outputPanel>
+					</apex:outputPanel>
+					<apex:outputPanel styleClass="slds-m-top_small slds-grid slds-size--12-of-12" layout="block">
+                    	<apex:outputPanel styleClass=" slds-size_8-of-12" layout="block">
+                       		<apex:outputPanel styleClass="slds-size_3-of-8">
+	                           <label class="lbcls slds-form-element__label " for="onday">Preferred Start Time :</label>
+	                        </apex:outputPanel>
+	                        <apex:outputPanel >
+	                         	<apex:selectList size="1" value="{!selectedPreferedTime}" styleClass="slds-size_small slds-select slds-combobox__input disableitem hourClass">
+				                	<apex:selectOptions value="{!preferedTimeOptions}"/>
+				            	</apex:selectList>
+	                        </apex:outputPanel>
+	                        <apex:outputPanel styleClass="slds-size_1-of-8">
+	                           <label class=" slds-form-element__label slds-p-left_xx-small">And</label>
+	                        </apex:outputPanel>
+	                        <apex:outputPanel >
+	                           <apex:selectList size="1" value="{!selectedPreferedMinute}" styleClass="slds-size_small slds-select slds-combobox__input disableitem minuteClass">
+				                	<apex:selectOptions value="{!preferedTimeMinuteOptions}"/>
+				            	</apex:selectList>
+	                        </apex:outputPanel>
+	                        <apex:outputPanel styleClass="slds-size_1-of-8">
+	                        	<label class=" slds-form-element__label slds-p-left_xx-small">Minutes</label>
+	                        </apex:outputPanel>
+                    	</apex:outputPanel>
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</fieldset>
+		</apex:form>
+	</div>
+	
+	<script>
+		$(function() {
+		    var $radios = $('input:radio[name=selectedFrequency]');
+		    if($radios.is(':checked') === false) {
+		        $radios.filter('[value=Weekly]').prop('checked', true);
+		    }
+		});
+		
+		$(document).ready(function(){
+	       overridePageMessages();
+	       isLightningExperienceOrSalesforce1();    
+	    });
+	        
+	    function overridePageMessages(){    
+	        var textureEffect = '';
+	        textureEffect = 'slds-theme--alert-texture';
+	        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);          
+	        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);    
+	        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                  
+	        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);    
+	        $('.btn').removeClass('btn');                 
+	        $('.errorM3').removeClass('errorM3'); 
+	        $('.confirmM3').removeClass('confirmM3'); 
+	        $('.infoM3').removeClass('infoM3');   
+	        $('.warningM3').removeClass('warningM3');  
+	    }
+	    
+        $('[id$=rdo_options] input').on('change', function () {
+        	show();
+            if ($(this).is(':radio')) {
+                $('[id$=rad_opt]').val($(this).attr('value'));
+            }
+            radioChange();
+        });
+        
+	    function isLightningExperienceOrSalesforce1() {
+		    if(!((typeof sforce != 'undefined') && sforce && (!!sforce.one))){
+		    	$("html").css({"background-color": "#1797c0"});
+		    }
+		}
+	</script>
+</apex:page>

@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sfOrgMetadataIndex builtAgainstVersion="1.9.13.06" lastStaleCheckUtc="0" orgId="00D4P000000xR5ZUAU">
+  <metadataTypes>
+    <entry>
+      <key valueClass="string">QuickAction</key>
+      <value valueClass="list">
+        <sfMetadataFile file="quickActions/LogACall.quickAction" fullName="LogACall" id="09D4P000002zLhoUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.Defer_0.quickAction" fullName="Task.Defer_0" id="09D4P000002zLmCUAU" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile file="quickActions/Task.UpdateStatus.quickAction" fullName="Task.UpdateStatus" id="09D4P000002zLhsUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/CollaborationGroup.NewGroupMember.quickAction" fullName="CollaborationGroup.NewGroupMember" id="09D4P000002zLi6UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewEvent.quickAction" fullName="NewEvent" id="09D4P000002zLhnUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewLead.quickAction" fullName="NewLead" id="09D4P000002zLhzUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Case.NewChildCase.quickAction" fullName="Case.NewChildCase" id="09D4P000002zLi3UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.EditDescription_0.quickAction" fullName="Task.EditDescription_0" id="09D4P000002zLmBUAU" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile file="quickActions/Task.UpdateStatus_0.quickAction" fullName="Task.UpdateStatus_0" id="09D4P000002zLmDUAU" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile file="quickActions/NewGroup.quickAction" fullName="NewGroup" id="09D4P000002zLi5UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/FeedItem.NewTaskFromFeedItem.quickAction" fullName="FeedItem.NewTaskFromFeedItem" id="09D4P000002zLhvUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewAccount.quickAction" fullName="NewAccount" id="09D4P000002zLhxUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewContact.quickAction" fullName="NewContact" id="09D4P000002zLhyUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.EditDescription.quickAction" fullName="Task.EditDescription" id="09D4P000002zLhqUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewOpportunity.quickAction" fullName="NewOpportunity" id="09D4P000002zLi0UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.UpdatePriority.quickAction" fullName="Task.UpdatePriority" id="09D4P000002zLhtUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewCase.quickAction" fullName="NewCase" id="09D4P000002zLi2UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Case.SendEmail.quickAction" fullName="Case.SendEmail" id="09D4P000002zLhwUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/SendEmail.quickAction" fullName="SendEmail" id="09D4P000002zLhuUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/CollaborationGroup.NewGroupRecord.quickAction" fullName="CollaborationGroup.NewGroupRecord" id="09D4P000002zLi4UAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.Defer.quickAction" fullName="Task.Defer" id="09D4P000002zLhrUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/Task.UpdatePriority_0.quickAction" fullName="Task.UpdatePriority_0" id="09D4P000002zLmEUAU" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile file="quickActions/NewTask.quickAction" fullName="NewTask" id="09D4P000002zLhpUAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="quickActions/NewNote.quickAction" fullName="NewNote" id="09D4P000002zLi1UAE" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">FlexiPage</key>
+      <value valueClass="list">
+        <sfMetadataFile file="flexipages/Flosum__Commit_Record_Page.flexipage" fullName="Flosum__Commit_Record_Page" id="0M04P000000I5jSSAS" lastModifiedDate="1560338208000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Branch_Record_Page.flexipage" fullName="Flosum__Branch_Record_Page" id="0M04P000000I5jQSAS" lastModifiedDate="1560338208000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Component_Record_Page.flexipage" fullName="Flosum__Component_Record_Page" id="0M04P000000I5jTSAS" lastModifiedDate="1560338208000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Patch_Record_Page.flexipage" fullName="Flosum__Patch_Record_Page" id="0M04P000000I5jVSAS" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Build_Record_Page.flexipage" fullName="Flosum__Build_Record_Page" id="0M04P000000I5jRSAS" lastModifiedDate="1560338208000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Org_Record_Page.flexipage" fullName="Flosum__Org_Record_Page" id="0M04P000000I5jUSAS" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Pull_Request_Record_Page.flexipage" fullName="Flosum__Pull_Request_Record_Page" id="0M04P000000I5jWSAS" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="flexipages/Flosum__Snapshot_Record_Page.flexipage" fullName="Flosum__Snapshot_Record_Page" id="0M04P000000I5jXSAS" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">CustomObject</key>
+      <value valueClass="list">
+        <sfMetadataFile file="objects/Flosum__Repository__c.object" fullName="Flosum__Repository__c" id="01I4P000000zGctUAE" lastModifiedDate="1560338285000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/AccountBrand.object" fullName="AccountBrand" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Build__c.object" fullName="Flosum__Build__c" id="01I4P000000zGcRUAU" lastModifiedDate="1560338281000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__AuthorizationDetails__c.object" fullName="Flosum__AuthorizationDetails__c" id="01I4P000000zGcOUAU" lastModifiedDate="1560338189000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Event.object" fullName="Event" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Topic.object" fullName="Topic" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Macro.object" fullName="Macro" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Pricebook2.object" fullName="Pricebook2" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Campaign.object" fullName="Campaign" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ServiceContract.object" fullName="ServiceContract" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ForecastingCategoryMapping.object" fullName="ForecastingCategoryMapping" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/CollaborationGroup.object" fullName="CollaborationGroup" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ScorecardMetric.object" fullName="ScorecardMetric" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/AuthorizationFormText.object" fullName="AuthorizationFormText" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ExpressionFilterCriteria.object" fullName="ExpressionFilterCriteria" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/QuickText.object" fullName="QuickText" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Pipeline__c.object" fullName="Flosum__Pipeline__c" id="01I4P000000zGcnUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Solution.object" fullName="Solution" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Org_Permission__c.object" fullName="Flosum__Org_Permission__c" id="01I4P000000zGciUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Activity.object" fullName="Activity" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Deployment_Approval__c.object" fullName="Flosum__Deployment_Approval__c" id="01I4P000000zGcYUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Question.object" fullName="Question" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/UserProvisioningRequest.object" fullName="UserProvisioningRequest" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Patch__c.object" fullName="Flosum__Patch__c" id="01I4P000000zGcmUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Order.object" fullName="Order" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/EmailMessage.object" fullName="EmailMessage" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/OrgMetricScanSummary.object" fullName="OrgMetricScanSummary" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ContractLineItem.object" fullName="ContractLineItem" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Build_Manifest__c.object" fullName="Flosum__Build_Manifest__c" id="01I4P000000zGcQUAU" lastModifiedDate="1560338281000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/ContactPointTypeConsent.object" fullName="ContactPointTypeConsent" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Task.object" fullName="Task" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ExchangeUserMapping.object" fullName="ExchangeUserMapping" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Site.object" fullName="Site" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/SocialPersona.object" fullName="SocialPersona" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/OpportunityLineItem.object" fullName="OpportunityLineItem" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Patch_Application__c.object" fullName="Flosum__Patch_Application__c" id="01I4P000000zGckUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Pull_Request__c.object" fullName="Flosum__Pull_Request__c" id="01I4P000000zGcpUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Pull_Request_Reviewer__c.object" fullName="Flosum__Pull_Request_Reviewer__c" id="01I4P000000zGcoUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Branch__c.object" fullName="Flosum__Branch__c" id="01I4P000000zGcPUAU" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Scorecard.object" fullName="Scorecard" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ScorecardAssociation.object" fullName="ScorecardAssociation" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/SocialPost.object" fullName="SocialPost" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/User.object" fullName="User" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Component_History__c.object" fullName="Flosum__Component_History__c" id="01I4P000000zGcVUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Manifest__c.object" fullName="Flosum__Manifest__c" id="01I4P000000zGcdUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Comment_Pull_Request__c.object" fullName="Flosum__Comment_Pull_Request__c" id="01I4P000000zGcSUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Trail_Component__c.object" fullName="Flosum__Trail_Component__c" id="01I4P000000zGczUAE" lastModifiedDate="1560338285000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Image.object" fullName="Image" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__RepositoryCredentials__c.object" fullName="Flosum__RepositoryCredentials__c" id="01I4P000000zGcqUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Patch_Manifest__c.object" fullName="Flosum__Patch_Manifest__c" id="01I4P000000zGclUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Asset.object" fullName="Asset" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/QuickTextUsage.object" fullName="QuickTextUsage" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Contact.object" fullName="Contact" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Namespace_Setting__c.object" fullName="Flosum__Namespace_Setting__c" id="01I4P000000zGcgUAE" lastModifiedDate="1560338190000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Security_Settings__c.object" fullName="Flosum__Security_Settings__c" id="01I4P000000zGcuUAE" lastModifiedDate="1560338191000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/OrgMetricScanResult.object" fullName="OrgMetricScanResult" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Component__c.object" fullName="Flosum__Component__c" id="01I4P000000zGcWUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Metadata_Item__c.object" fullName="Flosum__Metadata_Item__c" id="01I4P000000zGceUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/AccountContactRole.object" fullName="AccountContactRole" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Org_Component__c.object" fullName="Flosum__Org_Component__c" id="01I4P000000zGchUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/StreamingChannel.object" fullName="StreamingChannel" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/CaseMilestone.object" fullName="CaseMilestone" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/AssistantProgress.object" fullName="AssistantProgress" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ContentVersion.object" fullName="ContentVersion" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/LinkedArticle.object" fullName="LinkedArticle" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__HerokuCredentials__c.object" fullName="Flosum__HerokuCredentials__c" id="01I4P000000zGccUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/AuthorizationForm.object" fullName="AuthorizationForm" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/MacroUsage.object" fullName="MacroUsage" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/CollaborationGroupMember.object" fullName="CollaborationGroupMember" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/MacroInstruction.object" fullName="MacroInstruction" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/DuplicateRecordSet.object" fullName="DuplicateRecordSet" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Commit__c.object" fullName="Flosum__Commit__c" id="01I4P000000zGcUUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Machine__c.object" fullName="Machine__c" id="01I4P000001WrSQUA0" lastModifiedDate="1571000520000"/>
+        <sfMetadataFile file="objects/PartnerRole.object" fullName="PartnerRole" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Sync_Job__c.object" fullName="Flosum__Sync_Job__c" id="01I4P000000zGcwUAE" lastModifiedDate="1560338285000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/FeedItem.object" fullName="FeedItem" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Entitlement.object" fullName="Entitlement" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Contract.object" fullName="Contract" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/TopicAssignment.object" fullName="TopicAssignment" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Sync__c.object" fullName="Flosum__Sync__c" id="01I4P000000zGcxUAE" lastModifiedDate="1560338191000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Lead.object" fullName="Lead" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/OpportunityCompetitor.object" fullName="OpportunityCompetitor" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/AssetRelationship.object" fullName="AssetRelationship" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Repository_Permission__c.object" fullName="Flosum__Repository_Permission__c" id="01I4P000000zGcsUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Destructive_Manifest__c.object" fullName="Flosum__Destructive_Manifest__c" id="01I4P000000zGcZUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/AuthorizationFormConsent.object" fullName="AuthorizationFormConsent" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Case.object" fullName="Case" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ContractContactRole.object" fullName="ContractContactRole" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Flosum_Task__c.object" fullName="Flosum__Flosum_Task__c" id="01I4P000000zGcbUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/PromptAction.object" fullName="PromptAction" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Metadata_Log__c.object" fullName="Flosum__Metadata_Log__c" id="01I4P000000zGcfUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/ChatterActivity.object" fullName="ChatterActivity" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/EntitlementContact.object" fullName="EntitlementContact" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Repository_Manifest__c.object" fullName="Flosum__Repository_Manifest__c" id="01I4P000000zGcrUAE" lastModifiedDate="1560338284000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Opportunity.object" fullName="Opportunity" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/AuthorizationFormDataUse.object" fullName="AuthorizationFormDataUse" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Commit_Manifest__c.object" fullName="Flosum__Commit_Manifest__c" id="01I4P000000zGcTUAU" lastModifiedDate="1560338282000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Organisation__c.object" fullName="Flosum__Organisation__c" id="01I4P000000zGcjUAE" lastModifiedDate="1560338283000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Reply.object" fullName="Reply" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/CampaignMember.object" fullName="CampaignMember" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/OrderItem.object" fullName="OrderItem" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Flosum__Snapshot__c.object" fullName="Flosum__Snapshot__c" id="01I4P000000zGcvUAE" lastModifiedDate="1560338285000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/Flosum__Temp_Log__c.object" fullName="Flosum__Temp_Log__c" id="01I4P000000zGcyUAE" lastModifiedDate="1560338285000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="objects/OpportunityContactRole.object" fullName="OpportunityContactRole" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/DataUseLegalBasis.object" fullName="DataUseLegalBasis" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/DataUsePurpose.object" fullName="DataUsePurpose" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/ExpressionFilter.object" fullName="ExpressionFilter" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Product2.object" fullName="Product2" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Individual.object" fullName="Individual" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/RecordMergeHistory.object" fullName="RecordMergeHistory" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/FAQ__kav.object" fullName="FAQ__kav" id="01I4P000001e8OwUAI" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="objects/CaseContactRole.object" fullName="CaseContactRole" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Idea.object" fullName="Idea" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/RecordAction.object" fullName="RecordAction" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/PricebookEntry.object" fullName="PricebookEntry" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/MacroAction.object" fullName="MacroAction" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/DuplicateRecordItem.object" fullName="DuplicateRecordItem" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Account.object" fullName="Account" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objects/Global.object" fullName="Global"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">CustomTab</key>
+      <value valueClass="list">
+        <sfMetadataFile file="tabs/Flosum__Settings.tab" fullName="Flosum__Settings" id="01r4P000000V6LDQA0" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="tabs/Flosum__Search_Metadata.tab" fullName="Flosum__Search_Metadata" id="01r4P000000V6LCQA0" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="tabs/Machine__c.tab" fullName="Machine__c" id="01r4P000000OyDQQA0" lastModifiedDate="1570998829000"/>
+        <sfMetadataFile file="tabs/Getting_Started.tab" fullName="Getting_Started" id="01r4P000000v0xaQAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="tabs/Flosum__Repository.tab" fullName="Flosum__Repository" id="01r4P000000V6LBQA0" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="tabs/Flosum__Snapshot_Comparison.tab" fullName="Flosum__Snapshot_Comparison" id="01r4P000000V6LEQA0" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Profile</key>
+      <value valueClass="list">
+        <sfMetadataFile file="profiles/Chatter External User.profile" fullName="Chatter External User" id="00e4P000001UP2WQAW" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile file="profiles/MarketingProfile.profile" fullName="MarketingProfile" id="00e4P000001UP2TQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/Guest License User.profile" fullName="Guest License User" id="00e4P000001UP2YQAW" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile file="profiles/High Volume Customer Portal User.profile" fullName="High Volume Customer Portal User" id="00e4P000001UP2XQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/SolutionManager.profile" fullName="SolutionManager" id="00e4P000001UP2SQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/Chatter Free User.profile" fullName="Chatter Free User" id="00e4P000001UP2PQAW" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile file="profiles/Chatter Moderator User.profile" fullName="Chatter Moderator User" id="00e4P000001UP2VQAW" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile file="profiles/Trial Customer Portal User.profile" fullName="Trial Customer Portal User" id="00e4P000001UP2NQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/ReadOnly.profile" fullName="ReadOnly" id="00e4P000001UP2RQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/Admin.profile" fullName="Admin" id="00e4P000001UP2KQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/ContractManager.profile" fullName="ContractManager" id="00e4P000001UP2UQAW" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile file="profiles/Standard.profile" fullName="Standard" id="00e4P000001UP2QQAW" lastModifiedDate="1570999214000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">CustomApplication</key>
+      <value valueClass="list">
+        <sfMetadataFile file="applications/Service_Cloud_Console.app" fullName="Service_Cloud_Console" id="02u4P0000010F0lQAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="applications/standard__LightningSales.app" fullName="standard__LightningSales" id="02u4P000000ROOeQAO" lastModifiedDate="1559896414000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__AppLauncher.app" fullName="standard__AppLauncher" id="02u4P000000ROBFQA4" lastModifiedDate="1559872336000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/Chatter_Answers_Moderator.app" fullName="Chatter_Answers_Moderator" id="02u4P0000010F0pQAE" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="applications/standard__LightningBolt.app" fullName="standard__LightningBolt" id="02u4P000000ROBEQA4" lastModifiedDate="1559872336000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Sales.app" fullName="standard__Sales" id="02u4P0000010F0nQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Service.app" fullName="standard__Service" id="02u4P0000010F0sQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Platform.app" fullName="standard__Platform" id="02u4P0000010F0rQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Chatter.app" fullName="standard__Chatter" id="02u4P0000010F0uQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__LightningInstrumentation.app" fullName="standard__LightningInstrumentation" id="02u4P0000010F0qQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/Flosum__Flosum.app" fullName="Flosum__Flosum" id="02u4P000000RVJ7QAO" lastModifiedDate="1560338209000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="applications/standard__ServiceConsole.app" fullName="standard__ServiceConsole" id="02u4P0000010F0oQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Marketing.app" fullName="standard__Marketing" id="02u4P0000010F0tQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+        <sfMetadataFile file="applications/standard__Community.app" fullName="standard__Community" id="02u4P0000010F0vQAE" lastModifiedDate="1559872313000" namespacePrefix="standard"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">DataCategoryGroup</key>
+      <value valueClass="list">
+        <sfMetadataFile file="datacategorygroups/Topic.datacategorygroup" fullName="Topic" id="" lastModifiedDate="0"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ApexPage</key>
+      <value valueClass="list">
+        <sfMetadataFile file="pages/Flosum__OrgComponentToBranchCommit.page" fullName="Flosum__OrgComponentToBranchCommit" id="0664P000001vLYcQAM" lastModifiedDate="1560338268000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__UpdateOrganization.page" fullName="Flosum__UpdateOrganization" id="0664P000001vLZ9QAM" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__AddPatchManifest.page" fullName="Flosum__AddPatchManifest" id="0664P000001vLXqQAM" lastModifiedDate="1560338250000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ca_tour_style.page" fullName="ca_tour_style" id="0664P000002LEaNQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__EditMetadataItem.page" fullName="Flosum__EditMetadataItem" id="0664P000001vLYHQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapshotToPatches.page" fullName="Flosum__SnapshotToPatches" id="0664P000001vLZ5QAM" lastModifiedDate="1560338279000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PatchRollback.page" fullName="Flosum__PatchRollback" id="0664P000001vLYgQAM" lastModifiedDate="1560338270000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__JSSnapshotRetrieval.page" fullName="Flosum__JSSnapshotRetrieval" id="0664P000001vLYQQA2" lastModifiedDate="1560338262000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapshotToGitCommit.page" fullName="Flosum__SnapshotToGitCommit" id="0664P000001vLZ4QAM" lastModifiedDate="1560338188000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SyncJobs.page" fullName="Flosum__SyncJobs" id="0664P000001vLZ6QAM" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ProfileSnapshot.page" fullName="Flosum__ProfileSnapshot" id="0664P000001vLYkQAM" lastModifiedDate="1560338273000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__RetrievalType.page" fullName="Flosum__RetrievalType" id="0664P000001vLYsQAM" lastModifiedDate="1560338274000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__RegisterOrganizations.page" fullName="Flosum__RegisterOrganizations" id="0664P000001vLYoQAM" lastModifiedDate="1560338274000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__TrackStandardChanges.page" fullName="Flosum__TrackStandardChanges" id="0664P000001vLZ8QAM" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/scc_tour_style.page" fullName="scc_tour_style" id="0664P000002LEaKQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__ComponentDeploy.page" fullName="Flosum__ComponentDeploy" id="0664P000001vLXyQAM" lastModifiedDate="1560338182000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/scc_tour_main.page" fullName="scc_tour_main" id="0664P000002LEaJQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__ComputeComparison.page" fullName="Flosum__ComputeComparison" id="0664P000001vLY0QAM" lastModifiedDate="1560338182000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditBuild.page" fullName="Flosum__EditBuild" id="0664P000001vLY9QAM" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapshotToBranchCommit.page" fullName="Flosum__SnapshotToBranchCommit" id="0664P000001vLZ3QAM" lastModifiedDate="1560338279000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SchedulePatchDeployment.page" fullName="Flosum__SchedulePatchDeployment" id="0664P000001vLYvQAM" lastModifiedDate="1560338276000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CreateMultiMetaPatch.page" fullName="Flosum__CreateMultiMetaPatch" id="0664P000001vLY2QAM" lastModifiedDate="1560338256000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapshotDelete.page" fullName="Flosum__SnapshotDelete" id="0664P000001vLZ2QAM" lastModifiedDate="1560338278000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditMetadataLog.page" fullName="Flosum__EditMetadataLog" id="0664P000001vLYIQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SearchMetadata.page" fullName="Flosum__SearchMetadata" id="0664P000001vLYyQAM" lastModifiedDate="1560338277000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditCommitManifest.page" fullName="Flosum__EditCommitManifest" id="0664P000001vLYCQA2" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditCommit.page" fullName="Flosum__EditCommit" id="0664P000001vLYBQA2" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ComponentComparisonDetail.page" fullName="Flosum__ComponentComparisonDetail" id="0664P000001vLXwQAM" lastModifiedDate="1560338254000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditMetaData.page" fullName="Flosum__EditMetaData" id="0664P000001vLYGQA2" lastModifiedDate="1560338183000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ViewMetadata.page" fullName="Flosum__ViewMetadata" id="0664P000001vLZAQA2" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__InsertPullRequest.page" fullName="Flosum__InsertPullRequest" id="0664P000001vLYPQA2" lastModifiedDate="1560338262000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ReplaceSuffix.page" fullName="Flosum__ReplaceSuffix" id="0664P000001vLYqQAM" lastModifiedDate="1560338274000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__RetrieveChanges.page" fullName="Flosum__RetrieveChanges" id="0664P000001vLYtQAM" lastModifiedDate="1560338275000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CreateGitSnapshot.page" fullName="Flosum__CreateGitSnapshot" id="0664P000001vLY1QAM" lastModifiedDate="1560338182000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CreateMultiMetaSnapshot.page" fullName="Flosum__CreateMultiMetaSnapshot" id="0664P000001vLY3QAM" lastModifiedDate="1560338257000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersHelp.page" fullName="ChatterAnswersHelp" id="0664P000002LEaIQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__AddToPatch.page" fullName="Flosum__AddToPatch" id="0664P000001vLXrQAM" lastModifiedDate="1560338251000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersChangePassword.page" fullName="ChatterAnswersChangePassword" id="0664P000002LEaGQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__ReCreateMultiMetaSnapshot.page" fullName="Flosum__ReCreateMultiMetaSnapshot" id="0664P000001vLYmQAM" lastModifiedDate="1560338273000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditPatchManifest.page" fullName="Flosum__EditPatchManifest" id="0664P000001vLYLQA2" lastModifiedDate="1560338261000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PatchImpactAnalysis.page" fullName="Flosum__PatchImpactAnalysis" id="0664P000001vLYeQAM" lastModifiedDate="1560338270000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditComponent.page" fullName="Flosum__EditComponent" id="0664P000001vLYDQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PatchToBranch.page" fullName="Flosum__PatchToBranch" id="0664P000001vLYhQAM" lastModifiedDate="1560338271000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__AppSetting.page" fullName="Flosum__AppSetting" id="0664P000001vLXsQAM" lastModifiedDate="1560338252000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditBuildManifest.page" fullName="Flosum__EditBuildManifest" id="0664P000001vLYAQA2" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapRepoComparison.page" fullName="Flosum__SnapRepoComparison" id="0664P000001vLZ0QAM" lastModifiedDate="1560338277000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CreateSnapshotLocalFlosum.page" fullName="Flosum__CreateSnapshotLocalFlosum" id="0664P000001vLY5QAM" lastModifiedDate="1560338258000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MassDeletePatchItems.page" fullName="Flosum__MassDeletePatchItems" id="0664P000001vLYTQA2" lastModifiedDate="1560338263000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ScheduleTestExecution.page" fullName="Flosum__ScheduleTestExecution" id="0664P000001vLYxQAM" lastModifiedDate="1560338277000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditComponentHistory.page" fullName="Flosum__EditComponentHistory" id="0664P000001vLYEQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__OrgComponentToPatches.page" fullName="Flosum__OrgComponentToPatches" id="0664P000001vLYdQAM" lastModifiedDate="1560338269000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ObjectReport.page" fullName="Flosum__ObjectReport" id="0664P000001vLYbQAM" lastModifiedDate="1560338268000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ScheduleSnapshot.page" fullName="Flosum__ScheduleSnapshot" id="0664P000001vLYwQAM" lastModifiedDate="1560338277000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__DynamicLookup.page" fullName="Flosum__DynamicLookup" id="0664P000001vLY8QAM" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersRegistration.page" fullName="ChatterAnswersRegistration" id="0664P000002LEaDQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Trial_Tour.page" fullName="Trial_Tour" id="0664P000002LEaLQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__ComponentComparison.page" fullName="Flosum__ComponentComparison" id="0664P000001vLXvQAM" lastModifiedDate="1560338253000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ca_tour_main.page" fullName="ca_tour_main" id="0664P000002LEaMQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__HistoryComparison.page" fullName="Flosum__HistoryComparison" id="0664P000001vLYOQA2" lastModifiedDate="1560338261000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PatchRedirect.page" fullName="Flosum__PatchRedirect" id="0664P000001vLYfQAM" lastModifiedDate="1560338270000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__AddDestructiveChanges.page" fullName="Flosum__AddDestructiveChanges" id="0664P000001vLXpQAM" lastModifiedDate="1560338249000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MergeCommit.page" fullName="Flosum__MergeCommit" id="0664P000001vLYWQA2" lastModifiedDate="1560338265000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MetaQuickDeploy.page" fullName="Flosum__MetaQuickDeploy" id="0664P000001vLYYQA2" lastModifiedDate="1560338266000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/TrialCustomerPortalHomePage.page" fullName="TrialCustomerPortalHomePage" id="0664P000002LEaBQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__EditPatchApplication.page" fullName="Flosum__EditPatchApplication" id="0664P000001vLYKQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__Repository.page" fullName="Flosum__Repository" id="0664P000001vLYrQAM" lastModifiedDate="1560338274000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__DownloadComponents.page" fullName="Flosum__DownloadComponents" id="0664P000001vLY7QAM" lastModifiedDate="1560338259000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PostInstallScript.page" fullName="Flosum__PostInstallScript" id="0664P000001vLYiQAM" lastModifiedDate="1560338271000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CreateScratchOrg.page" fullName="Flosum__CreateScratchOrg" id="0664P000001vLY4QAM" lastModifiedDate="1560338257000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__PullRequest.page" fullName="Flosum__PullRequest" id="0664P000001vLYlQAM" lastModifiedDate="1560338273000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MergeBranches.page" fullName="Flosum__MergeBranches" id="0664P000001vLYVQA2" lastModifiedDate="1560338264000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__Redirect.page" fullName="Flosum__Redirect" id="0664P000001vLYnQAM" lastModifiedDate="1560338273000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__RetrieveLogs.page" fullName="Flosum__RetrieveLogs" id="0664P000001vLYuQAM" lastModifiedDate="1560338275000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MergePatches.page" fullName="Flosum__MergePatches" id="0664P000001vLYXQA2" lastModifiedDate="1560338266000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditSnapshot.page" fullName="Flosum__EditSnapshot" id="0664P000001vLYNQA2" lastModifiedDate="1560338261000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MassDeleteSnapshot.page" fullName="Flosum__MassDeleteSnapshot" id="0664P000001vLYUQA2" lastModifiedDate="1560338263000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersLogin.page" fullName="ChatterAnswersLogin" id="0664P000002LEaCQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/ChatterAnswersAgentView.page" fullName="ChatterAnswersAgentView" id="0664P000002LEaHQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__CommitRollback.page" fullName="Flosum__CommitRollback" id="0664P000001vLXuQAM" lastModifiedDate="1560338253000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ComponentPatchDeploy.page" fullName="Flosum__ComponentPatchDeploy" id="0664P000001vLXzQAM" lastModifiedDate="1560338255000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SnapToRepoCommit.page" fullName="Flosum__SnapToRepoCommit" id="0664P000001vLZ1QAM" lastModifiedDate="1560338278000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__Release2017Feb.page" fullName="Flosum__Release2017Feb" id="0664P000001vLYpQAM" lastModifiedDate="1560338274000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditOrgComponent.page" fullName="Flosum__EditOrgComponent" id="0664P000001vLYJQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ComponentComparisonPanel.page" fullName="Flosum__ComponentComparisonPanel" id="0664P000001vLXxQAM" lastModifiedDate="1560338182000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__ManifestRedirect.page" fullName="Flosum__ManifestRedirect" id="0664P000001vLYRQA2" lastModifiedDate="1560338262000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SecuritySettings.page" fullName="Flosum__SecuritySettings" id="0664P000001vLYzQAM" lastModifiedDate="1560338277000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MetadataComparison.page" fullName="Flosum__MetadataComparison" id="0664P000001vLYZQA2" lastModifiedDate="1560338267000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditDestructiveManifest.page" fullName="Flosum__EditDestructiveManifest" id="0664P000001vLYFQA2" lastModifiedDate="1560338260000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersForgotPasswordConfirm.page" fullName="ChatterAnswersForgotPasswordConfirm" id="0664P000002LEaFQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__MultiMetaAddManifest.page" fullName="Flosum__MultiMetaAddManifest" id="0664P000001vLYaQAM" lastModifiedDate="1560338267000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__CustomLookup.page" fullName="Flosum__CustomLookup" id="0664P000001vLY6QAM" lastModifiedDate="1560338258000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__EditRepositorySettings.page" fullName="Flosum__EditRepositorySettings" id="0664P000001vLYMQA2" lastModifiedDate="1560338261000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__MassDeleteComponents.page" fullName="Flosum__MassDeleteComponents" id="0664P000001vLYSQA2" lastModifiedDate="1560338263000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__SyncWithBranch.page" fullName="Flosum__SyncWithBranch" id="0664P000001vLZ7QAM" lastModifiedDate="1560338280000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/ChatterAnswersForgotPassword.page" fullName="ChatterAnswersForgotPassword" id="0664P000002LEaEQAW" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="pages/Flosum__ProfileComparison.page" fullName="Flosum__ProfileComparison" id="0664P000001vLYjQAM" lastModifiedDate="1560338272000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="pages/Flosum__BranchToPatch.page" fullName="Flosum__BranchToPatch" id="0664P000001vLXtQAM" lastModifiedDate="1560338252000" namespacePrefix="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ListView</key>
+      <value valueClass="list">
+        <sfMetadataFile fullName="Event.TodaysAgenda" id="00B4P000006KWMnUAO" lastModifiedDate="1560592285000"/>
+        <sfMetadataFile fullName="Contract.AllActivatedContracts" id="00B4P0000071xw5UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.MyOpportunities" id="00B4P0000071xwtUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Idea.Ideas_Last_7_Days" id="00B4P0000071xvqUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Activity.MyDelegatedActivities" id="00B4P0000071xwyUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="ServiceContract.All_ServiceContracts" id="00B4P0000071xvxUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.OverdueTasks" id="00B4P0000071xvKUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contact.AllContacts" id="00B4P0000071xvAUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Lead.MyUnreadLeads" id="00B4P0000071xwHUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Entitlement.All_Entitlements" id="00B4P0000071xvwUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="AuthorizationForm.All_AuthorizationForms" id="00B4P000007q63SUAQ" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Contract.AllDraftContracts" id="00B4P0000071xw6UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="DataUseLegalBasis.All_DataUseLegalBases" id="00B4P000007q63eUAA" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Case.Sample_Cases" id="00B4P0000071xvzUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.AllOpportunities" id="00B4P0000071xwrUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="AuthorizationFormDataUse.All_AuthorizationFormDataUses" id="00B4P000007q63VUAQ" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Opportunity.ClosingNextMonth" id="00B4P0000071xwQUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Event.MyTeamsUpcomingEvents" id="00B4P000006KWMpUAO" lastModifiedDate="1560592285000"/>
+        <sfMetadataFile fullName="Event.MyUpcomingEvents" id="00B4P000006KWMoUAO" lastModifiedDate="1560592285000"/>
+        <sfMetadataFile fullName="ContactPointTypeConsent.All_ContactPointTypeConsents" id="00B4P000007q63bUAA" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="User.AllUsers" id="00B4P0000071xvEUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contract.AllInApprovalContracts" id="00B4P0000071xw9UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="User.ActiveUsers" id="00B4P0000071xwMUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Campaign.MyActiveCampaigns" id="00B4P0000071xw0UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contact.BirthdaysThisMonth" id="00B4P0000071xwCUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.TodaysTasks" id="00B4P0000071xvJUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.RecurringTasks" id="00B4P0000071xvNUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.DelegatedTasks" id="00B4P0000071xvLUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Event.MyRecentEvents" id="00B4P000006KWMqUAO" lastModifiedDate="1560592285000"/>
+        <sfMetadataFile fullName="Activity.MyTeamsActivities" id="00B4P0000071xwzUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.CompletedTasks" id="00B4P0000071xvMUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Activity.UpcomingEvents" id="00B4P0000071xwPUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Solution.AllReviewedSolutions" id="00B4P0000071xwFUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="SocialPost.AllSocialPosts" id="00B4P0000071xxfUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Event.MyTeamsRecentEvents" id="00B4P000006KWMrUAO" lastModifiedDate="1560592285000"/>
+        <sfMetadataFile fullName="Contact.NewThisWeek" id="00B4P0000071xwDUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Scorecard.MyScorecards" id="00B4P0000071xvQUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Account.NewThisWeek" id="00B4P0000071xwBUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.UnscheduledTasks" id="00B4P0000071xvOUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="DataUsePurpose.All_DataUsePurposes" id="00B4P000007q63dUAA" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Opportunity.Default_Opportunity_Pipeline" id="00B4P000006JSpKUAW" lastModifiedDate="1559896414000"/>
+        <sfMetadataFile fullName="SocialPersona.AllSocialPersonas" id="00B4P000006JRLBUA4" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile fullName="Account.MyAccounts" id="00B4P0000071xwlUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Lead.TodaysLeads" id="00B4P0000071xwGUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.Won" id="00B4P0000071xwJUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Account.AllAccounts" id="00B4P0000071xwYUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.ClosingThisMonth" id="00B4P0000071xvBUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Solution.AllUnreviewedSolutions" id="00B4P0000071xwEUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="User.AdminUsers" id="00B4P0000071xwLUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Case.AllOpenCases" id="00B4P0000071xv8UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Order.AllOrders" id="00B4P0000071xweUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.NewThisWeek" id="00B4P0000071xwKUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="AuthorizationFormText.All_AuthorizationFormText" id="00B4P000007q63TUAQ" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Contract.AllContracts" id="00B4P0000071xwgUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contract.MyDraftContracts" id="00B4P0000071xw8UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Order.AllDraftOrders" id="00B4P0000071xw1UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Scorecard.AllScorecards" id="00B4P0000071xvPUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Task.OpenTasks" id="00B4P0000071xvIUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Product2.AllProducts" id="00B4P0000071xwfUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contract.MyInApprovalContracts" id="00B4P0000071xw7UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Case.Trial_Activities" id="00B4P0000071xvyUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Asset.AllAssets" id="00B4P0000071xwZUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="AuthorizationFormConsent.All_AuthorizationFormConsents" id="00B4P000007q63UUAQ" lastModifiedDate="1570876497000"/>
+        <sfMetadataFile fullName="Case.MyCases" id="00B4P0000071xwuUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Lead.AllOpenLeads" id="00B4P0000071xwIUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Activity.MyActivities" id="00B4P0000071xx0UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Machine__c.All" id="00B4P000007qkQHUAY" lastModifiedDate="1570998829000"/>
+        <sfMetadataFile fullName="CollaborationGroup.All_ChatterGroups" id="00B4P0000071xxUUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Case.MyOpenCases" id="00B4P0000071xwNUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Contract.MyActivatedContracts" id="00B4P0000071xw4UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="AccountBrand.All_Account_Brands" id="00B4P0000071xvoUAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Campaign.AllActiveCampaigns" id="00B4P0000071xv7UAA" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Activity.TodaysTasks" id="00B4P0000071xwOUAQ" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Order.AllActivatedOrders" id="00B4P0000071xw2UAA" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">PermissionSet</key>
+      <value valueClass="list">
+        <sfMetadataFile file="permissionsets/Provar_Metadata.permissionset" fullName="Provar_Metadata" id="0PS4P000000dXAPWA2" lastModifiedDate="1559924101000"/>
+        <sfMetadataFile file="permissionsets/Case_Feed.permissionset" fullName="Case_Feed" id="0PS4P000001K59UWAS" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Layout</key>
+      <value valueClass="list">
+        <sfMetadataFile file="layouts/Case-Portal Case Layout.layout" fullName="Case-Portal Case Layout" id="00h4P00000WBq23QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/UserProvAccount-User Provisioning Account Layout.layout" fullName="UserProvAccount-User Provisioning Account Layout" id="00h4P00000W2VK5QAN" lastModifiedDate="1559872336000"/>
+        <sfMetadataFile file="layouts/Individual-Individual Layout.layout" fullName="Individual-Individual Layout" id="00h4P00000W3DBIQA3" lastModifiedDate="1560592282000"/>
+        <sfMetadataFile file="layouts/EmailMessage-Email Message Layout - Email-to-Case.layout" fullName="EmailMessage-Email Message Layout - Email-to-Case" id="00h4P00000WBq2hQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Opportunity-Opportunity Layout.layout" fullName="Opportunity-Opportunity Layout" id="00h4P00000WBq20QAD" lastModifiedDate="1568627241000"/>
+        <sfMetadataFile file="layouts/Macro-Macro Layout.layout" fullName="Macro-Macro Layout" id="00h4P00000WBq2fQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/CaseClose-Close Case Layout.layout" fullName="CaseClose-Close Case Layout" id="00h4P00000WBq29QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/AccountBrand-Account Brand Layout.layout" fullName="AccountBrand-Account Brand Layout" id="00h4P00000WBq2EQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Case-Case Layout.layout" fullName="Case-Case Layout" id="00h4P00000WBq22QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Machine__c-Machine Layout.layout" fullName="Machine__c-Machine Layout" id="00h4P00000WLICPQA5" lastModifiedDate="1571000520000"/>
+        <sfMetadataFile file="layouts/User-User Layout.layout" fullName="User-User Layout" id="00h4P00000WBq2DQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Contact-Contact Layout.layout" fullName="Contact-Contact Layout" id="00h4P00000WBq21QAD" lastModifiedDate="1570999277000"/>
+        <sfMetadataFile file="layouts/Idea-Idea Layout.layout" fullName="Idea-Idea Layout" id="00h4P00000WBq2XQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/CollaborationGroup-Group Layout.layout" fullName="CollaborationGroup-Group Layout" id="00h4P00000WLBxcQAH" lastModifiedDate="1568381626000"/>
+        <sfMetadataFile file="layouts/FAQ__kav-How To Layout.layout" fullName="FAQ__kav-How To Layout" id="00h4P00000WBq2NQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/ContractLineItem-Contract Line Item Layout.layout" fullName="ContractLineItem-Contract Line Item Layout" id="00h4P00000WBq2SQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Order-Order Layout.layout" fullName="Order-Order Layout" id="00h4P00000WBq2ZQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/ScorecardMetric-Scorecard Metric Layout.layout" fullName="ScorecardMetric-Scorecard Metric Layout" id="00h4P00000WBq2IQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/CaseInteraction-Case Feed Layout.layout" fullName="CaseInteraction-Case Feed Layout" id="00h4P00000WBq1zQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Task-Task Layout.layout" fullName="Task-Task Layout" id="00h4P00000WBq27QAD" lastModifiedDate="1559872335000"/>
+        <sfMetadataFile file="layouts/DuplicateRecordSet-Duplicate Record Set Layout.layout" fullName="DuplicateRecordSet-Duplicate Record Set Layout" id="00h4P00000WBq2eQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/AssetRelationship-Asset Relationship Layout.layout" fullName="AssetRelationship-Asset Relationship Layout" id="00h4P00000W2VK2QAN" lastModifiedDate="1559872335000"/>
+        <sfMetadataFile file="layouts/CommunityMemberLayout-Community Member Layout.layout" fullName="CommunityMemberLayout-Community Member Layout" id="00h4P00000WBq2FQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Pricebook2-Price Book Layout.layout" fullName="Pricebook2-Price Book Layout" id="00h4P00000WBq2UQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Contract-Contract Layout.layout" fullName="Contract-Contract Layout" id="00h4P00000WBq2AQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/UserProvisioningLog-User Provisioning Log Layout.layout" fullName="UserProvisioningLog-User Provisioning Log Layout" id="00h4P00000W2VK4QAN" lastModifiedDate="1559872336000"/>
+        <sfMetadataFile file="layouts/Entitlement-Entitlement Layout.layout" fullName="Entitlement-Entitlement Layout" id="00h4P00000WBq2QQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Scorecard-Scorecard Layout.layout" fullName="Scorecard-Scorecard Layout" id="00h4P00000WBq2HQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/SocialPost-Social Post Layout.layout" fullName="SocialPost-Social Post Layout" id="00h4P00000WBq2MQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/CampaignMember-Campaign Member Page Layout.layout" fullName="CampaignMember-Campaign Member Page Layout" id="00h4P00000WBq2KQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Lead-Lead Layout.layout" fullName="Lead-Lead Layout" id="00h4P00000WBq25QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/SocialPersona-Social Persona Layout.layout" fullName="SocialPersona-Social Persona Layout" id="00h4P00000WBq2LQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Campaign-Campaign Layout.layout" fullName="Campaign-Campaign Layout" id="00h4P00000WBq28QAD" lastModifiedDate="1559872335000"/>
+        <sfMetadataFile file="layouts/Event-Event Layout.layout" fullName="Event-Event Layout" id="00h4P00000WBq2WQAT" lastModifiedDate="1559872337000"/>
+        <sfMetadataFile file="layouts/QuickText-Quick Text Layout.layout" fullName="QuickText-Quick Text Layout" id="00h4P00000W2VK6QAN" lastModifiedDate="1559872338000"/>
+        <sfMetadataFile file="layouts/Global-Global Layout.layout" fullName="Global-Global Layout" id="00h4P00000WBq26QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Solution-Solution Layout.layout" fullName="Solution-Solution Layout" id="00h4P00000WBq2CQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/OpportunityLineItem-Opportunity Product Layout.layout" fullName="OpportunityLineItem-Opportunity Product Layout" id="00h4P00000WBq2YQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Asset-Asset Layout.layout" fullName="Asset-Asset Layout" id="00h4P00000WBq2VQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/ScorecardAssociation-Scorecard Association Layout.layout" fullName="ScorecardAssociation-Scorecard Association Layout" id="00h4P00000WBq2JQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Question-Question Layout.layout" fullName="Question-Question Layout" id="00h4P00000WBq2OQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Reply-Reply Layout.layout" fullName="Reply-Reply Layout" id="00h4P00000WBq2PQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/FeedItem-Feed Item Layout.layout" fullName="FeedItem-Feed Item Layout" id="00h4P00000WBq2gQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Product2-Product Layout.layout" fullName="Product2-Product Layout" id="00h4P00000WBq2BQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/ServiceContract-Service Contract Layout.layout" fullName="ServiceContract-Service Contract Layout" id="00h4P00000WBq2RQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/OrderItem-Order Product Layout.layout" fullName="OrderItem-Order Product Layout" id="00h4P00000WBq2aQAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/Account-Account Layout.layout" fullName="Account-Account Layout" id="00h4P00000WBq24QAD" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/CaseMilestone-Case Milestone Layout.layout" fullName="CaseMilestone-Case Milestone Layout" id="00h4P00000WBq2TQAT" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile file="layouts/UserProvisioningRequest-User Provisioning Request Layout.layout" fullName="UserProvisioningRequest-User Provisioning Request Layout" id="00h4P00000W2VK3QAN" lastModifiedDate="1559872336000"/>
+        <sfMetadataFile file="layouts/PricebookEntry-Price Book Entry Layout.layout" fullName="PricebookEntry-Price Book Entry Layout" id="00h4P00000WBq2dQAD" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">InstalledPackage</key>
+      <value valueClass="list">
+        <sfMetadataFile file="installedPackages/Flosum__Flosum.installedPackage" fullName="Flosum__Flosum" id="0A34P000000IKAKSA4" lastModifiedDate="1560338287000" namespacePrefix="Flosum" origFile="installedPackages/Flosum.installedPackage" origFullName="Flosum"/>
+        <sfMetadataFile file="installedPackages/SK__SK.installedPackage" fullName="SK__SK" id="0A34P000000peDmSAI" lastModifiedDate="1559872313000" namespacePrefix="SK" origFile="installedPackages/SK.installedPackage" origFullName="SK"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">CustomField</key>
+      <value valueClass="list">
+        <sfMetadataFile fullName="Machine__c.Contact__c" id="00N4P00000Fv1UmUAJ" lastModifiedDate="1570999214000"/>
+        <sfMetadataFile fullName="FAQ__kav.Question__c" id="00N4P00000BQ9LDUA1" lastModifiedDate="1559872313000"/>
+        <sfMetadataFile fullName="Opportunity.Additional_Description__c" id="00N4P00000FuZwlUAF" lastModifiedDate="1568902254000"/>
+        <sfMetadataFile fullName="Opportunity.Extra_Comments__c" id="00N4P00000FuZwvUAF" lastModifiedDate="1568966521000"/>
+        <sfMetadataFile fullName="Machine__c.Serial_Number__c" id="00N4P00000Fv1UhUAJ" lastModifiedDate="1570999061000"/>
+        <sfMetadataFile fullName="FAQ__kav.Answer__c" id="00N4P00000BQ9LEUA1" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">Portal</key>
+      <value valueClass="list">
+        <sfMetadataFile file="portals/Customer Portal.portal" fullName="Customer Portal" id="0604P000000gZqwQAE" lastModifiedDate="1559872313000"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">CustomObjectTranslation</key>
+      <value valueClass="list">
+        <sfMetadataFile file="objectTranslations/FAQ__kav-en_US.objectTranslation" fullName="FAQ__kav-en_US" id="" lastModifiedDate="0"/>
+        <sfMetadataFile file="objectTranslations/Machine__c-en_US.objectTranslation" fullName="Machine__c-en_US" id="" lastModifiedDate="0"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">AuraDefinitionBundle</key>
+      <value valueClass="list">
+        <sfMetadataFile file="aura/Flosum__ComponentHistoryComparision" fullName="Flosum__ComponentHistoryComparision" id="0Ab4P0000005tsiSAA" lastModifiedDate="1560338246000" namespacePrefix="Flosum"/>
+      </value>
+    </entry>
+    <entry>
+      <key valueClass="string">ApexComponent</key>
+      <value valueClass="list">
+        <sfMetadataFile file="components/Flosum__FlosumLogo.component" fullName="Flosum__FlosumLogo" id="0994P000000M1D5QAK" lastModifiedDate="1560338180000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__DynamicLookupScript.component" fullName="Flosum__DynamicLookupScript" id="0994P000000M1D4QAK" lastModifiedDate="1560338247000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__Wait.component" fullName="Flosum__Wait" id="0994P000000M1D9QAK" lastModifiedDate="1560338180000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__CommitToPatch.component" fullName="Flosum__CommitToPatch" id="0994P000000M1D3QAK" lastModifiedDate="1560338247000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__TrackPanel.component" fullName="Flosum__TrackPanel" id="0994P000000M1D8QAK" lastModifiedDate="1560338180000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__MultiSelectComponent.component" fullName="Flosum__MultiSelectComponent" id="0994P000000M1D6QAK" lastModifiedDate="1560338247000" namespacePrefix="Flosum"/>
+        <sfMetadataFile file="components/Flosum__NotificationComponent.component" fullName="Flosum__NotificationComponent" id="0994P000000M1D7QAK" lastModifiedDate="1560338248000" namespacePrefix="Flosum"/>
+      </value>
+    </entry>
+  </metadataTypes>
+</sfOrgMetadataIndex>

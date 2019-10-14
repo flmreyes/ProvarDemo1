@@ -1,0 +1,27 @@
+2019/10/14-11:25:54.069 59a8 Reusing MANIFEST C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\.provarCaches\.chromeProfiles\profile0\Default\IndexedDB\https_ips-provar.lightning.force.com_0.indexeddb.leveldb/MANIFEST-000001
+2019/10/14-11:25:54.071 59a8 Recovering log #14
+2019/10/14-11:25:54.081 59a8 Reusing old log C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\.provarCaches\.chromeProfiles\profile0\Default\IndexedDB\https_ips-provar.lightning.force.com_0.indexeddb.leveldb/000014.log 
+2019/10/14-11:25:55.310 3164 Level-0 table #19: started
+2019/10/14-11:25:55.392 3164 Level-0 table #19: 4022022 bytes OK
+2019/10/14-11:25:55.398 3164 Delete type=0 #14
+2019/10/14-11:26:27.138 3164 Level-0 table #21: started
+2019/10/14-11:26:27.330 3164 Level-0 table #21: 4025035 bytes OK
+2019/10/14-11:26:27.337 3164 Delete type=0 #18
+2019/10/14-11:27:05.446 3164 Level-0 table #23: started
+2019/10/14-11:27:05.519 3164 Level-0 table #23: 4278320 bytes OK
+2019/10/14-11:27:05.523 3164 Delete type=0 #20
+2019/10/14-11:27:38.660 3164 Level-0 table #25: started
+2019/10/14-11:27:38.759 3164 Level-0 table #25: 4048845 bytes OK
+2019/10/14-11:27:38.885 3164 Delete type=0 #22
+2019/10/14-11:27:38.887 3164 Compacting 4@0 + 1@1 files
+2019/10/14-11:27:38.986 3164 Generated table #26@0: 865 keys, 1277289 bytes
+2019/10/14-11:27:38.986 3164 Compacted 4@0 + 1@1 files => 1277289 bytes
+2019/10/14-11:27:38.993 3164 compacted to: files[ 0 1 1 0 0 0 0 ]
+2019/10/14-11:27:38.995 3164 Delete type=2 #16
+2019/10/14-11:27:38.995 3164 Delete type=2 #19
+2019/10/14-11:27:38.995 3164 Delete type=2 #21
+2019/10/14-11:27:38.995 3164 Delete type=2 #23
+2019/10/14-11:27:38.996 3164 Delete type=2 #25
+2019/10/14-11:28:23.539 3164 Level-0 table #28: started
+2019/10/14-11:28:23.622 3164 Level-0 table #28: 4238040 bytes OK
+2019/10/14-11:28:23.627 3164 Delete type=0 #24
