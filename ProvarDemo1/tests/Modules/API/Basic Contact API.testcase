@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testCase id="118" visibility="Internal">
+<testCase registryId="17fca992-1287-4b78-a78a-3401a8b7a2ba" visibility="Internal">
   <summary/>
   <steps>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexConnect" name="ApexConnect" testItemId="34" title="Salesforce Connect: ProvarDemo1 (Test)">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexConnect" name="ApexConnect" testItemId="2" title="Salesforce Connect: ProvarDemo1 (Test)">
       <arguments>
         <argument id="connectionName">
           <value class="value" valueClass="string">ProvarDemo1</value>
@@ -41,7 +41,7 @@
         <argument id="webBrowser"/>
       </arguments>
     </apiCall>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexSoqlQuery" name="ApexSoqlQuery" testItemId="36" title="SOQL Query: select Id\n    ,FirstName\n    ,LastName\n    ,AccountId\n    ,LastModifiedDate from Contact=&gt;ContactRows">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexSoqlQuery" name="ApexSoqlQuery" testItemId="3" title="SOQL Query: select Id\n    ,FirstName\n    ,LastName\n    ,AccountId\n    ,LastModifiedDate from Contact=&gt;ContactRows">
       <arguments>
         <argument id="soqlQuery">
           <value class="value" valueClass="string">select Id\n    ,FirstName\n    ,LastName\n    ,AccountId\n    ,LastModifiedDate from Contact</value>
@@ -59,7 +59,7 @@
       <expectedExceptions/>
       <parameterValueSources/>
     </apiCall>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexCreateObject" name="ApexCreateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.CreateCustomObjectTestStepCommand" testItemId="40" title="Create Object: Contact=&gt;ContactId">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexCreateObject" name="ApexCreateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.CreateCustomObjectTestStepCommand" testItemId="4" title="Create Object: Contact=&gt;ContactId">
       <arguments>
         <argument id="objectType">
           <value class="value" valueClass="string">Contact</value>
@@ -74,32 +74,20 @@
         <argument id="resultScope">
           <value class="value" valueClass="string">Test</value>
         </argument>
-        <argument id="FirstName">
-          <value class="compound">
-            <parts>
-              <value valueClass="string">Test First </value>
-              <funcCall id="UniqueId">
-                <argument id="length">
-                  <value class="value" valueClass="decimal">4</value>
-                </argument>
-              </funcCall>
-            </parts>
+        <argument argId="9c62bfe7-c031-440b-8be4-a0671a11e949" id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
           </value>
         </argument>
-        <argument id="LastName">
-          <value class="compound">
-            <parts>
-              <value valueClass="string">Test Last </value>
-              <funcCall id="UniqueId">
-                <argument id="length">
-                  <value class="value" valueClass="decimal">4</value>
-                </argument>
-              </funcCall>
-            </parts>
+        <argument argId="e13e6397-eafe-4146-9f74-8e557db5760d" id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
           </value>
         </argument>
-        <argument id="AccountId">
-          <value class="value" valueClass="string">0014P000027nFpA</value>
+        <argument argId="acfab55e-895f-40e9-8337-3769f31a81b7" id="AccountId">
+          <value class="variable">
+            <path element="AccountId"/>
+          </value>
         </argument>
       </arguments>
       <parameterValueSources/>
@@ -113,7 +101,7 @@
         <apiParam group="fields" modelBinding="sf:ui:binding:object?object=Contact&amp;field=AccountId" name="AccountId" title="AccountId"/>
       </generatedParameters>
     </apiCall>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexUpdateObject" name="ApexUpdateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.UpdateCustomObjectTestStepCommand" testItemId="38" title="Update Object: Contact = 0034P00002fDEfI">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexUpdateObject" name="ApexUpdateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.UpdateCustomObjectTestStepCommand" testItemId="5" title="Update Object: Contact = {ContactId}">
       <arguments>
         <argument id="objectType">
           <value class="value" valueClass="string">Contact</value>
@@ -125,7 +113,9 @@
           <value class="value" valueClass="string">ProvarDemo1</value>
         </argument>
         <argument id="objectId">
-          <value class="value" valueClass="string">0034P00002fDEfI</value>
+          <value class="variable">
+            <path element="ContactId"/>
+          </value>
         </argument>
         <argument id="assignmentRuleId"/>
         <argument id="resultScope">
@@ -152,7 +142,7 @@
         <apiParam group="fields" modelBinding="sf:ui:binding:object?object=Contact&amp;field=Title" name="Title" title="Title"/>
       </generatedParameters>
     </apiCall>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexCreateObject" name="ApexCreateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.CreateCustomObjectTestStepCommand" testItemId="41" title="Create Object: Contact=&gt;ContactId2">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexCreateObject" name="ApexCreateObject" parameterGeneratorUri="command:com.provar.plugins.forcedotcom.ui.commands.CreateCustomObjectTestStepCommand" testItemId="6" title="Create Object: Contact=&gt;ContactId2">
       <arguments>
         <argument id="objectType">
           <value class="value" valueClass="string">Contact</value>
@@ -168,31 +158,19 @@
           <value class="value" valueClass="string">Test</value>
         </argument>
         <argument id="FirstName">
-          <value class="compound">
-            <parts>
-              <value valueClass="string">Test First </value>
-              <funcCall id="UniqueId">
-                <argument id="length">
-                  <value class="value" valueClass="decimal">4</value>
-                </argument>
-              </funcCall>
-            </parts>
+          <value class="variable">
+            <path element="FirstName"/>
           </value>
         </argument>
         <argument id="LastName">
-          <value class="compound">
-            <parts>
-              <value valueClass="string">Test Last </value>
-              <funcCall id="UniqueId">
-                <argument id="length">
-                  <value class="value" valueClass="decimal">4</value>
-                </argument>
-              </funcCall>
-            </parts>
+          <value class="variable">
+            <path element="LastName"/>
           </value>
         </argument>
         <argument id="AccountId">
-          <value class="value" valueClass="string">0014P000027nFpA</value>
+          <value class="variable">
+            <path element="AccountId"/>
+          </value>
         </argument>
       </arguments>
       <parameterValueSources/>
@@ -206,7 +184,7 @@
         <apiParam group="fields" modelBinding="sf:ui:binding:object?object=Contact&amp;field=AccountId" name="AccountId" title="AccountId"/>
       </generatedParameters>
     </apiCall>
-    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexDeleteObject" name="ApexDeleteObject" testItemId="39" title="Delete Object: {ContactId2}">
+    <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexDeleteObject" name="ApexDeleteObject" testItemId="7" title="Delete Object: {ContactId2}">
       <arguments>
         <argument id="apexConnectionName">
           <value class="value" valueClass="string">ProvarDemo1</value>
@@ -220,45 +198,18 @@
     </apiCall>
   </steps>
   <params>
-    <param name="FirstName" title="FirstName">
+    <param linkedToUrl="provar:hasvalue:9c62bfe7-c031-440b-8be4-a0671a11e949" modelBinding="sf:ui:binding:object?object=Contact&amp;field=FirstName" name="FirstName" title="FirstName">
       <summary/>
-      <type>
-        <textType>
-          <constraints>
-            <valueConstraint name="minLength">0</valueConstraint>
-            <valueConstraint name="maxLength">9999</valueConstraint>
-            <valueConstraint name="regex"/>
-          </constraints>
-        </textType>
-      </type>
     </param>
-    <param name="LastName" title="LastName">
+    <param linkedToUrl="provar:hasvalue:e13e6397-eafe-4146-9f74-8e557db5760d" modelBinding="sf:ui:binding:object?object=Contact&amp;field=LastName" name="LastName" title="LastName">
       <summary/>
-      <type>
-        <textType>
-          <constraints>
-            <valueConstraint name="minLength">0</valueConstraint>
-            <valueConstraint name="maxLength">9999</valueConstraint>
-            <valueConstraint name="regex"/>
-          </constraints>
-        </textType>
-      </type>
     </param>
-    <param name="AccountName" title="AccountName">
+    <param linkedToUrl="provar:hasvalue:acfab55e-895f-40e9-8337-3769f31a81b7" modelBinding="sf:ui:binding:object?object=Contact&amp;field=AccountId" name="AccountId" title="AccountId">
       <summary/>
-      <type>
-        <textType>
-          <constraints>
-            <valueConstraint name="minLength">0</valueConstraint>
-            <valueConstraint name="maxLength">9999</valueConstraint>
-            <valueConstraint name="regex"/>
-          </constraints>
-        </textType>
-      </type>
     </param>
   </params>
   <outputParams>
-    <param defaultScope="Test" name="contactId" title="contactId">
+    <param name="ContactId" title="ContactId">
       <summary>The name under which the resulting Object Id will be stored.</summary>
       <type>
         <textType>
@@ -270,7 +221,7 @@
         </textType>
       </type>
       <sourceValue class="variable">
-        <path element="contactId"/>
+        <path element="ContactId"/>
       </sourceValue>
     </param>
   </outputParams>
@@ -278,10 +229,10 @@
     <argument id="FirstName">
       <value class="compound">
         <parts>
-          <value valueClass="string">First Name </value>
+          <value valueClass="string">Test First </value>
           <funcCall id="UniqueId">
             <argument id="length">
-              <value class="value" valueClass="decimal">8</value>
+              <value class="value" valueClass="decimal">4</value>
             </argument>
           </funcCall>
         </parts>
@@ -290,31 +241,22 @@
     <argument id="LastName">
       <value class="compound">
         <parts>
-          <value valueClass="string">Last Name </value>
+          <value valueClass="string">Test Last </value>
           <funcCall id="UniqueId">
             <argument id="length">
-              <value class="value" valueClass="decimal">8</value>
+              <value class="value" valueClass="decimal">4</value>
             </argument>
           </funcCall>
         </parts>
       </value>
     </argument>
-    <argument id="AccountName">
-      <value class="value" valueClass="string">Global Media</value>
+    <argument id="AccountId">
+      <value class="value" valueClass="string">0014P000027nFpA</value>
     </argument>
   </args>
   <outputArgs>
-    <outputArgument id="contactId">
-      <name class="value" valueClass="string">contactId</name>
-    </outputArgument>
-    <outputArgument id="FirstName">
-      <name class="value" valueClass="string">FirstName</name>
-    </outputArgument>
-    <outputArgument id="LastName">
-      <name class="value" valueClass="string">LastName</name>
-    </outputArgument>
-    <outputArgument id="AccountName">
-      <name class="value" valueClass="string">AccountName</name>
+    <outputArgument id="ContactId">
+      <name class="value" valueClass="string">ContactId</name>
     </outputArgument>
   </outputArgs>
 </testCase>

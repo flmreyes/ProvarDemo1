@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testCase>
+  <summary/>
+  <steps>
+    <caseCall testCaseId="17fca992-1287-4b78-a78a-3401a8b7a2ba" testCasePath="tests/Modules/API/Basic Contact API.testcase" testItemId="2">
+      <arguments>
+        <argument argId="a7cc13af-14e9-4568-9e17-9cb3a5e03476" id="FirstName">
+          <value class="variable">
+            <path element="FirstName"/>
+          </value>
+        </argument>
+        <argument argId="f6ead12f-2690-48d8-ae7b-1af5f527e695" id="LastName">
+          <value class="variable">
+            <path element="LastName"/>
+          </value>
+        </argument>
+        <argument argId="79912343-c286-46a2-862a-18c69a6353fc" id="AccountId">
+          <value class="variable">
+            <path element="AccountId"/>
+          </value>
+        </argument>
+      </arguments>
+      <outputArguments>
+        <outputArgument id="ContactId">
+          <name class="value" valueClass="string">ContactId</name>
+        </outputArgument>
+      </outputArguments>
+    </caseCall>
+    <caseCall testCaseId="86109744-f2a0-4a6d-a7cb-55e930f8946b" testCasePath="tests/Modules/API/Basic Machine API.testcase" testItemId="3">
+      <arguments>
+        <argument argId="d0a1a991-0395-47e7-a231-79b8a1e7379b" id="Serial_Number__c">
+          <value class="variable">
+            <path element="Serial_Number__c"/>
+          </value>
+        </argument>
+        <argument argId="eeea149e-1206-490c-a1ba-d0fad5f30bde" id="Name">
+          <value class="variable">
+            <path element="Name"/>
+          </value>
+        </argument>
+        <argument id="Contact__c">
+          <value class="variable">
+            <path element="ContactId"/>
+          </value>
+        </argument>
+      </arguments>
+    </caseCall>
+  </steps>
+  <params>
+    <param linkedToUrl="provar:hasvalue:a7cc13af-14e9-4568-9e17-9cb3a5e03476" modelBinding="sf:ui:binding:object?object=Contact&amp;field=FirstName" name="FirstName" title="FirstName">
+      <summary/>
+    </param>
+    <param linkedToUrl="provar:hasvalue:f6ead12f-2690-48d8-ae7b-1af5f527e695" modelBinding="sf:ui:binding:object?object=Contact&amp;field=LastName" name="LastName" title="LastName">
+      <summary/>
+    </param>
+    <param linkedToUrl="provar:hasvalue:79912343-c286-46a2-862a-18c69a6353fc" modelBinding="sf:ui:binding:object?object=Contact&amp;field=AccountId" name="AccountId" title="AccountId">
+      <summary/>
+    </param>
+    <param linkedToUrl="provar:hasvalue:d0a1a991-0395-47e7-a231-79b8a1e7379b" modelBinding="sf:ui:binding:object?object=Machine__c&amp;field=Serial_Number__c" name="Serial_Number__c" title="Serial_Number__c">
+      <summary/>
+    </param>
+    <param linkedToUrl="provar:hasvalue:eeea149e-1206-490c-a1ba-d0fad5f30bde" modelBinding="sf:ui:binding:object?object=Machine__c&amp;field=Name" name="Name" title="Name">
+      <summary/>
+    </param>
+  </params>
+  <args>
+    <argument id="FirstName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Test First </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">4</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="LastName">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Test Last </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">4</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="AccountId">
+      <value class="value" valueClass="string">0014P000027nFpA</value>
+    </argument>
+    <argument id="Serial_Number__c">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">SN </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+    <argument id="Name">
+      <value class="compound">
+        <parts>
+          <value valueClass="string">Machine </value>
+          <funcCall id="UniqueId">
+            <argument id="length">
+              <value class="value" valueClass="decimal">8</value>
+            </argument>
+          </funcCall>
+        </parts>
+      </value>
+    </argument>
+  </args>
+</testCase>

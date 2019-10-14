@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testCase id="7" registryId="7ec1d835-1dab-42bf-86fe-e4e86ae097de" visibility="Internal">
+<testCase id="4" registryId="7ec1d835-1dab-42bf-86fe-e4e86ae097de" visibility="Internal">
   <summary/>
   <steps>
     <apiCall apiId="com.provar.plugins.forcedotcom.core.testapis.ApexConnect" name="ApexConnect" testItemId="1" title="Salesforce Connect: ProvarDemo1 (Test)">
@@ -66,7 +66,7 @@
             <apiParam name="AccountID"/>
             <apiParam name="ContactName"/>
           </cachedParameters>
-          <sourceValue class="excelTarget" created="0" namesLocation="FirstRowOfRange" updated="0" whereComparison="EqualTo">
+          <sourceValue class="excelTarget" namesLocation="FirstRowOfRange" whereComparison="EqualTo">
             <workbookPath class="value" valueClass="string">templates/Contacts.xlsx</workbookPath>
             <worksheetName class="value" valueClass="string">Contacts</worksheetName>
             <valuesRange class="value" valueClass="string">A1:D6</valuesRange>
@@ -168,7 +168,7 @@
                   </value>
                 </argument>
                 <argument id="dataUrl">
-                  <value class="excelTarget" created="0" sheetWriteMode="Overwrite" updated="0">
+                  <value class="excelTarget" sheetWriteMode="Append">
                     <workbookPath class="value" valueClass="string">templates/Contacts.xlsx</workbookPath>
                     <worksheetName class="value" valueClass="string">Write Contact Details</worksheetName>
                   </value>

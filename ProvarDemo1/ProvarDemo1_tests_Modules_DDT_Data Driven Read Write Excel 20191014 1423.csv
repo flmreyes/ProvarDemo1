@@ -1,0 +1,6 @@
+started, ended, path, name, successful, skipped, failed
+2019-10-14 14:23:55.198,2019-10-14 14:24:08.606,C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1,,1,0,0
+2019-10-14 14:23:55.198,1970-01-01 01:00:00.000,C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1\tests,,1,0,0
+2019-10-14 14:23:55.198,1970-01-01 01:00:00.000,C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1\tests\Modules,,1,0,0
+2019-10-14 14:23:55.198,2019-10-14 14:24:08.604,C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1\tests\Modules\DDT,,1,0,0
+2019-10-14 14:23:55.198,2019-10-14 14:24:08.604,C:\Users\francis.l.m.reyes\GitHub\ProvarDemo1\ProvarDemo1\tests\Modules\DDT,Data Driven Read Write Excel.testcase,1,0,0
